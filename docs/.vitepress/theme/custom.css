@@ -1,0 +1,28 @@
+/* pgRDF docs custom theme — PostgreSQL blue + a green-teal accent */
+
+:root {
+  --vp-c-brand-1:        #336791;   /* PostgreSQL elephant blue */
+  --vp-c-brand-2:        #2c5a7a;
+  --vp-c-brand-3:        #244a64;
+  --vp-c-brand-soft:     rgba(51, 103, 145, 0.14);
+
+  --vp-c-tip-1:          #0f9d6e;   /* RDF "data" green */
+  --vp-c-tip-2:          #0d8a61;
+  --vp-c-tip-soft:       rgba(15, 157, 110, 0.14);
+
+  --vp-home-hero-name-color: linear-gradient(120deg, #336791 30%, #0f9d6e);
+  --vp-home-hero-image-background-image: linear-gradient(-45deg, #336791 50%, #0f9d6e 50%);
+  --vp-home-hero-image-filter: blur(40px);
+}
+
+.dark {
+  --vp-c-brand-1:        #6da3c8;
+  --vp-c-brand-2:        #4d87ad;
+  --vp-c-brand-3:        #336791;
+  --vp-c-brand-soft:     rgba(109, 163, 200, 0.16);
+}
+
+/* tighten code blocks a touch — the docs are SQL-heavy */
+.vp-doc div[class*='language-'] {
+  margin: 16px 0;
+}
