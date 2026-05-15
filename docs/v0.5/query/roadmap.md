@@ -24,15 +24,26 @@ pages. Recently shipped:
   atomic DELETE+INSERT/WHERE, WITH and inline GRAPH scoping,
   DROP/CLEAR/CREATE lifecycle algebra).
 
-## <span class="material-symbols-outlined icon-orange">rocket_launch</span>Phase D — CONSTRUCT
+In flight on `main` right now (pre-release):
+
+- <span class="material-symbols-outlined icon-orange">rocket_launch</span>**Phase D** — [CONSTRUCT](/v0.5/query/construct)
+  (`pgrdf.construct(q)` foundation with constant-only templates,
+  variable substitution, blank-node templates, multi-triple
+  templates, GRAPH-scoped WHERE, WHERE-shorthand) — countdown
+  slices 59 → 54 landed. Tags in the next release.
+
+## <span class="material-symbols-outlined icon-orange">rocket_launch</span>Phase D — CONSTRUCT (in flight)
+
+Now landing on `main`. See the dedicated
+[**CONSTRUCT page**](/v0.5/query/construct) for the full surface
+as it stands today.
 
 `CONSTRUCT` is the canonical SPARQL form for **graph-snapshot
 export, view materialisation, and graph-rewrite pipelines**:
 take a WHERE pattern, instantiate a graph template against every
 solution, return the resulting triples.
 
-The v0.4 plan adds a sibling UDF rather than overloading
-`pgrdf.sparql`:
+pgRDF adds a sibling UDF rather than overloading `pgrdf.sparql`:
 
 ```
 pgrdf.construct(q TEXT) → SETOF JSONB
@@ -41,15 +52,6 @@ pgrdf.construct(q TEXT) → SETOF JSONB
 Each result row has the shape `{subject, predicate, object}`
 (JSONB), suitable for direct piping into `INSERT INTO … SELECT`
 or any tabular consumer.
-
-Use-cases this unlocks:
-
-- **Snapshot a subgraph as a CONSTRUCT** that you store as a row
-  set or feed into another pgRDF graph.
-- **Implement a graph view** as a CONSTRUCT query wrapped in a
-  Postgres `VIEW`.
-- **Pipeline transformations** — CONSTRUCT against an input
-  graph, capture the result, INSERT-DATA into an output graph.
 
 Tracked at [`SPEC.pgRDF.LLD.v0.4 §6`](https://github.com/styk-tv/pgRDF/blob/main/specs/SPEC.pgRDF.LLD.v0.4.md).
 

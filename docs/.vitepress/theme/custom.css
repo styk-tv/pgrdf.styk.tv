@@ -206,6 +206,24 @@
   color: var(--vp-c-brand-1);
   font-variation-settings: 'wght' 300, 'opsz' 24;
 }
+.VPSidebarItem a.link[href$="/v0.5/training"] .text::before {
+  font-family: 'Material Symbols Outlined';
+  content: 'auto_stories';
+  margin-right: 0.45em;
+  font-size: 1em;
+  vertical-align: -0.15em;
+  color: var(--vp-c-brand-1);
+  font-variation-settings: 'wght' 300, 'opsz' 24;
+}
+.VPSidebarItem a.link[href$="/v0.5/query/construct"] .text::before {
+  font-family: 'Material Symbols Outlined';
+  content: 'rocket_launch';
+  margin-right: 0.45em;
+  font-size: 1em;
+  vertical-align: -0.15em;
+  color: #e8a23a;
+  font-variation-settings: 'wght' 300, 'opsz' 24;
+}
 
 /* The lifecycle UDF group gets a tiny build accent at the
    collapsed-group header (text comes from the sidebar config). */

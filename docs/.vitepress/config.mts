@@ -22,7 +22,7 @@ export default withMermaid(defineConfig({
     // it sparingly in pages.
     ['link', { rel: 'preconnect', href: 'https://fonts.googleapis.com' }],
     ['link', { rel: 'preconnect', href: 'https://fonts.gstatic.com', crossorigin: '' }],
-    ['link', { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,300,0..1,-25..0&icon_names=account_tree,bolt,build,check_circle,code,content_copy,delete_forever,description,fact_check,groups,hub,info,layers_clear,psychology,query_stats,rocket_launch,school,search,settings,storage,swap_horiz,verified&display=swap' }],
+    ['link', { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,300,0..1,-25..0&icon_names=account_tree,auto_stories,bolt,build,check_circle,code,content_copy,delete_forever,description,fact_check,groups,hub,info,layers_clear,mic,psychology,query_stats,rocket_launch,school,search,settings,storage,swap_horiz,verified&display=swap' }],
 
     // Theme + canonical
     ['meta', { name: 'theme-color', content: '#336791' }],
@@ -124,6 +124,7 @@ export default withMermaid(defineConfig({
           items: [
             { text: 'Introduction',     link: '/' },
             { text: 'The four pillars', link: '/v0.5/pillars' },
+            { text: 'Training',         link: '/v0.5/training' },
           ],
         },
         {
@@ -170,6 +171,7 @@ export default withMermaid(defineConfig({
             { text: 'ASK',                               link: '/v0.5/query/ask' },
             { text: 'GRAPH <iri> { … }',                 link: '/v0.5/query/graph-clause' },
             { text: 'SPARQL UPDATE',                     link: '/v0.5/query/update' },
+            { text: 'CONSTRUCT (in flight)',             link: '/v0.5/query/construct' },
             { text: 'sparql_parse — inspect without executing', link: '/v0.5/query/sparql-parse' },
             { text: 'Error-message contract',            link: '/v0.5/query/error-contract' },
             { text: "Forward edge — what's next",        link: '/v0.5/query/roadmap' },

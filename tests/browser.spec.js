@@ -349,4 +349,44 @@ test.describe('v0.5 sub-pages', () => {
     );
     expect(before).toMatch(/storage/);
   });
+
+  test('CONSTRUCT page documents Phase D shipping surface', async ({ page }) => {
+    await page.goto('/v0.5/query/construct');
+    await expect(page.locator('h1').first()).toContainText('CONSTRUCT');
+    await expect(page.getByText(/In flight/i).first()).toBeVisible();
+    await expect(page.getByText(/Variable substitution/i).first()).toBeVisible();
+    await expect(page.getByText(/Blank-node templates/i).first()).toBeVisible();
+    await expect(page.getByText(/WHERE-shorthand/i).first()).toBeVisible();
+  });
+
+  test('Training landing page enumerates pillars + audio companion', async ({ page }) => {
+    await page.goto('/v0.5/training');
+    await expect(page.locator('h1').first()).toContainText('Training');
+    const main = page.locator('.vp-doc').first();
+    await expect(main.getByRole('heading', { level: 2, name: /Audio companion/i })).toBeVisible();
+    await expect(main.getByText(/Apache-2.0/i).first()).toBeVisible();
+    await expect(main.getByText(/Kokoro/i).first()).toBeVisible();
+  });
+
+  test('All five pillar overview pages have a Training section', async ({ page }) => {
+    for (const url of [
+      '/v0.5/storage/',
+      '/v0.5/query/',
+      '/v0.5/inference/',
+      '/v0.5/validation/',
+      '/v0.5/operations/',
+    ]) {
+      await page.goto(url);
+      const main = page.locator('.vp-doc').first();
+      await expect(main.getByRole('heading', { level: 2, name: /Training/ })).toBeVisible();
+      await expect(main.getByText(/Audio companion/i).first()).toBeVisible();
+    }
+  });
+
+  test('At-a-glance callout references CONSTRUCT landing on main', async ({ page }) => {
+    await page.goto('/');
+    const block = page.locator('.custom-block.info', { hasText: 'At a glance' });
+    await expect(block.getByText(/CONSTRUCT/i)).toBeVisible();
+    await expect(block.getByText(/Training/i)).toBeVisible();
+  });
 });

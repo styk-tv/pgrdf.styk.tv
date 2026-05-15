@@ -39,3 +39,30 @@ SELECT * FROM pgrdf._pgrdf_dictionary
 ```
 
 [**Next — Load Turtle from disk →**](/v0.5/storage/load-turtle)
+
+## <span class="material-symbols-outlined icon-blue">auto_stories</span>Training {#training}
+
+A recommended path through Pillar 1 — read in this order and
+each page builds on the previous one:
+
+<div class="icon-bullets">
+
+- <span class="material-symbols-outlined">description</span> **Start with [Load Turtle from disk](/v0.5/storage/load-turtle)** — the single UDF call that takes you from "file on disk" to "queryable quads". The simplest end-to-end win.
+- <span class="material-symbols-outlined">storage</span> **Then [Per-graph LIST partitions](/v0.5/storage/graph-partitions)** — the partition-per-graph model is the structural choice everything else hangs off. Understand it before going further.
+- <span class="material-symbols-outlined">account_tree</span> **Then [Named graphs (IRI ↔ id)](/v0.5/storage/named-graphs) → [Hexastore + dictionary](/v0.5/storage/hexastore)** — how graphs are addressed and how terms are stored. The two pillars of cheap storage and fast lookup.
+- <span class="material-symbols-outlined">description</span> **Then [Term types](/v0.5/storage/term-types)** — datatypes, language tags, blank nodes, RDF lists. The detail you'll need before any FILTER or aggregate.
+- <span class="material-symbols-outlined">bolt</span> **Then [Bulk ingest](/v0.5/storage/bulk-ingest) + [Shared-memory dictionary cache](/v0.5/storage/shmem-cache)** — performance characteristics for production loads.
+- <span class="material-symbols-outlined">build</span> **Finish with [Graph lifecycle UDFs](/v0.5/storage/lifecycle)** — once you understand the storage model, the lifecycle operations are partition-level primitives.
+
+</div>
+
+### Learn more
+
+<div class="icon-bullets">
+
+- <span class="material-symbols-outlined">info</span> Refresh on RDF foundations with the [RDF 1.1 Primer](https://www.w3.org/TR/rdf11-primer/).
+- <span class="material-symbols-outlined">description</span> The [RDF 1.1 Turtle](https://www.w3.org/TR/turtle/) spec — what `parse_turtle` is implementing.
+- <span class="material-symbols-outlined">code</span> Postgres internals — partitioning chapter of the [PG manual](https://www.postgresql.org/docs/current/ddl-partitioning.html).
+- <span class="material-symbols-outlined">mic</span> **Audio companion** — every page in this pillar has a corresponding podcast episode (see [Training](/v0.5/training#audio-companion)).
+
+</div>
