@@ -15,9 +15,11 @@ test.describe('Root landing (/)', () => {
   });
 
   test('renders the "At a glance" critical-details header', async ({ page }) => {
-    await expect(page.locator('text=At a glance')).toBeVisible();
-    await expect(page.locator('text=Apache-2.0')).toBeVisible();
-    await expect(page.locator('text=Latest release')).toBeVisible();
+    const block = page.locator('.custom-block.info', { hasText: 'At a glance' });
+    await expect(block).toBeVisible();
+    await expect(block.getByText('Apache-2.0', { exact: true })).toBeVisible();
+    await expect(block.getByText('Latest release')).toBeVisible();
+    await expect(block.getByText('14 · 15 · 16 · 17')).toBeVisible();
   });
 
   test('left sidebar exposes Getting started + all four pillars', async ({ page }) => {
@@ -46,9 +48,12 @@ test.describe('Root landing (/)', () => {
     await expect(page.locator('h2:has-text("Get the bits")')).toBeVisible();
   });
 
-  test('promotes releases prominently', async ({ page }) => {
-    await expect(page.locator('a[href="https://github.com/styk-tv/pgRDF/releases"]').first()).toBeVisible();
-    await expect(page.locator('a[href="https://crates.io/crates/pgrdf"]').first()).toBeVisible();
+  test('promotes releases prominently in the page body', async ({ page }) => {
+    // Restrict to .vp-doc (body content), excluding nav/footer where
+    // links may exist but be visually collapsed in dropdowns.
+    const body = page.locator('.vp-doc');
+    await expect(body.locator('a[href="https://github.com/styk-tv/pgRDF/releases"]').first()).toBeVisible();
+    await expect(body.locator('a[href="https://crates.io/crates/pgrdf"]').first()).toBeVisible();
   });
 
   test('next-step CTA points at the four pillars', async ({ page }) => {
