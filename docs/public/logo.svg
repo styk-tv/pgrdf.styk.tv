@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="none">
+  <rect width="256" height="256" rx="40" fill="#336791"/>
+  <path d="M40 200 V 56 H 110 a40 40 0 1 1 0 80 H 80 V 200 Z" fill="#fff"/>
+  <circle cx="110" cy="96" r="14" fill="#336791"/>
+  <text x="130" y="184" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="58" font-weight="700" fill="#0f9d6e">RDF</text>
+</svg>

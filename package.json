@@ -8,6 +8,7 @@
     "docs:build": "vitepress build docs",
     "docs:preview": "vitepress preview docs",
     "test": "npx playwright test",
+    "test:live": "TARGET=live npx playwright test",
     "test:browser": "npx playwright test tests/browser.spec.js"
   },
   "devDependencies": {
