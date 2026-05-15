@@ -15,12 +15,12 @@ The lifecycle UDFs treat each named graph as the partition-level
 object it really is. They all return `BIGINT` and share the same
 stable error-prefix contract.
 
-| UDF | Signature | What it does |
-|---|---|---|
-| **[`drop_graph`](/v0.5/storage/drop-graph)** | `pgrdf.drop_graph(id BIGINT, cascade BOOLEAN DEFAULT TRUE) → BIGINT` | DETACH + DROP the LIST partition; remove the `_pgrdf_graphs` row. Returns pre-drop triple count. |
-| **[`clear_graph`](/v0.5/storage/clear-graph)** | `pgrdf.clear_graph(id BIGINT) → BIGINT` | `TRUNCATE ONLY` the partition. Partition + IRI binding survive. Returns rows-removed count. |
-| **[`copy_graph`](/v0.5/storage/copy-graph)** | `pgrdf.copy_graph(src BIGINT, dst BIGINT) → BIGINT` | `INSERT INTO … SELECT` every row from `src` to `dst`. Auto-creates `dst` if missing. Returns count copied. |
-| **[`move_graph`](/v0.5/storage/move-graph)** | `pgrdf.move_graph(src BIGINT, dst BIGINT) → BIGINT` | Composes `copy_graph(src, dst)` + `drop_graph(src, cascade => TRUE)` in the caller's transaction. Returns count moved. |
+|   | UDF | Signature | What it does |
+|---|---|---|---|
+| <span class="material-symbols-outlined icon-orange">delete_forever</span> | **[`drop_graph`](/v0.5/storage/drop-graph)** | `pgrdf.drop_graph(id BIGINT, cascade BOOLEAN DEFAULT TRUE) → BIGINT` | DETACH + DROP the LIST partition; remove the `_pgrdf_graphs` row. Returns pre-drop triple count. |
+| <span class="material-symbols-outlined">layers_clear</span> | **[`clear_graph`](/v0.5/storage/clear-graph)** | `pgrdf.clear_graph(id BIGINT) → BIGINT` | `TRUNCATE ONLY` the partition. Partition + IRI binding survive. Returns rows-removed count. |
+| <span class="material-symbols-outlined">content_copy</span> | **[`copy_graph`](/v0.5/storage/copy-graph)** | `pgrdf.copy_graph(src BIGINT, dst BIGINT) → BIGINT` | `INSERT INTO … SELECT` every row from `src` to `dst`. Auto-creates `dst` if missing. Returns count copied. |
+| <span class="material-symbols-outlined">swap_horiz</span> | **[`move_graph`](/v0.5/storage/move-graph)** | `pgrdf.move_graph(src BIGINT, dst BIGINT) → BIGINT` | Composes `copy_graph(src, dst)` + `drop_graph(src, cascade => TRUE)` in the caller's transaction. Returns count moved. |
 
 All four are **idempotent on absent inputs** (return 0, no error),
 all four reject **negative ids** with a stable prefix, and all

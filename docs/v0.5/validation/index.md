@@ -9,15 +9,15 @@ from the [rudof project](https://github.com/rudof-project/rudof).
 
 ## Topics in this pillar
 
-- [**Mental model**](/v0.5/validation/mental-model).
-- [**Worked example**](/v0.5/validation/example) — minCount,
-  datatype, nodeKind constraints.
-- [**SHACL Core components**](/v0.5/validation/shacl-components) —
-  what's supported.
-- [**Report as data**](/v0.5/validation/report-as-data) — querying
-  violations with regular SQL.
-- [**🚀 Forward edge — SHACL-SPARQL**](/v0.5/validation/shacl-sparql) —
-  v0.5 custom-constraint surface.
+<div class="icon-bullets">
+
+- <span class="material-symbols-outlined">info</span> [**Mental model**](/v0.5/validation/mental-model).
+- <span class="material-symbols-outlined">description</span> [**Worked example**](/v0.5/validation/example) — minCount, datatype, nodeKind constraints.
+- <span class="material-symbols-outlined">verified</span> [**SHACL Core components**](/v0.5/validation/shacl-components) — what's supported.
+- <span class="material-symbols-outlined">fact_check</span> [**Report as data**](/v0.5/validation/report-as-data) — querying violations with regular SQL.
+- <span class="material-symbols-outlined icon-orange">rocket_launch</span> [**Forward edge — SHACL-SPARQL**](/v0.5/validation/shacl-sparql) — custom-constraint surface.
+
+</div>
 
 ## At a glance
 

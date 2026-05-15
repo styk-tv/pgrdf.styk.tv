@@ -15,30 +15,39 @@ the read and write surface share a single UDF entry point.
 
 ## Read surface
 
-- [**BGP joins**](/v0.5/query/bgp-joins) — N-pattern joins.
-- [**FILTER**](/v0.5/query/filter) — boolean composition + term-type tests.
-- [**OPTIONAL**](/v0.5/query/optional) — left outer join.
-- [**UNION**](/v0.5/query/union) — disjoint pattern alternatives.
-- [**MINUS**](/v0.5/query/minus) — set difference.
-- [**Aggregates**](/v0.5/query/aggregates) — `COUNT`, `SUM`, `AVG`, `MIN`/`MAX`, `GROUP_CONCAT`, `SAMPLE`.
-- [**HAVING**](/v0.5/query/having) — post-aggregate FILTER.
-- [**BIND**](/v0.5/query/bind) — project computed values.
-- [**Solution modifiers**](/v0.5/query/modifiers) — `DISTINCT`, `ORDER BY`, `LIMIT`, `OFFSET`.
-- [**ASK**](/v0.5/query/ask) — boolean queries.
-- [**GRAPH `<iri> { … }`**](/v0.5/query/graph-clause) — named-graph scoping (literal + variable forms).
+<div class="icon-bullets">
+
+- <span class="material-symbols-outlined">search</span> [**BGP joins**](/v0.5/query/bgp-joins) — N-pattern joins.
+- <span class="material-symbols-outlined">search</span> [**FILTER**](/v0.5/query/filter) — boolean composition + term-type tests.
+- <span class="material-symbols-outlined">hub</span> [**OPTIONAL**](/v0.5/query/optional) — left outer join.
+- <span class="material-symbols-outlined">hub</span> [**UNION**](/v0.5/query/union) — disjoint pattern alternatives.
+- <span class="material-symbols-outlined">hub</span> [**MINUS**](/v0.5/query/minus) — set difference.
+- <span class="material-symbols-outlined">query_stats</span> [**Aggregates**](/v0.5/query/aggregates) — `COUNT`, `SUM`, `AVG`, `MIN`/`MAX`, `GROUP_CONCAT`, `SAMPLE`.
+- <span class="material-symbols-outlined">query_stats</span> [**HAVING**](/v0.5/query/having) — post-aggregate FILTER.
+- <span class="material-symbols-outlined">search</span> [**BIND**](/v0.5/query/bind) — project computed values.
+- <span class="material-symbols-outlined">search</span> [**Solution modifiers**](/v0.5/query/modifiers) — `DISTINCT`, `ORDER BY`, `LIMIT`, `OFFSET`.
+- <span class="material-symbols-outlined">search</span> [**ASK**](/v0.5/query/ask) — boolean queries.
+- <span class="material-symbols-outlined">account_tree</span> [**GRAPH `<iri> { … }`**](/v0.5/query/graph-clause) — named-graph scoping (literal + variable forms).
+
+</div>
 
 ## Write surface
 
-- [**SPARQL UPDATE**](/v0.5/query/update) — `INSERT DATA`,
-  `DELETE DATA`, pattern-driven `INSERT/DELETE WHERE`, atomic
-  `DELETE+INSERT/WHERE`, graph-scoped `WITH` and inline `GRAPH`,
-  plus lifecycle `DROP / CLEAR / CREATE GRAPH`.
+<div class="icon-bullets">
+
+- <span class="material-symbols-outlined">code</span> [**SPARQL UPDATE**](/v0.5/query/update) — `INSERT DATA`, `DELETE DATA`, pattern-driven `INSERT/DELETE WHERE`, atomic `DELETE+INSERT/WHERE`, graph-scoped `WITH` and inline `GRAPH`, plus lifecycle `DROP / CLEAR / CREATE GRAPH`.
+
+</div>
 
 ## Diagnostics
 
-- [**`sparql_parse`**](/v0.5/query/sparql-parse) — inspect parsed shape (read + write) without executing.
-- [**Error-message contract**](/v0.5/query/error-contract) — stable error prefixes.
-- [**Forward edge — what's next**](/v0.5/query/roadmap) — CONSTRUCT (Phase D), property paths, smaller residual items.
+<div class="icon-bullets">
+
+- <span class="material-symbols-outlined">info</span> [**`sparql_parse`**](/v0.5/query/sparql-parse) — inspect parsed shape (read + write) without executing.
+- <span class="material-symbols-outlined">info</span> [**Error-message contract**](/v0.5/query/error-contract) — stable error prefixes.
+- <span class="material-symbols-outlined icon-orange">rocket_launch</span> [**Forward edge — what's next**](/v0.5/query/roadmap) — CONSTRUCT (Phase D), property paths, smaller residual items.
+
+</div>
 
 ## At a glance
 

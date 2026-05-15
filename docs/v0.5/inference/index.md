@@ -10,16 +10,15 @@ rows first and replaces them. The base graph is never touched.
 
 ## Topics in this pillar
 
-- [**Mental model**](/v0.5/inference/mental-model) — how to think
-  about materialization in pgRDF.
-- [**Worked example**](/v0.5/inference/example) — subclass-chain
-  walkthrough you can run in psql.
-- [**OWL 2 RL rule set**](/v0.5/inference/owl-rl-rules) — what
-  the reasoner actually entails.
-- [**Idempotence + operator safety**](/v0.5/inference/idempotence) —
-  guarantees you can rely on for scheduled jobs.
-- [**🚀 Forward edge — profile selector**](/v0.5/inference/profile-selector) —
-  v0.5 `pgrdf.materialize(g, profile)`.
+<div class="icon-bullets">
+
+- <span class="material-symbols-outlined">info</span> [**Mental model**](/v0.5/inference/mental-model) — how to think about materialization in pgRDF.
+- <span class="material-symbols-outlined">description</span> [**Worked example**](/v0.5/inference/example) — subclass-chain walkthrough you can run in psql.
+- <span class="material-symbols-outlined">psychology</span> [**OWL 2 RL rule set**](/v0.5/inference/owl-rl-rules) — what the reasoner actually entails.
+- <span class="material-symbols-outlined">settings</span> [**Idempotence + operator safety**](/v0.5/inference/idempotence) — guarantees you can rely on for scheduled jobs.
+- <span class="material-symbols-outlined icon-orange">rocket_launch</span> [**Forward edge — profile selector**](/v0.5/inference/profile-selector) — `pgrdf.materialize(g, profile)`.
+
+</div>
 
 ## At a glance
 

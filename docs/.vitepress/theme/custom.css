@@ -108,3 +108,113 @@
   margin-right: 0.4em;
   vertical-align: -0.15em;
 }
+
+/* Size variants. Default (no class) ≈ 1.2em. Use xs for inline-in-tables
+   accents, lg/xl for hero callouts. */
+.material-symbols-outlined.icon-xs { font-size: 1.0em; vertical-align: -0.15em; }
+.material-symbols-outlined.icon-sm { font-size: 1.2em; vertical-align: -0.22em; }
+.material-symbols-outlined.icon-md { font-size: 1.5em; vertical-align: -0.32em; }
+.material-symbols-outlined.icon-lg { font-size: 1.9em; vertical-align: -0.38em; }
+.material-symbols-outlined.icon-xl { font-size: 2.6em; vertical-align: -0.45em; }
+
+/* Icon-as-bullet — wrap a list in <div class="icon-bullets">. The
+   first icon inside each <li> replaces the default disc marker and
+   grows to a comfortable readable size. */
+.vp-doc .icon-bullets ul,
+.vp-doc .icon-bullets ol {
+  list-style: none;
+  padding-left: 0;
+}
+.vp-doc .icon-bullets li {
+  position: relative;
+  padding-left: 2.4em;
+  margin: 0.55em 0;
+  min-height: 1.5em;
+}
+.vp-doc .icon-bullets li > .material-symbols-outlined:first-child {
+  position: absolute;
+  left: 0;
+  top: 0.05em;
+  font-size: 1.6em;
+  margin: 0;
+  width: 1.6em;
+  text-align: center;
+  vertical-align: baseline;
+}
+
+/* Nested lists inside an icon-bullets block fall back to regular
+   disc markers — keeps the visual hierarchy distinct. */
+.vp-doc .icon-bullets ul ul,
+.vp-doc .icon-bullets ol ul,
+.vp-doc .icon-bullets ul ol,
+.vp-doc .icon-bullets ol ol {
+  list-style: disc;
+  padding-left: 1.4em;
+}
+.vp-doc .icon-bullets ul ul li,
+.vp-doc .icon-bullets ol ul li,
+.vp-doc .icon-bullets ul ol li,
+.vp-doc .icon-bullets ol ol li {
+  padding-left: 0;
+}
+
+/* Sidebar — surface pillar overview icons next to the "Overview"
+   entries via ::before content. The font-family is the same as
+   the Material Symbols inline utility; the icon name is the
+   content. Keeps the sidebar in sync with the page H1 vocabulary
+   without writing a custom theme component. */
+.VPSidebarItem a.link[href$="/v0.5/storage/"] .text::before,
+.VPSidebarItem a.link[href$="/v0.5/query/"] .text::before,
+.VPSidebarItem a.link[href$="/v0.5/inference/"] .text::before,
+.VPSidebarItem a.link[href$="/v0.5/validation/"] .text::before,
+.VPSidebarItem a.link[href$="/v0.5/operations/"] .text::before {
+  font-family: 'Material Symbols Outlined';
+  font-weight: normal;
+  font-size: 1.1em;
+  line-height: 1;
+  vertical-align: -0.2em;
+  margin-right: 0.45em;
+  font-variation-settings: 'wght' 300, 'opsz' 24;
+  color: var(--vp-c-brand-1);
+}
+.VPSidebarItem a.link[href$="/v0.5/storage/"]     .text::before { content: 'storage'; }
+.VPSidebarItem a.link[href$="/v0.5/query/"]       .text::before { content: 'search'; }
+.VPSidebarItem a.link[href$="/v0.5/inference/"]   .text::before { content: 'psychology'; }
+.VPSidebarItem a.link[href$="/v0.5/validation/"]  .text::before { content: 'verified'; }
+.VPSidebarItem a.link[href$="/v0.5/operations/"]  .text::before {
+  content: 'build';
+  color: var(--vp-c-text-2);
+}
+
+/* Sidebar — status icons on the roadmap + iconography links so the
+   nav surface mirrors the in-page vocabulary. */
+.VPSidebarItem a.link[href$="/v0.5/query/roadmap"] .text::before {
+  font-family: 'Material Symbols Outlined';
+  content: 'rocket_launch';
+  margin-right: 0.45em;
+  font-size: 1em;
+  vertical-align: -0.15em;
+  color: #e8a23a;
+  font-variation-settings: 'wght' 300, 'opsz' 24;
+}
+.VPSidebarItem a.link[href$="/v0.5/iconography"] .text::before {
+  font-family: 'Material Symbols Outlined';
+  content: 'bolt';
+  margin-right: 0.45em;
+  font-size: 1em;
+  vertical-align: -0.15em;
+  color: var(--vp-c-brand-1);
+  font-variation-settings: 'wght' 300, 'opsz' 24;
+}
+
+/* The lifecycle UDF group gets a tiny build accent at the
+   collapsed-group header (text comes from the sidebar config). */
+.VPSidebarItem .group-title-wrapper[data-text="Graph lifecycle UDFs"] .text::before {
+  font-family: 'Material Symbols Outlined';
+  content: 'build';
+  margin-right: 0.45em;
+  font-size: 1em;
+  vertical-align: -0.15em;
+  color: var(--vp-c-text-2);
+  font-variation-settings: 'wght' 300, 'opsz' 24;
+}

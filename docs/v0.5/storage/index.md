@@ -6,27 +6,20 @@ from any Postgres client.
 
 ## Features in this pillar
 
-- [**Load Turtle from disk**](/v0.5/storage/load-turtle) — one UDF
-  reads any `.ttl` file off the server filesystem and ingests it.
-- [**Inline Turtle ingest**](/v0.5/storage/parse-turtle) — same
-  parser, no filesystem dependency.
-- [**Verbose ingest statistics**](/v0.5/storage/verbose-stats) —
-  JSONB report of timing, cache hits, batch counts.
-- [**Per-graph LIST partitions**](/v0.5/storage/graph-partitions) —
-  cheap whole-graph drops, isolated namespaces.
-- [**Named graphs (IRI ↔ id mapping)**](/v0.5/storage/named-graphs) —
-  symmetric IRI lookup for graph-scoped SPARQL.
-- [**Hexastore + dictionary**](/v0.5/storage/hexastore) — three
-  covering indexes (SPO/POS/OSP), interned terms.
-- [**Term types**](/v0.5/storage/term-types) — typed literals,
-  language tags, blank nodes, RDF collections.
-- [**Bulk ingest**](/v0.5/storage/bulk-ingest) — prepared `INSERT`
-  pipeline for large ontologies.
-- [**Shared-memory dictionary cache**](/v0.5/storage/shmem-cache) —
-  cross-backend hot path for repeated IRIs.
-- [**Graph lifecycle UDFs**](/v0.5/storage/lifecycle) —
-  `drop_graph`, `clear_graph`, `copy_graph`, `move_graph` as
-  partition-level primitives.
+<div class="icon-bullets">
+
+- <span class="material-symbols-outlined">description</span> [**Load Turtle from disk**](/v0.5/storage/load-turtle) — one UDF reads any `.ttl` file off the server filesystem and ingests it.
+- <span class="material-symbols-outlined">description</span> [**Inline Turtle ingest**](/v0.5/storage/parse-turtle) — same parser, no filesystem dependency.
+- <span class="material-symbols-outlined">query_stats</span> [**Verbose ingest statistics**](/v0.5/storage/verbose-stats) — JSONB report of timing, cache hits, batch counts.
+- <span class="material-symbols-outlined">storage</span> [**Per-graph LIST partitions**](/v0.5/storage/graph-partitions) — cheap whole-graph drops, isolated namespaces.
+- <span class="material-symbols-outlined">account_tree</span> [**Named graphs (IRI ↔ id mapping)**](/v0.5/storage/named-graphs) — symmetric IRI lookup for graph-scoped SPARQL.
+- <span class="material-symbols-outlined">account_tree</span> [**Hexastore + dictionary**](/v0.5/storage/hexastore) — three covering indexes (SPO/POS/OSP), interned terms.
+- <span class="material-symbols-outlined">description</span> [**Term types**](/v0.5/storage/term-types) — typed literals, language tags, blank nodes, RDF collections.
+- <span class="material-symbols-outlined">bolt</span> [**Bulk ingest**](/v0.5/storage/bulk-ingest) — prepared `INSERT` pipeline for large ontologies.
+- <span class="material-symbols-outlined">bolt</span> [**Shared-memory dictionary cache**](/v0.5/storage/shmem-cache) — cross-backend hot path for repeated IRIs.
+- <span class="material-symbols-outlined">build</span> [**Graph lifecycle UDFs**](/v0.5/storage/lifecycle) — `drop_graph`, `clear_graph`, `copy_graph`, `move_graph` as partition-level primitives.
+
+</div>
 
 ## At a glance
 

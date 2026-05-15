@@ -299,4 +299,54 @@ test.describe('v0.5 sub-pages', () => {
       await expect(page.locator('h1 .material-symbols-outlined.icon-blue').first()).toBeVisible();
     }
   });
+
+  test('Iconography reference page documents the vocabulary', async ({ page }) => {
+    await page.goto('/v0.5/iconography');
+    await expect(page.locator('h1').first()).toContainText('Iconography');
+    // Scope to the main content area — sidebar group titles also render as <h3>.
+    const main = page.locator('.vp-doc').first();
+    await expect(main.getByRole('heading', { level: 3, name: 'Pillars' })).toBeVisible();
+    await expect(main.getByRole('heading', { level: 3, name: 'Personas' })).toBeVisible();
+    await expect(main.getByRole('heading', { level: 3, name: 'Lifecycle UDFs' })).toBeVisible();
+    await expect(main.getByRole('heading', { level: 2, name: 'Adding a new icon' })).toBeVisible();
+  });
+
+  test('Audience list on root uses icon-as-bullet markers (no disc + grown icons)', async ({ page }) => {
+    await page.goto('/');
+    const group = page.locator('.icon-bullets').first();
+    await expect(group).toBeVisible();
+    // Default disc bullets should be suppressed inside the icon-bullets group.
+    const liStyle = await group.locator('ul li').first().evaluate(el => getComputedStyle(el.parentElement).listStyleType);
+    expect(liStyle).toBe('none');
+  });
+
+  test('Storage pillar features list is icon-bulleted', async ({ page }) => {
+    await page.goto('/v0.5/storage/');
+    const group = page.locator('.icon-bullets').first();
+    await expect(group).toBeVisible();
+    // Each list item carries an icon as its first child.
+    const itemCount = await group.locator('ul li').count();
+    expect(itemCount).toBeGreaterThanOrEqual(9);
+  });
+
+  test('Lifecycle table has an icon column per UDF', async ({ page }) => {
+    await page.goto('/v0.5/storage/lifecycle');
+    const table = page.locator('table').first();
+    // delete_forever icon adjacent to drop_graph row
+    await expect(table.getByText('delete_forever').first()).toBeVisible();
+    await expect(table.getByText('layers_clear').first()).toBeVisible();
+    await expect(table.getByText('content_copy').first()).toBeVisible();
+    await expect(table.getByText('swap_horiz').first()).toBeVisible();
+  });
+
+  test('Sidebar surfaces pillar icons via CSS ::before content', async ({ page }) => {
+    await page.goto('/');
+    // The ::before content rule keys off the link href.
+    const storageLink = page.locator('.VPSidebarItem a.link[href$="/v0.5/storage/"]').first();
+    await expect(storageLink).toBeVisible();
+    const before = await storageLink.locator('.text').evaluate(el =>
+      window.getComputedStyle(el, '::before').content
+    );
+    expect(before).toMatch(/storage/);
+  });
 });
