@@ -9,7 +9,11 @@ JSONB row per solution.
 Solution variables become JSONB keys; unbound variables come
 through as `null`.
 
-## Surface in this pillar
+`pgrdf.sparql` also dispatches **UPDATE forms** (INSERT, DELETE,
+MODIFY, lifecycle algebra) inside the caller's transaction —
+the read and write surface share a single UDF entry point.
+
+## Read surface
 
 - [**BGP joins**](/v0.5/query/bgp-joins) — N-pattern joins.
 - [**FILTER**](/v0.5/query/filter) — boolean composition + term-type tests.
@@ -21,10 +25,20 @@ through as `null`.
 - [**BIND**](/v0.5/query/bind) — project computed values.
 - [**Solution modifiers**](/v0.5/query/modifiers) — `DISTINCT`, `ORDER BY`, `LIMIT`, `OFFSET`.
 - [**ASK**](/v0.5/query/ask) — boolean queries.
-- [**GRAPH `<iri> { … }`**](/v0.5/query/graph-clause) — named-graph scoping.
-- [**`sparql_parse`**](/v0.5/query/sparql-parse) — inspect without executing.
+- [**GRAPH `<iri> { … }`**](/v0.5/query/graph-clause) — named-graph scoping (literal + variable forms).
+
+## Write surface
+
+- [**SPARQL UPDATE**](/v0.5/query/update) — `INSERT DATA`,
+  `DELETE DATA`, pattern-driven `INSERT/DELETE WHERE`, atomic
+  `DELETE+INSERT/WHERE`, graph-scoped `WITH` and inline `GRAPH`,
+  plus lifecycle `DROP / CLEAR / CREATE GRAPH`.
+
+## Diagnostics
+
+- [**`sparql_parse`**](/v0.5/query/sparql-parse) — inspect parsed shape (read + write) without executing.
 - [**Error-message contract**](/v0.5/query/error-contract) — stable error prefixes.
-- [**Forward edge (v0.5)**](/v0.5/query/roadmap) — UPDATE, CONSTRUCT, property paths.
+- [**Forward edge — what's next**](/v0.5/query/roadmap) — CONSTRUCT (Phase D), property paths, smaller residual items.
 
 ## At a glance
 

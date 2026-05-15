@@ -162,6 +162,7 @@ export default withMermaid(defineConfig({
             { text: 'Solution modifiers',                link: '/v0.5/query/modifiers' },
             { text: 'ASK',                               link: '/v0.5/query/ask' },
             { text: 'GRAPH <iri> { … }',                 link: '/v0.5/query/graph-clause' },
+            { text: 'SPARQL UPDATE',                     link: '/v0.5/query/update' },
             { text: 'sparql_parse — inspect without executing', link: '/v0.5/query/sparql-parse' },
             { text: 'Error-message contract',            link: '/v0.5/query/error-contract' },
             { text: "Forward edge — what's next",        link: '/v0.5/query/roadmap' },

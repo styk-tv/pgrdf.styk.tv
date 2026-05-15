@@ -239,4 +239,29 @@ test.describe('v0.5 sub-pages', () => {
     await expect(page.getByRole('heading', { name: 'Variable form' })).toBeVisible();
     await expect(page.getByRole('heading', { name: 'Composition with OPTIONAL / UNION / MINUS' })).toBeVisible();
   });
+
+  test('SPARQL UPDATE page lists all six write forms + lifecycle algebra', async ({ page }) => {
+    await page.goto('/v0.5/query/update');
+    await expect(page.locator('h1').first()).toContainText('SPARQL UPDATE');
+    await expect(page.getByRole('heading', { name: /INSERT DATA/ })).toBeVisible();
+    await expect(page.getByRole('heading', { name: /DELETE DATA/ })).toBeVisible();
+    await expect(page.getByRole('heading', { name: /pattern-driven/i }).first()).toBeVisible();
+    await expect(page.getByRole('heading', { name: /atomic modify/i })).toBeVisible();
+    await expect(page.getByRole('heading', { name: /scoped variants/i })).toBeVisible();
+    await expect(page.getByRole('heading', { name: /Lifecycle algebra/ })).toBeVisible();
+  });
+
+  test('roadmap page reflects shipped UPDATE + future CONSTRUCT / paths', async ({ page }) => {
+    await page.goto('/v0.5/query/roadmap');
+    await expect(page.locator('text=Phase C').first()).toBeVisible();
+    await expect(page.getByRole('heading', { name: 'Phase D — CONSTRUCT' })).toBeVisible();
+    await expect(page.getByRole('heading', { name: 'Property paths' })).toBeVisible();
+  });
+
+  test('At-a-glance callout reflects v0.4.3', async ({ page }) => {
+    await page.goto('/');
+    const block = page.locator('.custom-block.info', { hasText: 'At a glance' });
+    await expect(block.getByText(/v0\.4\.3/)).toBeVisible();
+    await expect(block.getByText(/Phase D \(CONSTRUCT\) next/i)).toBeVisible();
+  });
 });
