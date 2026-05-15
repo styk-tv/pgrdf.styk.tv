@@ -8,7 +8,7 @@ hero:
   actions:
     - theme: brand
       text: Get started
-      link: /v0.4/introduction
+      link: /v0.5/introduction
     - theme: alt
       text: View on GitHub
       link: https://github.com/styk-tv/pgRDF
@@ -19,19 +19,19 @@ hero:
 features:
   - title: Semantic storage
     details: Turtle in. Quads out. Dictionary-encoded, hexastore-indexed, LIST-partitioned per graph.
-    link: /v0.4/storage/
+    link: /v0.5/storage/
     linkText: Storage features →
   - title: Semantic query
     details: SPARQL 1.1 SELECT/ASK with N-pattern BGP joins, FILTER, OPTIONAL, UNION, MINUS, aggregates, BIND, GRAPH.
-    link: /v0.4/query/
+    link: /v0.5/query/
     linkText: SPARQL features →
   - title: Materialization
     details: OWL 2 RL forward-chaining. Subclass closures, equivalence, inverse, transitive — written back as queryable rows.
-    link: /v0.4/inference/
+    link: /v0.5/inference/
     linkText: Inference features →
   - title: Validation
     details: SHACL Core. A data graph + a shapes graph yields a W3C-shape ValidationReport JSONB you can persist or alert on.
-    link: /v0.4/validation/
+    link: /v0.5/validation/
     linkText: Validation features →
 ---
 
@@ -66,4 +66,4 @@ SELECT pgrdf.materialize(100);
 SELECT pgrdf.validate(100, 200);
 ```
 
-[**Start with the introduction →**](/v0.4/introduction)
+[**Start with the introduction →**](/v0.5/introduction)

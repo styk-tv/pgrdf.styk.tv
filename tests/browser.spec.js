@@ -8,17 +8,17 @@ test('home page renders the hero', async ({ page }) => {
 });
 
 test('introduction page is reachable', async ({ page }) => {
-  await page.goto('/v0.4/introduction');
+  await page.goto('/v0.5/introduction');
   await expect(page.locator('h1').first()).toContainText('Introduction');
 });
 
 test('pillar 1 storage overview is reachable', async ({ page }) => {
-  await page.goto('/v0.4/storage/');
+  await page.goto('/v0.5/storage/');
   await expect(page.locator('h1').first()).toContainText('Pillar 1');
 });
 
 test('sidebar exposes all four pillars', async ({ page }) => {
-  await page.goto('/v0.4/introduction');
+  await page.goto('/v0.5/introduction');
   await expect(page.getByText('Pillar 1 — Semantic storage')).toBeVisible();
   await expect(page.getByText('Pillar 2 — Semantic query (SPARQL 1.1)')).toBeVisible();
   await expect(page.getByText('Pillar 3 — Materialization (OWL 2 RL)')).toBeVisible();

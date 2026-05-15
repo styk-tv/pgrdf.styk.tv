@@ -40,7 +40,7 @@ docs/
 │  ├── config.mts                # site config — nav, sidebar, head meta
 │  └── theme/                    # custom theme overrides
 ├── public/                      # static assets — CNAME, robots, logo
-└── v0.4/                        # current version content
+└── v0.5/                        # current version content
    ├── introduction.md
    ├── storage/{...}             # Pillar 1 — RDF storage in Postgres
    ├── query/{...}               # Pillar 2 — SPARQL 1.1
