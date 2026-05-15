@@ -5,6 +5,9 @@ description: pgRDF — PostgreSQL extension for RDF, SPARQL, SHACL and OWL 2 RL 
 
 # Introduction
 
+<div class="glance-grid">
+<div class="glance-text">
+
 ::: info At a glance
 **pgRDF** · Semantic web inside PostgreSQL ·
 Status **Alpha** · License **Apache-2.0** ·
@@ -15,6 +18,14 @@ v0.4.2 in flight (Phase B graph lifecycle UDFs landed) ·
 [GitHub](https://github.com/styk-tv/pgRDF) ·
 [Install →](/v0.5/operations/install)
 :::
+
+</div>
+<div class="glance-logo">
+
+[![pgRDF logo](/pgRDF-logo.v0.5.960.png)](/pgRDF-logo.v0.5.png)
+
+</div>
+</div>
 
 **pgRDF** is a PostgreSQL extension that turns your Postgres
 database into a high-performance semantic-web platform. Written

@@ -22,6 +22,28 @@ test.describe('Root landing (/)', () => {
     await expect(block.getByText('14 · 15 · 16 · 17')).toBeVisible();
   });
 
+  test('renders the pgRDF logo next to the At-a-glance block (two-column)', async ({ page }) => {
+    const grid = page.locator('.glance-grid');
+    await expect(grid).toBeVisible();
+    const logo = grid.locator('img[alt="pgRDF logo"]');
+    await expect(logo).toBeVisible();
+    await expect(logo).toHaveAttribute('src', /pgRDF-logo\.v0\.5\.960\.png$/);
+    // Side-by-side at desktop width: the logo's left edge sits to the
+    // right of the "At a glance" block's left edge.
+    await page.setViewportSize({ width: 1280, height: 800 });
+    const textBox = await grid.locator('.glance-text').boundingBox();
+    const logoBox = await grid.locator('.glance-logo').boundingBox();
+    expect(logoBox.x).toBeGreaterThan(textBox.x + textBox.width * 0.5);
+  });
+
+  test('logo asset (scaled + original) are reachable', async ({ request }) => {
+    const r1 = await request.get('/pgRDF-logo.v0.5.960.png');
+    expect(r1.status()).toBe(200);
+    expect(r1.headers()['content-type']).toMatch(/png/);
+    const r2 = await request.get('/pgRDF-logo.v0.5.png');
+    expect(r2.status()).toBe(200);
+  });
+
   test('left sidebar exposes Getting started + all four pillars', async ({ page }) => {
     await expect(page.getByText('Getting started')).toBeVisible();
     await expect(page.getByText('Pillar 1 — Semantic storage')).toBeVisible();

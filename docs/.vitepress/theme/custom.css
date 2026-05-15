@@ -26,3 +26,41 @@
 .vp-doc div[class*='language-'] {
   margin: 16px 0;
 }
+
+/* Two-column hero on the Introduction page —
+   "At a glance" callout on the left, logo on the right.
+   Collapses to a single column on narrow viewports. */
+.vp-doc .glance-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 280px);
+  gap: 24px;
+  align-items: center;
+  margin: 16px 0 24px;
+}
+.vp-doc .glance-grid > .glance-text {
+  min-width: 0;
+}
+.vp-doc .glance-grid > .glance-text .custom-block {
+  margin: 0;
+}
+.vp-doc .glance-grid > .glance-logo {
+  text-align: center;
+}
+.vp-doc .glance-grid > .glance-logo img {
+  width: 100%;
+  height: auto;
+  max-width: 240px;
+  display: block;
+  margin: 0 auto;
+}
+@media (max-width: 768px) {
+  .vp-doc .glance-grid {
+    grid-template-columns: 1fr;
+  }
+  .vp-doc .glance-grid > .glance-logo {
+    order: -1;             /* logo on top on mobile */
+  }
+  .vp-doc .glance-grid > .glance-logo img {
+    max-width: 160px;
+  }
+}
