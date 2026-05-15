@@ -1,0 +1,24 @@
+{
+  "rendering": "en-kokoro_warm-af_heart-clean-24000Hz-96k-ogg",
+  "engine": "Kokoro TTS (Apache-2.0)",
+  "note": "Test slice — one episode rendered so far; the rest are pending the full render fan-out.",
+  "chapters": {
+    "inference": {
+      "name": "Pillar 3 — Materialization (OWL 2 RL)",
+      "episodes": [
+        {
+          "id": "pgrdf-inference-index",
+          "title": "Pillar 3 — Materialization (OWL 2 RL)",
+          "file": "/audio/pgrdf-inference-index.ogg",
+          "duration_s": 258.01,
+          "status": "available"
+        },
+        { "id": "pgrdf-inference-mental-model",     "title": "The mental model",                 "status": "pending" },
+        { "id": "pgrdf-inference-example",          "title": "Worked example — subclass chain",  "status": "pending" },
+        { "id": "pgrdf-inference-owl-rl-rules",     "title": "OWL 2 RL rule set",                "status": "pending" },
+        { "id": "pgrdf-inference-idempotence",      "title": "Idempotence + operator safety",    "status": "pending" },
+        { "id": "pgrdf-inference-profile-selector", "title": "Forward edge — profile selector",  "status": "pending" }
+      ]
+    }
+  }
+}

@@ -81,13 +81,22 @@ once the catalogue is published.
 
 ### Status
 
-::: tip Coming soon
-The audio catalogue is generated and pending publication to its
-own GitHub Pages site. Per-page "Listen to this episode" callouts
-will appear on each documentation page once the catalogue ships.
-This site reserves the integration shape but doesn't ship the
-audio elements yet.
+::: tip Test slice live
+One episode is rendered and wired into the player below — the
+**Pillar 3 (Materialization) overview**, ~4 minutes. The other
+51 episodes are pending the full render fan-out; they show as
+*pending* in the playlist. The player is a single audio engine:
+selecting an episode stops any other, and it auto-advances to
+the next available episode on finish.
 :::
+
+<ChapterPlayer chapter="inference" />
+
+This is a deliberately small test — one chapter, one rendered
+episode, native `<audio>` (no waveform / talking-head yet). The
+richer chapter experience (waveform, transcript highlight,
+wireface) is a separate styk.tv sub-project; this page just
+proves the audio path end-to-end on the docs site.
 
 ### Licence + attribution
 

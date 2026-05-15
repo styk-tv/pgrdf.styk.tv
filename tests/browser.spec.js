@@ -369,6 +369,42 @@ test.describe('v0.5 sub-pages', () => {
     await expect(main.getByText(/Kokoro/i).first()).toBeVisible();
   });
 
+  test('ChapterPlayer renders, loads manifest, and plays the test episode', async ({ page }) => {
+    await page.goto('/v0.5/training');
+    const player = page.locator('.chapter-player');
+    await expect(player).toBeVisible();
+    // Manifest-driven chapter name resolves.
+    await expect(player.locator('.cp-chapter')).toContainText('Materialization');
+    // Six episodes listed: 1 available + 5 pending.
+    await expect(player.locator('.cp-list li')).toHaveCount(6);
+    await expect(player.locator('.cp-list li.pending')).toHaveCount(5);
+    // The available episode is the first list entry and is active.
+    await expect(player.locator('.cp-list li').first()).toHaveClass(/active/);
+    // Position label reflects "1 of 6 — <title>".
+    await expect(player.locator('.cp-position')).toContainText('1 of 6');
+  });
+
+  test('ChapterPlayer test audio asset is reachable + correct type', async ({ request }) => {
+    const res = await request.get('/audio/pgrdf-inference-index.ogg');
+    expect(res.status()).toBe(200);
+    expect(res.headers()['content-type']).toMatch(/ogg|octet-stream/);
+    const m = await request.get('/audio/manifest.json');
+    expect(m.status()).toBe(200);
+    const json = await m.json();
+    expect(json.chapters.inference.episodes.length).toBe(6);
+  });
+
+  test('ChapterPlayer actually plays audio on Play click', async ({ page }) => {
+    await page.goto('/v0.5/training');
+    const player = page.locator('.chapter-player');
+    await expect(player).toBeVisible();
+    await player.getByRole('button', { name: /Play/ }).click();
+    // The <audio> element should be advancing currentTime.
+    await page.waitForTimeout(1200);
+    const t = await player.locator('audio').evaluate(a => a.currentTime);
+    expect(t).toBeGreaterThan(0);
+  });
+
   test('All five pillar overview pages have a Training section', async ({ page }) => {
     for (const url of [
       '/v0.5/storage/',
