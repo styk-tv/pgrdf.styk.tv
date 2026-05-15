@@ -1,76 +1,37 @@
 ---
-layout: home
-title: pgRDF — Semantic web inside PostgreSQL
-description: Rust-native PostgreSQL extension for RDF, SPARQL, SHACL and OWL 2 RL reasoning. Load Turtle, query SPARQL, validate SHACL, materialize OWL 2 RL inferences — all inside Postgres.
-
-hero:
-  name: pgRDF
-  text: Semantic web inside PostgreSQL.
-  tagline: Load Turtle. Query SPARQL. Validate SHACL. Materialize OWL 2 RL inferences. All in one Postgres extension. Written in Rust.
-  image:
-    src: /logo.svg
-    alt: pgRDF logo
-  actions:
-    - theme: brand
-      text: Get started — v0.5
-      link: /v0.5/introduction
-    - theme: alt
-      text: The four pillars
-      link: /v0.5/pillars
-    - theme: alt
-      text: View on GitHub
-      link: https://github.com/styk-tv/pgRDF
-    - theme: alt
-      text: crates.io
-      link: https://crates.io/crates/pgrdf
-
-features:
-  - icon: 📦
-    title: Pillar 1 — Semantic storage
-    details: Turtle in. Quads out. Dictionary-encoded, hexastore-indexed (SPO/POS/OSP), LIST-partitioned per graph. Drop-in install on stock postgres:17.4.
-    link: /v0.5/storage/
-    linkText: Storage features →
-  - icon: 🔍
-    title: Pillar 2 — Semantic query
-    details: SPARQL 1.1 SELECT/ASK with N-pattern BGP joins, FILTER, OPTIONAL, UNION, MINUS, aggregates, BIND, GRAPH — translated to native SQL with a prepared-plan cache.
-    link: /v0.5/query/
-    linkText: SPARQL features →
-  - icon: 🧠
-    title: Pillar 3 — Materialization
-    details: OWL 2 RL forward-chaining. Subclass closures, equivalence, inverse, transitive — written back to the same tables as queryable rows. Idempotent.
-    link: /v0.5/inference/
-    linkText: Inference features →
-  - icon: ✅
-    title: Pillar 4 — Validation
-    details: SHACL Core. A data graph + a shapes graph yields a W3C-shape ValidationReport JSONB. Persist, alert on, or gate ingestion with it.
-    link: /v0.5/validation/
-    linkText: Validation features →
+title: Introduction
+description: pgRDF — PostgreSQL extension for RDF, SPARQL, SHACL and OWL 2 RL reasoning. The four engines, who it's for, how it differs from a separate triplestore. Tracks the v0.5 target.
 ---
 
-## What is pgRDF?
+# Introduction
 
-**pgRDF** turns your PostgreSQL database into a high-performance
-semantic-web platform. It's a single extension that adds four
-real engines under the `pgrdf.*` schema, written entirely in
-Rust on top of [`pgrx`](https://github.com/pgcentralfoundation/pgrx):
+::: info At a glance
+**pgRDF** · Semantic web inside PostgreSQL ·
+Status **Alpha** · License **Apache-2.0** ·
+Postgres **14 · 15 · 16 · 17** ·
+Latest release [**v0.4.0**](https://github.com/styk-tv/pgRDF/releases) ·
+[crates.io](https://crates.io/crates/pgrdf) ·
+[GitHub](https://github.com/styk-tv/pgRDF) ·
+[Install →](/v0.5/operations/install)
+:::
 
-1. **A storage engine** — dictionary-encoded triples in
-   LIST-partitioned tables with SPO/POS/OSP covering indexes.
-2. **A SPARQL 1.1 query engine** — parses with `spargebra`,
-   translates the algebra to dynamic SQL, executes with a
-   per-backend plan cache.
-3. **An OWL 2 RL inference engine** — forward-chaining via
-   [`reasonable`](https://github.com/gtfierro/reasonable).
-   Inferred quads are written back as `is_inferred = TRUE` rows.
-4. **A SHACL Core validation engine** — via the
-   [rudof project's](https://github.com/rudof-project/rudof)
-   `shacl` crate. Returns a W3C `sh:ValidationReport`-shape
-   JSONB document.
+**pgRDF** is a PostgreSQL extension that turns your Postgres
+database into a high-performance semantic-web platform. Written
+in Rust on top of [`pgrx`](https://github.com/pgcentralfoundation/pgrx),
+it provides four real engines under one extension surface:
 
-Every operation is addressable from any Postgres client — psql,
-psycopg, sqlx, pgx, postgres.js, anything that speaks the
-Postgres wire protocol. **No separate triplestore. No second
-deployment surface. One Postgres.**
+| Engine | What it does | Entry-point UDFs |
+|---|---|---|
+| **Storage** | Dictionary-encoded triples in LIST-partitioned tables with SPO / POS / OSP covering indexes. | [`pgrdf.load_turtle`](/v0.5/storage/load-turtle), [`pgrdf.parse_turtle`](/v0.5/storage/parse-turtle), [`pgrdf.add_graph`](/v0.5/storage/named-graphs) |
+| **SPARQL** | SPARQL 1.1 SELECT/ASK — parsed via `spargebra`, translated to dynamic SQL, executed with a per-backend plan cache. | [`pgrdf.sparql`](/v0.5/query/), [`pgrdf.sparql_parse`](/v0.5/query/sparql-parse) |
+| **Inference** | OWL 2 RL forward-chaining via the [`reasonable`](https://github.com/gtfierro/reasonable) reasoner. Writes inferences back as queryable rows. | [`pgrdf.materialize`](/v0.5/inference/) |
+| **Validation** | SHACL Core via the [rudof project's](https://github.com/rudof-project/rudof) `shacl` crate. Returns a W3C `sh:ValidationReport`-shape JSONB document. | [`pgrdf.validate`](/v0.5/validation/) |
+
+All four engines run **inside Postgres**. There's no separate
+service, no second deployment surface, no extra protocol. Every
+operation is addressable from any Postgres client (psql,
+psycopg, sqlx, pgx, postgres.js — anything that speaks the
+Postgres wire protocol).
 
 ```sql
 -- One-time install
@@ -80,7 +41,7 @@ CREATE EXTENSION pgrdf;
 SELECT pgrdf.load_turtle('/fixtures/ontologies/foaf.ttl', 100);
 --  → 631
 
--- Query it with SPARQL
+-- Query with SPARQL
 SELECT * FROM pgrdf.sparql(
   'PREFIX foaf: <http://xmlns.com/foaf/0.1/>
    SELECT ?s ?n WHERE { ?s foaf:name ?n }');
@@ -94,97 +55,82 @@ SELECT pgrdf.validate(100, 200);
 --  → {"conforms": true, "results": []}
 ```
 
-## Why does it exist?
+This documentation tracks the **v0.5 target** — a coherent
+capability set combining the shipped v0.4 surface with the
+in-flight forward edges. Items not yet callable on `main` are
+marked **🚀 Forward edge** with a link to the relevant LLD
+section.
 
-Knowledge graphs are usually deployed as a **second database** —
-a triplestore alongside your operational Postgres, with separate
-backups, separate access control, separate observability, separate
-SLOs, separate everything. Application code ends up gluing two
-systems together over the wire.
+## Why pgRDF, not a separate triplestore?
 
-pgRDF treats Postgres as the **storage and execution engine for
-the knowledge graph too**. The graph is stored in regular
-Postgres tables (partitioned for cheap whole-graph drops,
-indexed for hexastore-style triple-pattern lookups). SPARQL
-compiles to SQL and runs through Postgres' own planner.
-Inference and validation are SQL UDFs.
+Knowledge graphs are usually deployed as a **second database**
+alongside Postgres — with their own backups, IAM, observability,
+SLOs, and operator burden. Application code glues two systems
+together over the wire.
 
-You get:
+pgRDF takes a different view:
 
-- **One operational surface** — the same connection pool,
-  ORM, backup tool, monitoring agent, IAM, encryption, and
-  failover that already manages your relational data.
-- **Native composition with regular SQL** — `pgrdf.sparql(...)`
-  is a set-returning function. Join its output against your
-  application tables; wrap it in a Postgres view; fold it into
-  an `INSERT INTO ... SELECT`. The graph is just another table.
-- **Multi-tenancy via partitions** — each `graph_id` is a
-  Postgres LIST partition. Drop a tenant's graph by detaching
-  one partition. No row-by-row delete.
-- **Zero-cost migrations** — no Kubernetes operator, no second
-  process tree, no extra cert rotation. Three artefacts
-  (`pgrdf.so`, `pgrdf.control`, `pgrdf--<ver>.sql`) bind-mount
-  onto a stock `postgres:17.4` image.
+| Concern | Separate triplestore | pgRDF |
+|---|---|---|
+| Where the graph lives | Second process tree | Inside Postgres |
+| Connection pool | New | Reuses your existing pool |
+| Backup / WAL / PITR | Bespoke | Inherited from Postgres |
+| IAM, auth, TLS | Bespoke | Inherited from Postgres |
+| Multi-tenancy | Bespoke | LIST partitions per `graph_id` |
+| Composition with SQL | Bridge layer | Native — SPARQL is a set-returning SQL function |
+| Monitoring | Extra agent | Standard Postgres tooling + `pgrdf.stats()` |
+| Install footprint | Cluster, operator, CRD | Three files bind-mounted onto a stock PG image |
 
-## Who is this for?
+You also get the four standard semantic-web operations —
+load Turtle, SPARQL query, OWL 2 RL materialize, SHACL
+validate — first-class.
 
-| You | Why pgRDF helps |
-|---|---|
-| **Project managers** scoping graph workloads | One operational system. The four pillars (storage / query / inference / validation) cover the canonical SPARQL+OWL+SHACL stack. |
-| **Data scientists** doing graph-shaped analytics | SPARQL inside SQL. Join graph features against your relational features in the same query. JSONB rows, no special drivers. |
-| **Ontologists** publishing OWL/SHACL artefacts | Real OWL 2 RL forward-chaining; real SHACL Core validation; Turtle ingest that preserves the full term-type space (datatypes, lang tags, blank nodes, RDF lists). |
-| **Backend engineers** building knowledge-graph features | A regular Postgres extension. No new connection pool, no new auth surface, no new deployment story. |
-| **Operators** running production Postgres | A handful of `pgrdf.*` UDFs. Stable JSONB shape for `pgrdf.stats()`. Drop-in install. Multi-PG (14-17) support. |
+## Audience
 
-## Latest release
+This site is the user-facing documentation. It assumes you know
+SQL and at least the basics of RDF, SPARQL, OWL, and SHACL —
+but not all four. Each pillar's documentation can be read
+independently.
 
-The pgRDF project ships per-PG binary tarballs on GitHub
-releases. The current shipping cycle is **v0.4**; this
-documentation tracks the **v0.5** target (a superset).
+- **Project managers** — start with [The four pillars](/v0.5/pillars)
+  to scope what pgRDF can absorb from your backlog.
+- **Data scientists** — start with [Storage](/v0.5/storage/) and
+  [SPARQL queries](/v0.5/query/) to see how you'd join graph data
+  against your existing SQL tables.
+- **Ontologists** — start with [Inference](/v0.5/inference/) and
+  [Validation](/v0.5/validation/) to see which slice of OWL 2 RL
+  and SHACL Core runs at the storage layer.
+- **Backend engineers** — start with [Compose with regular SQL](/v0.5/operations/sql-composition)
+  to see how to call pgRDF from your existing connection pool.
+- **Operators** — start with [Drop-in install](/v0.5/operations/install)
+  and [`pgrdf.stats()`](/v0.5/operations/stats).
 
-- **Releases** — <https://github.com/styk-tv/pgRDF/releases>
-- **CHANGELOG** — <https://github.com/styk-tv/pgRDF/blob/main/CHANGELOG.md>
-- **crates.io** — <https://crates.io/crates/pgrdf>
-- **Install spec** — [`SPEC.pgRDF.INSTALL.v0.2.md`](https://github.com/styk-tv/pgRDF/blob/main/specs/SPEC.pgRDF.INSTALL.v0.2.md)
-- **Feature catalogue (canonical)** — [`SPEC.pgRDF.v0.5.FEATURES.md`](https://github.com/styk-tv/pgRDF/blob/main/specs/SPEC.pgRDF.v0.5.FEATURES.md)
+## Where this content comes from
 
-::: tip Five-minute install
-```bash
-just build-ext     # build pgrdf.{so,control,sql} in a Linux container
-just compose-up    # podman / docker compose up -d
-just psql          # opens a psql shell
-```
-Then inside `psql`: `CREATE EXTENSION pgrdf;` — see
-[**Drop-in install**](/v0.5/operations/install).
-:::
+This site translates the canonical feature spec
+[`SPEC.pgRDF.v0.5.FEATURES.md`](https://github.com/styk-tv/pgRDF/blob/main/specs/SPEC.pgRDF.v0.5.FEATURES.md)
+into a per-feature documentation surface. Each page here cites
+the test fixture in
+[`styk-tv/pgRDF/tests/`](https://github.com/styk-tv/pgRDF/tree/main/tests)
+that pins the contract — every feature is real and tested, not
+aspirational. Where surface is still in flight (not yet callable
+on `main`), it's clearly marked **🚀 Forward edge** with a link
+to the relevant LLD section:
+[`SPEC.pgRDF.LLD.v0.4.md`](https://github.com/styk-tv/pgRDF/blob/main/specs/SPEC.pgRDF.LLD.v0.4.md)
+for in-flight items and
+[`SPEC.pgRDF.LLD.v0.5-FUTURE.md`](https://github.com/styk-tv/pgRDF/blob/main/specs/SPEC.pgRDF.LLD.v0.5-FUTURE.md)
+for the next-cut target.
 
-## What's documented here
+## Get the bits
 
-This site is the user-facing companion to the canonical pgRDF
-feature spec
-[`SPEC.pgRDF.v0.5.FEATURES.md`](https://github.com/styk-tv/pgRDF/blob/main/specs/SPEC.pgRDF.v0.5.FEATURES.md).
-Each page documents one feature with a description, a working
-SQL example, an *under-the-hood* explanation, and links to the
-load-bearing test fixtures in
-[`styk-tv/pgRDF/tests/`](https://github.com/styk-tv/pgRDF/tree/main/tests).
+- **Releases** — <https://github.com/styk-tv/pgRDF/releases> — per-PG binary tarballs.
+- **CHANGELOG** — <https://github.com/styk-tv/pgRDF/blob/main/CHANGELOG.md>.
+- **Source** — <https://github.com/styk-tv/pgRDF>.
+- **crates.io** — <https://crates.io/crates/pgrdf>.
 
-- **[Introduction](/v0.5/introduction)** — what pgRDF is, the
-  four engines, who it's for.
-- **[The four pillars](/v0.5/pillars)** — one-stop tour of the
-  capability surface, with a composition diagram.
-- **[Pillar 1 — Storage](/v0.5/storage/)** — Turtle ingest,
-  dictionary, partitions, named graphs, hexastore.
-- **[Pillar 2 — SPARQL](/v0.5/query/)** — every SPARQL 1.1
-  feature pgRDF exposes, plus the v0.5 roadmap.
-- **[Pillar 3 — Inference](/v0.5/inference/)** — OWL 2 RL
-  materialization.
-- **[Pillar 4 — Validation](/v0.5/validation/)** — SHACL Core.
-- **[Operations](/v0.5/operations/)** — observability, caching,
-  SQL composition, install.
+See [Drop-in install](/v0.5/operations/install) for the
+five-minute path on stock `postgres:17.4` containers via
+per-file bind mounts. The full install spec is
+[`SPEC.pgRDF.INSTALL.v0.2.md`](https://github.com/styk-tv/pgRDF/blob/main/specs/SPEC.pgRDF.INSTALL.v0.2.md).
 
-Items still in flight (not yet callable on the `main` branch
-of the pgRDF repo) are clearly marked **🚀 Forward edge** so
-you can tell the shipped surface from the planned surface at
-a glance.
-
-[**Start with the introduction →**](/v0.5/introduction)
+[**Next — the four pillars →**](/v0.5/pillars)

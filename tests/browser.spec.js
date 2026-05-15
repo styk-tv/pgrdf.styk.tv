@@ -2,31 +2,48 @@
 const { test, expect } = require('@playwright/test');
 
 // ────────────────────────────────────────────────────────────────────────
-// Landing page — content, SEO, OG, structured data, release promotion
+// Root landing — sidebar doc layout, no splash, "Introduction" content
 // ────────────────────────────────────────────────────────────────────────
 
-test.describe('Landing page', () => {
+test.describe('Root landing (/)', () => {
   test.beforeEach(async ({ page }) => {
     await page.goto('/');
   });
 
-  test('hero renders with the brand', async ({ page }) => {
-    await expect(page.locator('h1')).toContainText('pgRDF');
-    await expect(page).toHaveTitle(/pgRDF/);
+  test('renders the Introduction heading at root', async ({ page }) => {
+    await expect(page.locator('h1').first()).toContainText('Introduction');
   });
 
-  test('exposes the four pillar tiles', async ({ page }) => {
-    await expect(page.locator('text=Pillar 1 — Semantic storage')).toBeVisible();
-    await expect(page.locator('text=Pillar 2 — Semantic query')).toBeVisible();
-    await expect(page.locator('text=Pillar 3 — Materialization')).toBeVisible();
-    await expect(page.locator('text=Pillar 4 — Validation')).toBeVisible();
+  test('renders the "At a glance" critical-details header', async ({ page }) => {
+    await expect(page.locator('text=At a glance')).toBeVisible();
+    await expect(page.locator('text=Apache-2.0')).toBeVisible();
+    await expect(page.locator('text=Latest release')).toBeVisible();
   });
 
-  test('has README-style sections — what / why / who / releases', async ({ page }) => {
-    await expect(page.locator('h2:has-text("What is pgRDF?")')).toBeVisible();
-    await expect(page.locator('h2:has-text("Why does it exist?")')).toBeVisible();
-    await expect(page.locator('h2:has-text("Who is this for?")')).toBeVisible();
-    await expect(page.locator('h2:has-text("Latest release")')).toBeVisible();
+  test('left sidebar exposes Getting started + all four pillars', async ({ page }) => {
+    await expect(page.getByText('Getting started')).toBeVisible();
+    await expect(page.getByText('Pillar 1 — Semantic storage')).toBeVisible();
+    await expect(page.getByText('Pillar 2 — Semantic query (SPARQL 1.1)')).toBeVisible();
+    await expect(page.getByText('Pillar 3 — Materialization (OWL 2 RL)')).toBeVisible();
+    await expect(page.getByText('Pillar 4 — Validation (SHACL Core)')).toBeVisible();
+  });
+
+  test('no hero/splash — content starts with an H1, not a hero CTA', async ({ page }) => {
+    // VitePress home layout uses .VPHero. Doc layout does not.
+    await expect(page.locator('.VPHero')).toHaveCount(0);
+  });
+
+  test('explains the four engines in a table', async ({ page }) => {
+    await expect(page.locator('text=Storage').first()).toBeVisible();
+    await expect(page.locator('text=SPARQL').first()).toBeVisible();
+    await expect(page.locator('text=Inference').first()).toBeVisible();
+    await expect(page.locator('text=Validation').first()).toBeVisible();
+  });
+
+  test('has the README-style sections — why / audience / get the bits', async ({ page }) => {
+    await expect(page.locator('h2:has-text("Why pgRDF")')).toBeVisible();
+    await expect(page.locator('h2:has-text("Audience")')).toBeVisible();
+    await expect(page.locator('h2:has-text("Get the bits")')).toBeVisible();
   });
 
   test('promotes releases prominently', async ({ page }) => {
@@ -34,15 +51,15 @@ test.describe('Landing page', () => {
     await expect(page.locator('a[href="https://crates.io/crates/pgrdf"]').first()).toBeVisible();
   });
 
-  test('primary CTA points at v0.5', async ({ page }) => {
-    const cta = page.getByRole('link', { name: /Get started/i }).first();
+  test('next-step CTA points at the four pillars', async ({ page }) => {
+    const cta = page.locator('a:has-text("the four pillars")').last();
     await expect(cta).toBeVisible();
-    await expect(cta).toHaveAttribute('href', /\/v0\.5\/introduction/);
+    await expect(cta).toHaveAttribute('href', /\/v0\.5\/pillars/);
   });
 });
 
 // ────────────────────────────────────────────────────────────────────────
-// SEO / Open Graph / structured data — checked against rendered HTML head
+// SEO / Open Graph / structured data
 // ────────────────────────────────────────────────────────────────────────
 
 test.describe('SEO + Open Graph', () => {
@@ -96,13 +113,13 @@ test.describe('SEO + Open Graph', () => {
     expect(sw.programmingLanguage).toBe('Rust');
   });
 
-  test('og-image asset is reachable', async ({ page, request }) => {
+  test('og-image asset is reachable', async ({ request }) => {
     const res = await request.get('/og-image.svg');
     expect(res.status()).toBe(200);
     expect(res.headers()['content-type']).toMatch(/svg/);
   });
 
-  test('logo asset is reachable', async ({ page, request }) => {
+  test('logo asset is reachable', async ({ request }) => {
     const res = await request.get('/logo.svg');
     expect(res.status()).toBe(200);
     expect(res.headers()['content-type']).toMatch(/svg/);
@@ -113,7 +130,6 @@ test.describe('SEO + Open Graph', () => {
     expect(res.status()).toBe(200);
     const body = await res.text();
     expect(body).toMatch(/<urlset/);
-    expect(body).toMatch(/v0\.5\/introduction/);
   });
 
   test('robots.txt is reachable', async ({ request }) => {
@@ -125,14 +141,13 @@ test.describe('SEO + Open Graph', () => {
 });
 
 // ────────────────────────────────────────────────────────────────────────
-// Navigation / v0.5 focus
+// v0.5 sub-pages
 // ────────────────────────────────────────────────────────────────────────
 
-test.describe('v0.5 focus', () => {
-  test('introduction page is reachable and explains the four engines', async ({ page }) => {
-    await page.goto('/v0.5/introduction');
-    await expect(page.locator('h1').first()).toContainText('Introduction');
-    await expect(page.locator('text=The four engines')).toBeVisible();
+test.describe('v0.5 sub-pages', () => {
+  test('the four pillars page is reachable', async ({ page }) => {
+    await page.goto('/v0.5/pillars');
+    await expect(page.locator('h1').first()).toContainText('four pillars');
   });
 
   test('pillar 1 storage overview is reachable', async ({ page }) => {
@@ -140,22 +155,24 @@ test.describe('v0.5 focus', () => {
     await expect(page.locator('h1').first()).toContainText('Pillar 1');
   });
 
-  test('sidebar exposes all four pillars', async ({ page }) => {
-    await page.goto('/v0.5/introduction');
-    await expect(page.getByText('Pillar 1 — Semantic storage')).toBeVisible();
-    await expect(page.getByText('Pillar 2 — Semantic query (SPARQL 1.1)')).toBeVisible();
-    await expect(page.getByText('Pillar 3 — Materialization (OWL 2 RL)')).toBeVisible();
-    await expect(page.getByText('Pillar 4 — Validation (SHACL Core)')).toBeVisible();
+  test('feature page (BGP joins) is reachable with example SQL', async ({ page }) => {
+    await page.goto('/v0.5/query/bgp-joins');
+    await expect(page.locator('h1').first()).toContainText('BGP joins');
+    await expect(page.locator('pre code').first()).toContainText('pgrdf.sparql');
+  });
+
+  test('inference overview is reachable', async ({ page }) => {
+    await page.goto('/v0.5/inference/');
+    await expect(page.locator('h1').first()).toContainText('Pillar 3');
+  });
+
+  test('validation overview is reachable', async ({ page }) => {
+    await page.goto('/v0.5/validation/');
+    await expect(page.locator('h1').first()).toContainText('Pillar 4');
   });
 
   test('top-level nav exposes the Releases dropdown', async ({ page }) => {
     await page.goto('/');
     await expect(page.locator('text=Releases').first()).toBeVisible();
-  });
-
-  test('feature page (BGP joins) is reachable with example SQL', async ({ page }) => {
-    await page.goto('/v0.5/query/bgp-joins');
-    await expect(page.locator('h1').first()).toContainText('BGP joins');
-    await expect(page.locator('pre code').first()).toContainText('pgrdf.sparql');
   });
 });

@@ -7,7 +7,7 @@ const SITE_DESC = 'PostgreSQL extension for RDF, SPARQL, SHACL and OWL 2 RL reas
 
 export default withMermaid(defineConfig({
   title: SITE_NAME,
-  titleTemplate: ':title · pgRDF — Semantic web inside PostgreSQL',
+  titleTemplate: ':title — pgRDF',
   description: SITE_DESC,
   lang: 'en-GB',
 
@@ -95,8 +95,8 @@ export default withMermaid(defineConfig({
       {
         text: 'Docs',
         items: [
-          { text: 'v0.5 (current target)', link: '/v0.5/introduction' },
-          { text: 'The four pillars',      link: '/v0.5/pillars' },
+          { text: 'Introduction',     link: '/' },
+          { text: 'The four pillars', link: '/v0.5/pillars' },
         ],
       },
       {
@@ -111,11 +111,11 @@ export default withMermaid(defineConfig({
     ],
 
     sidebar: {
-      '/v0.5/': [
+      '/': [
         {
           text: 'Getting started',
           items: [
-            { text: 'Introduction',     link: '/v0.5/introduction' },
+            { text: 'Introduction',     link: '/' },
             { text: 'The four pillars', link: '/v0.5/pillars' },
           ],
         },
