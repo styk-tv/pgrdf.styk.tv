@@ -235,8 +235,8 @@ test.describe('v0.5 sub-pages', () => {
 
   test('GRAPH clause page documents both literal-IRI and variable forms', async ({ page }) => {
     await page.goto('/v0.5/query/graph-clause');
-    await expect(page.locator('text=Literal-IRI form')).toBeVisible();
-    await expect(page.locator('text=Variable form')).toBeVisible();
-    await expect(page.locator('text=Composition with OPTIONAL / UNION / MINUS')).toBeVisible();
+    await expect(page.getByRole('heading', { name: 'Literal-IRI form' })).toBeVisible();
+    await expect(page.getByRole('heading', { name: 'Variable form' })).toBeVisible();
+    await expect(page.getByRole('heading', { name: 'Composition with OPTIONAL / UNION / MINUS' })).toBeVisible();
   });
 });
