@@ -52,10 +52,15 @@ For an explicit IRI ↔ id binding, see
 _pgrdf_quads FOR VALUES IN (N)`. The covering indexes (SPO/POS/OSP)
 are declared on the parent table and inherited.
 
-🚀 **Forward edge** — graph-lifecycle UDFs (`drop_graph`,
-`clear_graph`, `copy_graph`, `move_graph`) land alongside SPARQL
-UPDATE as a coherent group. See
-[`SPEC.pgRDF.LLD.v0.4 §5`](https://github.com/styk-tv/pgRDF/blob/main/specs/SPEC.pgRDF.LLD.v0.4.md).
+✅ **Graph lifecycle UDFs shipped** — `drop_graph`,
+`clear_graph`, `copy_graph`, `move_graph` are now first-class
+partition-level primitives. See
+[**Graph lifecycle UDFs**](/v0.5/storage/lifecycle) for the
+overview, or the individual pages:
+[`drop_graph`](/v0.5/storage/drop-graph),
+[`clear_graph`](/v0.5/storage/clear-graph),
+[`copy_graph`](/v0.5/storage/copy-graph),
+[`move_graph`](/v0.5/storage/move-graph).
 
 ## Tests
 
@@ -65,4 +70,5 @@ UPDATE as a coherent group. See
 ## See also
 
 - [Named graphs (IRI ↔ id)](/v0.5/storage/named-graphs).
+- [Graph lifecycle UDFs](/v0.5/storage/lifecycle).
 - [GRAPH `<iri> { … }` in SPARQL](/v0.5/query/graph-clause).

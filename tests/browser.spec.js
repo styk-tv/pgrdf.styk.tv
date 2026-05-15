@@ -180,4 +180,41 @@ test.describe('v0.5 sub-pages', () => {
     await page.goto('/');
     await expect(page.locator('text=Releases').first()).toBeVisible();
   });
+
+  test('lifecycle UDF overview is reachable', async ({ page }) => {
+    await page.goto('/v0.5/storage/lifecycle');
+    await expect(page.locator('h1').first()).toContainText('Graph lifecycle UDFs');
+    await expect(page.locator('text=drop_graph').first()).toBeVisible();
+    await expect(page.locator('text=clear_graph').first()).toBeVisible();
+    await expect(page.locator('text=copy_graph').first()).toBeVisible();
+    await expect(page.locator('text=move_graph').first()).toBeVisible();
+  });
+
+  test('drop_graph page is reachable with stable-prefix table', async ({ page }) => {
+    await page.goto('/v0.5/storage/drop-graph');
+    await expect(page.locator('h1').first()).toContainText('drop_graph');
+    await expect(page.locator('text=cannot drop default partition')).toBeVisible();
+  });
+
+  test('clear_graph page is reachable', async ({ page }) => {
+    await page.goto('/v0.5/storage/clear-graph');
+    await expect(page.locator('h1').first()).toContainText('clear_graph');
+  });
+
+  test('copy_graph page is reachable', async ({ page }) => {
+    await page.goto('/v0.5/storage/copy-graph');
+    await expect(page.locator('h1').first()).toContainText('copy_graph');
+  });
+
+  test('move_graph page is reachable', async ({ page }) => {
+    await page.goto('/v0.5/storage/move-graph');
+    await expect(page.locator('h1').first()).toContainText('move_graph');
+  });
+
+  test('GRAPH clause page documents both literal-IRI and variable forms', async ({ page }) => {
+    await page.goto('/v0.5/query/graph-clause');
+    await expect(page.locator('text=Literal-IRI form')).toBeVisible();
+    await expect(page.locator('text=Variable form')).toBeVisible();
+    await expect(page.locator('text=Composition with OPTIONAL / UNION / MINUS')).toBeVisible();
+  });
 });

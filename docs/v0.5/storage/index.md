@@ -24,6 +24,9 @@ from any Postgres client.
   pipeline for large ontologies.
 - [**Shared-memory dictionary cache**](/v0.5/storage/shmem-cache) —
   cross-backend hot path for repeated IRIs.
+- [**Graph lifecycle UDFs**](/v0.5/storage/lifecycle) —
+  `drop_graph`, `clear_graph`, `copy_graph`, `move_graph` as
+  partition-level primitives.
 
 ## At a glance
 

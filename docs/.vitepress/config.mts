@@ -133,6 +133,17 @@ export default withMermaid(defineConfig({
             { text: 'Term types — literals, lang, blank, lists', link: '/v0.5/storage/term-types' },
             { text: 'Bulk ingest',                             link: '/v0.5/storage/bulk-ingest' },
             { text: 'Shared-memory dictionary cache',          link: '/v0.5/storage/shmem-cache' },
+            {
+              text: 'Graph lifecycle UDFs',
+              collapsed: true,
+              items: [
+                { text: 'Overview',     link: '/v0.5/storage/lifecycle' },
+                { text: 'drop_graph',   link: '/v0.5/storage/drop-graph' },
+                { text: 'clear_graph',  link: '/v0.5/storage/clear-graph' },
+                { text: 'copy_graph',   link: '/v0.5/storage/copy-graph' },
+                { text: 'move_graph',   link: '/v0.5/storage/move-graph' },
+              ],
+            },
           ],
         },
         {
