@@ -1,4 +1,4 @@
-# Operations
+# <span class="material-symbols-outlined">build</span>Operations
 
 The operator-facing surface: observability, cache control,
 SQL composition, multi-PG support, install.

@@ -17,6 +17,13 @@ export default withMermaid(defineConfig({
     ['link', { rel: 'mask-icon', href: '/logo.svg', color: '#336791' }],
     ['link', { rel: 'apple-touch-icon', href: '/logo.svg' }],
 
+    // Material Symbols (Outlined) — subsetted to only the icons we
+    // reference, so the woff2 stays a few KB. Add a glyph here, use
+    // it sparingly in pages.
+    ['link', { rel: 'preconnect', href: 'https://fonts.googleapis.com' }],
+    ['link', { rel: 'preconnect', href: 'https://fonts.gstatic.com', crossorigin: '' }],
+    ['link', { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,300,0..1,-25..0&icon_names=bolt,build,check_circle,code,groups,info,psychology,query_stats,rocket_launch,school,search,settings,storage,verified&display=swap' }],
+
     // Theme + canonical
     ['meta', { name: 'theme-color', content: '#336791' }],
     ['meta', { name: 'author', content: 'Peter Styk' }],

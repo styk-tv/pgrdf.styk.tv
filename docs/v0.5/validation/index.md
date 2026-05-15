@@ -1,4 +1,4 @@
-# Pillar 4 — Validation (SHACL Core)
+# <span class="material-symbols-outlined icon-blue">verified</span>Pillar 4 — Validation (SHACL Core)
 
 `pgrdf.validate(data_graph_id BIGINT, shapes_graph_id BIGINT) → JSONB`
 validates the data graph against the shapes graph and returns a

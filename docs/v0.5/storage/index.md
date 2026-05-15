@@ -1,4 +1,4 @@
-# Pillar 1 — Semantic storage
+# <span class="material-symbols-outlined icon-blue">storage</span>Pillar 1 — Semantic storage
 
 RDF storage in PostgreSQL. Turtle goes in; dictionary-encoded,
 hexastore-indexed, LIST-partitioned quads come out — addressable

@@ -104,17 +104,17 @@ SQL and at least the basics of RDF, SPARQL, OWL, and SHACL —
 but not all four. Each pillar's documentation can be read
 independently.
 
-- **Project managers** — start with [The four pillars](/v0.5/pillars)
+- <span class="material-symbols-outlined">groups</span>**Project managers** — start with [The four pillars](/v0.5/pillars)
   to scope what pgRDF can absorb from your backlog.
-- **Data scientists** — start with [Storage](/v0.5/storage/) and
+- <span class="material-symbols-outlined">query_stats</span>**Data scientists** — start with [Storage](/v0.5/storage/) and
   [SPARQL queries](/v0.5/query/) to see how you'd join graph data
   against your existing SQL tables.
-- **Ontologists** — start with [Inference](/v0.5/inference/) and
+- <span class="material-symbols-outlined">school</span>**Ontologists** — start with [Inference](/v0.5/inference/) and
   [Validation](/v0.5/validation/) to see which slice of OWL 2 RL
   and SHACL Core runs at the storage layer.
-- **Backend engineers** — start with [Compose with regular SQL](/v0.5/operations/sql-composition)
+- <span class="material-symbols-outlined">code</span>**Backend engineers** — start with [Compose with regular SQL](/v0.5/operations/sql-composition)
   to see how to call pgRDF from your existing connection pool.
-- **Operators** — start with [Drop-in install](/v0.5/operations/install)
+- <span class="material-symbols-outlined">settings</span>**Operators** — start with [Drop-in install](/v0.5/operations/install)
   and [`pgrdf.stats()`](/v0.5/operations/stats).
 
 ## Where this content comes from

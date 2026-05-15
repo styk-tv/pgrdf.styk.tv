@@ -3,7 +3,7 @@ title: Forward edge — what's next
 description: SPARQL surface still in flight in the pgRDF v0.4 cycle — CONSTRUCT, property paths, and the smaller residual items.
 ---
 
-# 🚀 Forward edge — what's next
+# <span class="material-symbols-outlined icon-orange">rocket_launch</span>Forward edge — what's next
 
 > What's landing next on the SPARQL surface. Tracked in
 > [`SPEC.pgRDF.LLD.v0.4 §6–§7`](https://github.com/styk-tv/pgRDF/blob/main/specs/SPEC.pgRDF.LLD.v0.4.md)
@@ -17,14 +17,14 @@ the in-progress cycle** and clearly future-tensed.
 For surface that *has* already shipped, see the relevant feature
 pages. Recently shipped:
 
-- ✅ **Phase B** (v0.4.2) — [Graph lifecycle UDFs](/v0.5/storage/lifecycle)
+- <span class="material-symbols-outlined icon-green">check_circle</span>**Phase B** (v0.4.2) — [Graph lifecycle UDFs](/v0.5/storage/lifecycle)
   (`drop_graph`, `clear_graph`, `copy_graph`, `move_graph`).
-- ✅ **Phase C** (v0.4.3) — [Full SPARQL UPDATE surface](/v0.5/query/update)
+- <span class="material-symbols-outlined icon-green">check_circle</span>**Phase C** (v0.4.3) — [Full SPARQL UPDATE surface](/v0.5/query/update)
   (INSERT/DELETE DATA, pattern-driven INSERT/DELETE WHERE,
   atomic DELETE+INSERT/WHERE, WITH and inline GRAPH scoping,
   DROP/CLEAR/CREATE lifecycle algebra).
 
-## Phase D — CONSTRUCT
+## <span class="material-symbols-outlined icon-orange">rocket_launch</span>Phase D — CONSTRUCT
 
 `CONSTRUCT` is the canonical SPARQL form for **graph-snapshot
 export, view materialisation, and graph-rewrite pipelines**:
@@ -53,7 +53,7 @@ Use-cases this unlocks:
 
 Tracked at [`SPEC.pgRDF.LLD.v0.4 §6`](https://github.com/styk-tv/pgRDF/blob/main/specs/SPEC.pgRDF.LLD.v0.4.md).
 
-## Property paths
+## <span class="material-symbols-outlined icon-orange">rocket_launch</span>Property paths
 
 The closure-aware path operators:
 

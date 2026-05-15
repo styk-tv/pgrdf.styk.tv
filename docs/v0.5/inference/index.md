@@ -1,4 +1,4 @@
-# Pillar 3 — Materialization (OWL 2 RL)
+# <span class="material-symbols-outlined icon-blue">psychology</span>Pillar 3 — Materialization (OWL 2 RL)
 
 `pgrdf.materialize(graph_id BIGINT) → JSONB` runs OWL 2 RL
 forward-chaining inference (via the [`reasonable`](https://github.com/gtfierro/reasonable)

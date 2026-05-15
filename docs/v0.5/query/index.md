@@ -1,4 +1,4 @@
-# Pillar 2 — Semantic query (SPARQL 1.1)
+# <span class="material-symbols-outlined icon-blue">search</span>Pillar 2 — Semantic query (SPARQL 1.1)
 
 `pgrdf.sparql(q TEXT) → SETOF JSONB` parses SPARQL with
 [`spargebra`](https://crates.io/crates/spargebra), translates the

@@ -264,4 +264,39 @@ test.describe('v0.5 sub-pages', () => {
     await expect(block.getByText(/v0\.4\.3/)).toBeVisible();
     await expect(block.getByText(/Phase D \(CONSTRUCT\) next/i)).toBeVisible();
   });
+
+  test('Material Symbols stylesheet is loaded with subsetted icon list', async ({ page }) => {
+    await page.goto('/');
+    const href = await page.locator('link[href*="fonts.googleapis.com/css2"][href*="Material+Symbols"]').getAttribute('href');
+    expect(href).toBeTruthy();
+    expect(href).toMatch(/icon_names=/);
+    // Sanity-check that a few critical glyphs are in the subset.
+    expect(href).toMatch(/groups/);
+    expect(href).toMatch(/rocket_launch/);
+    expect(href).toMatch(/check_circle/);
+    expect(href).toMatch(/storage/);
+  });
+
+  test('Persona list on root uses Material Symbols icons', async ({ page }) => {
+    await page.goto('/');
+    // Each persona row contains an inline span.material-symbols-outlined.
+    const icons = page.locator('.vp-doc .material-symbols-outlined');
+    await expect(icons.first()).toBeVisible();
+    // At least 5 (5 personas) + 1 (At-a-glance section may have one).
+    const count = await icons.count();
+    expect(count).toBeGreaterThanOrEqual(5);
+  });
+
+  test('Roadmap status markers use rocket_launch + check_circle', async ({ page }) => {
+    await page.goto('/v0.5/query/roadmap');
+    await expect(page.locator('.material-symbols-outlined.icon-orange').first()).toBeVisible();
+    await expect(page.locator('.material-symbols-outlined.icon-green').first()).toBeVisible();
+  });
+
+  test('Pillar overview headings carry a header icon', async ({ page }) => {
+    for (const url of ['/v0.5/storage/', '/v0.5/query/', '/v0.5/inference/', '/v0.5/validation/']) {
+      await page.goto(url);
+      await expect(page.locator('h1 .material-symbols-outlined.icon-blue').first()).toBeVisible();
+    }
+  });
 });

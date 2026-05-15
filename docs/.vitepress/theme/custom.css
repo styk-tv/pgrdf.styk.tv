@@ -64,3 +64,47 @@
     max-width: 160px;
   }
 }
+
+/* Material Symbols — inline icon utility. Applied sparingly:
+   - persona bullet lists (one per row)
+   - status markers on the roadmap (rocket_launch / check_circle)
+   - one header icon per pillar overview
+   The font is subsetted via the Google Fonts query string in
+   config.mts, so adding new glyphs requires extending that list. */
+.material-symbols-outlined {
+  font-family: 'Material Symbols Outlined';
+  font-weight: normal;
+  font-style: normal;
+  font-size: 1.2em;
+  line-height: 1;
+  letter-spacing: normal;
+  text-transform: none;
+  display: inline-block;
+  white-space: nowrap;
+  word-wrap: normal;
+  direction: ltr;
+  -webkit-font-feature-settings: 'liga';
+  -webkit-font-smoothing: antialiased;
+  vertical-align: -0.22em;
+  margin-right: 0.35em;
+  color: var(--vp-c-text-2);
+  font-variation-settings:
+    'FILL' 0,
+    'wght' 300,
+    'GRAD' 0,
+    'opsz' 24;
+}
+
+/* Tasteful accent colors — used only when the icon is making a
+   real signal (status, callout). Inherit by default. */
+.icon-blue   { color: var(--vp-c-brand-1); }
+.icon-green  { color: var(--vp-c-tip-1); }
+.icon-orange { color: #e8a23a; }
+
+/* When an icon prefixes an H1/H2, give it a touch more breathing room. */
+.vp-doc h1 .material-symbols-outlined,
+.vp-doc h2 .material-symbols-outlined {
+  font-size: 0.9em;
+  margin-right: 0.4em;
+  vertical-align: -0.15em;
+}
