@@ -28,6 +28,7 @@ the read and write surface share a single UDF entry point.
 - <span class="material-symbols-outlined">search</span> [**Solution modifiers**](/v0.5/query/modifiers) — `DISTINCT`, `ORDER BY`, `LIMIT`, `OFFSET`.
 - <span class="material-symbols-outlined">search</span> [**ASK**](/v0.5/query/ask) — boolean queries.
 - <span class="material-symbols-outlined">account_tree</span> [**GRAPH `<iri> { … }`**](/v0.5/query/graph-clause) — named-graph scoping (literal + variable forms).
+- <span class="material-symbols-outlined">hub</span> [**Property paths**](/v0.5/query/property-paths) — `^` `+` `*` `?` `\|` with cycle-safe recursion + materialised-closure fast path (v0.4.5).
 
 </div>
 
@@ -35,7 +36,8 @@ the read and write surface share a single UDF entry point.
 
 <div class="icon-bullets">
 
-- <span class="material-symbols-outlined">code</span> [**SPARQL UPDATE**](/v0.5/query/update) — `INSERT DATA`, `DELETE DATA`, pattern-driven `INSERT/DELETE WHERE`, atomic `DELETE+INSERT/WHERE`, graph-scoped `WITH` and inline `GRAPH`, plus lifecycle `DROP / CLEAR / CREATE GRAPH`.
+- <span class="material-symbols-outlined">code</span> [**SPARQL UPDATE**](/v0.5/query/update) — `INSERT DATA`, `DELETE DATA`, pattern-driven `INSERT/DELETE WHERE`, atomic `DELETE+INSERT/WHERE`, graph-scoped `WITH` and inline `GRAPH`, plus lifecycle `DROP / CLEAR / CREATE GRAPH` (v0.4.3).
+- <span class="material-symbols-outlined">code</span> [**CONSTRUCT**](/v0.5/query/construct) — `pgrdf.construct(q) → SETOF JSONB`; templates (constant / variable / blank-node / multi-triple), GRAPH-scoped WHERE, WHERE-shorthand, round-trip ingest (v0.4.4).
 
 </div>
 
@@ -43,9 +45,9 @@ the read and write surface share a single UDF entry point.
 
 <div class="icon-bullets">
 
-- <span class="material-symbols-outlined">info</span> [**`sparql_parse`**](/v0.5/query/sparql-parse) — inspect parsed shape (read + write) without executing.
+- <span class="material-symbols-outlined">info</span> [**`sparql_parse`**](/v0.5/query/sparql-parse) — inspect parsed shape (read + write + paths) without executing.
 - <span class="material-symbols-outlined">info</span> [**Error-message contract**](/v0.5/query/error-contract) — stable error prefixes.
-- <span class="material-symbols-outlined icon-orange">rocket_launch</span> [**Forward edge — what's next**](/v0.5/query/roadmap) — CONSTRUCT (Phase D), property paths, smaller residual items.
+- <span class="material-symbols-outlined icon-orange">rocket_launch</span> [**Forward edge — what's next**](/v0.5/query/roadmap) — shipped phases B–E, plus the v0.5 residual surface.
 
 </div>
 
@@ -95,7 +97,8 @@ Take them in order — each loop builds on the previous one:
 <div class="icon-bullets">
 
 - <span class="material-symbols-outlined">code</span> **[SPARQL UPDATE](/v0.5/query/update)** — once you can read, the same UDF dispatches the six write forms.
-- <span class="material-symbols-outlined icon-orange">rocket_launch</span> **[CONSTRUCT](/v0.5/query/construct)** — read-side counterpart to UPDATE's template-from-pattern shape (Phase D, in flight).
+- <span class="material-symbols-outlined">code</span> **[CONSTRUCT](/v0.5/query/construct)** — read-side counterpart to UPDATE's template-from-pattern shape (shipped v0.4.4).
+- <span class="material-symbols-outlined">hub</span> **[Property paths](/v0.5/query/property-paths)** — `^` `+` `*` `?` `\|`; the materialised-closure fast path is where inference and query pay each other back (shipped v0.4.5).
 - <span class="material-symbols-outlined">info</span> **[sparql_parse](/v0.5/query/sparql-parse)** + **[Error-message contract](/v0.5/query/error-contract)** — programmatic shape inspection and stable error prefixes for tooling.
 
 </div>

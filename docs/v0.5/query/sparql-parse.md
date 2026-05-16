@@ -50,12 +50,54 @@ SELECT pgrdf.sparql_parse(
 }
 ```
 
-A query that uses a yet-unsupported feature (e.g. CONSTRUCT)
-shows up in `unsupported_algebra`:
+A query that uses a feature outside the executable surface shows
+up in `unsupported_algebra`. `sparql_parse` itself **never
+panics** — it lowers the full executable set and flags only the
+genuinely-unsupported remainder, mirroring how it reports
+not-yet-shipped UPDATE forms.
+
+## Property paths
+
+`sparql_parse` lowers the **entire executable property-path set**
+(`^`, `+`, `*`, `?`, `|` and their compositions) into the `bgp`
+shape — it does not panic on them, even though the executor
+preview-panics on the small gated remainder. Only that gated
+remainder (an alternation arm that is itself a sequence/recursive
+path, or a recursive operator whose inner box is a sequence —
+e.g. `(a/b|c)`, `(p1/p2)+`) is flagged in `unsupported_algebra`,
+alongside negated property sets. This makes `sparql_parse` a safe
+static gate: a query that parses clean here will not hit a
+path-related preview-panic at execution.
 
 ```sql
-SELECT pgrdf.sparql_parse('CONSTRUCT { ?s ?p ?o } WHERE { ?s ?p ?o }');
---  → {"form": "CONSTRUCT", ..., "unsupported_algebra": ["Construct"]}
+SELECT pgrdf.sparql_parse(
+  'PREFIX ex: <http://example.org/>
+   SELECT ?x WHERE { ?x ex:sub+ ex:c11 }');
+--  → {"form": "SELECT", ..., "unsupported_algebra": []}   ← p+ is executable
+
+SELECT pgrdf.sparql_parse(
+  'PREFIX ex: <http://example.org/>
+   SELECT ?x WHERE { ?x (ex:a/ex:b)+ ?o }');
+--  → {"form": "SELECT", ..., "unsupported_algebra": ["NestedRecursivePath"]}
+```
+
+## Inspect the translated SQL — `pgrdf.sparql_sql`
+
+```
+pgrdf.sparql_sql(q TEXT) → TEXT
+```
+
+Returns the SQL the translator emits for a query, with
+dictionary ids inlined. Useful to `EXPLAIN`-scrape and confirm,
+for instance, that a `subClassOf+` query took the
+[materialised-closure no-CTE fast path](/v0.5/query/property-paths#materialised-closure-no-cte-fast-path)
+(the executed plan should carry no `CTE Scan`):
+
+```sql
+SELECT pgrdf.sparql_sql(
+  'PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+   SELECT ?c WHERE { ?c rdfs:subClassOf+ <http://example.org/Root> }');
+-- → the lowered SQL; EXPLAIN it to verify recursion was elided.
 ```
 
 ## UPDATE — per-op detail enrichment

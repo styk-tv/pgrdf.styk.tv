@@ -1,90 +1,50 @@
 ---
 title: Forward edge — what's next
-description: SPARQL surface still in flight in the pgRDF v0.4 cycle — CONSTRUCT, property paths, and the smaller residual items.
+description: What's shipped on the SPARQL surface (Phases B–E) and what's still pre-v1.0 — the v0.5-FUTURE items plus the gated path remainder.
 ---
 
 # <span class="material-symbols-outlined icon-orange">rocket_launch</span>Forward edge — what's next
 
-> What's landing next on the SPARQL surface. Tracked in
-> [`SPEC.pgRDF.LLD.v0.4 §6–§7`](https://github.com/styk-tv/pgRDF/blob/main/specs/SPEC.pgRDF.LLD.v0.4.md)
+> The four highest-leverage gaps from the v0.3 cut have all
+> shipped. This page records what landed and what's still ahead.
+> Tracked in
+> [`SPEC.pgRDF.LLD.v0.4`](https://github.com/styk-tv/pgRDF/blob/main/specs/SPEC.pgRDF.LLD.v0.4.md)
 > and
-> [`SPEC.pgRDF.LLD.v0.5-FUTURE.md`](https://github.com/styk-tv/pgRDF/blob/main/specs/SPEC.pgRDF.LLD.v0.5-FUTURE.md).
+> [`SPEC.pgRDF.LLD.v0.5-FUTURE`](https://github.com/styk-tv/pgRDF/blob/main/specs/SPEC.pgRDF.LLD.v0.5-FUTURE.md).
 
-This page is forward-looking. None of the surface described here
-is callable on the current `main` cut — everything below is **in
-the in-progress cycle** and clearly future-tensed.
+## <span class="material-symbols-outlined icon-green">check_circle</span>Shipped (tagged releases)
 
-For surface that *has* already shipped, see the relevant feature
-pages. Recently shipped:
+<div class="icon-bullets">
 
-- <span class="material-symbols-outlined icon-green">check_circle</span>**Phase B** (v0.4.2) — [Graph lifecycle UDFs](/v0.5/storage/lifecycle)
-  (`drop_graph`, `clear_graph`, `copy_graph`, `move_graph`).
-- <span class="material-symbols-outlined icon-green">check_circle</span>**Phase C** (v0.4.3) — [Full SPARQL UPDATE surface](/v0.5/query/update)
-  (INSERT/DELETE DATA, pattern-driven INSERT/DELETE WHERE,
-  atomic DELETE+INSERT/WHERE, WITH and inline GRAPH scoping,
-  DROP/CLEAR/CREATE lifecycle algebra).
+- <span class="material-symbols-outlined icon-green">check_circle</span>**Phase B** — v0.4.2 — [Graph lifecycle UDFs](/v0.5/storage/lifecycle): `drop_graph`, `clear_graph`, `copy_graph`, `move_graph`.
+- <span class="material-symbols-outlined icon-green">check_circle</span>**Phase C** — v0.4.3 — [Full SPARQL UPDATE surface](/v0.5/query/update): INSERT/DELETE DATA, pattern-driven INSERT/DELETE WHERE, atomic DELETE+INSERT/WHERE, WITH + inline GRAPH scoping, DROP/CLEAR/CREATE lifecycle algebra.
+- <span class="material-symbols-outlined icon-green">check_circle</span>**Phase D** — v0.4.4 — [CONSTRUCT](/v0.5/query/construct): constant-only + variable + blank-node + multi-triple templates, GRAPH-scoped WHERE, WHERE-shorthand, round-trip ingest, `sparql_parse` shape analysis.
+- <span class="material-symbols-outlined icon-green">check_circle</span>**Phase E** — v0.4.5 — [Property paths](/v0.5/query/property-paths): `^` `+` `*` `?` `|` with cycle-safe recursive CTEs, the `pgrdf.path_max_depth` guard, W3C §9.3 zero-length semantics, and the materialised-closure no-CTE fast path.
 
-In flight on `main` right now (pre-release):
+</div>
 
-- <span class="material-symbols-outlined icon-orange">rocket_launch</span>**Phase D** — [CONSTRUCT](/v0.5/query/construct)
-  (`pgrdf.construct(q)` foundation with constant-only templates,
-  variable substitution, blank-node templates, multi-triple
-  templates, GRAPH-scoped WHERE, WHERE-shorthand) — countdown
-  slices 59 → 54 landed. Tags in the next release.
+That closes the LLD v0.4 §4 / §5 / §6 / §7 columns. The SPARQL
+read **and** write surface, named graphs, lifecycle, CONSTRUCT,
+and property paths are all on tagged releases.
 
-## <span class="material-symbols-outlined icon-orange">rocket_launch</span>Phase D — CONSTRUCT (in flight)
+## <span class="material-symbols-outlined icon-orange">rocket_launch</span>Still ahead — the v0.5 target
 
-Now landing on `main`. See the dedicated
-[**CONSTRUCT page**](/v0.5/query/construct) for the full surface
-as it stands today.
+The [`v0.5-FUTURE` spec](https://github.com/styk-tv/pgRDF/blob/main/specs/SPEC.pgRDF.LLD.v0.5-FUTURE.md)
+covers the residual surface:
 
-`CONSTRUCT` is the canonical SPARQL form for **graph-snapshot
-export, view materialisation, and graph-rewrite pipelines**:
-take a WHERE pattern, instantiate a graph template against every
-solution, return the resulting triples.
+<div class="icon-bullets">
 
-pgRDF adds a sibling UDF rather than overloading `pgrdf.sparql`:
+- <span class="material-symbols-outlined icon-orange">rocket_launch</span>**Reasoning profile selector** on `pgrdf.materialize` — per-call choice between RDFS, OWL 2 RL, and an extended OWL 2 RL+ rule set. See [Profile selector](/v0.5/inference/profile-selector).
+- <span class="material-symbols-outlined icon-orange">rocket_launch</span>**TriG + N-Quads ingest** — `pgrdf.parse_trig`, `pgrdf.parse_nquads` for full named-graph serialisations.
+- <span class="material-symbols-outlined icon-orange">rocket_launch</span>**SHACL-SPARQL** — custom constraint components defined as embedded SPARQL `SELECT` / `ASK`. See [Forward edge — SHACL-SPARQL](/v0.5/validation/shacl-sparql).
+- <span class="material-symbols-outlined icon-orange">rocket_launch</span>**W3C SHACL manifest runner** — wired to CI like the SPARQL conformance suite is today.
+- <span class="material-symbols-outlined icon-orange">rocket_launch</span>**IRI overloads for lifecycle UDFs** — `drop_graph(iri TEXT)`, `clear_graph(iri TEXT)`, etc. as ergonomic siblings to the integer-id variants.
 
-```
-pgrdf.construct(q TEXT) → SETOF JSONB
-```
-
-Each result row has the shape `{subject, predicate, object}`
-(JSONB), suitable for direct piping into `INSERT INTO … SELECT`
-or any tabular consumer.
-
-Tracked at [`SPEC.pgRDF.LLD.v0.4 §6`](https://github.com/styk-tv/pgRDF/blob/main/specs/SPEC.pgRDF.LLD.v0.4.md).
-
-## <span class="material-symbols-outlined icon-orange">rocket_launch</span>Property paths
-
-The closure-aware path operators:
-
-| Operator | Meaning |
-|---|---|
-| `p*` | Zero or more `p` hops. |
-| `p+` | One or more `p` hops. |
-| `p?` | Zero or one `p` hop. |
-| `^p` | Inverse path. |
-| `p1\|p2` | Alternation (stretch goal). |
-
-These will be **closure-aware**: where the closure was already
-[materialized](/v0.5/inference/) into the graph (via OWL 2 RL
-forward-chaining over `rdfs:subClassOf` or
-`owl:TransitiveProperty`), the translator will pick the
-materialised view; otherwise it will fall back to recursive SQL
-through Postgres' `WITH RECURSIVE`.
-
-This is the surface that closes the gap between "the inference
-engine produced a closure" and "SPARQL queries can walk it
-ergonomically" without forcing the application to model the
-transitive closure separately.
-
-Tracked at [`SPEC.pgRDF.LLD.v0.4 §7`](https://github.com/styk-tv/pgRDF/blob/main/specs/SPEC.pgRDF.LLD.v0.4.md).
+</div>
 
 ## Residual SPARQL items
 
-Smaller items from the v0.3 backlog land alongside the items
-above as part of the same delivery group.
+Smaller items still queued in the SPARQL surface:
 
 | Item | Sketch |
 |---|---|
@@ -95,24 +55,21 @@ above as part of the same delivery group.
 
 Tracked at [`SPEC.pgRDF.LLD.v0.4 §11`](https://github.com/styk-tv/pgRDF/blob/main/specs/SPEC.pgRDF.LLD.v0.4.md).
 
-## Beyond v0.4 — the v0.5 target
+## Deliberately out of scope (v0.4)
 
-Looking further out, the v0.5-FUTURE spec covers:
+Not "coming soon" — these are spec-permitted gaps:
 
-- **Reasoning profile selector** on `pgrdf.materialize` —
-  per-call choice between RDFS, OWL 2 RL, and an extended
-  OWL 2 RL+ rule set. See
-  [Profile selector](/v0.5/inference/profile-selector).
-- **TriG + N-Quads ingest** — `pgrdf.parse_trig`,
-  `pgrdf.parse_nquads` for full named-graph serialisations.
-- **SHACL-SPARQL** — custom constraint components defined as
-  SPARQL `SELECT` / `ASK` queries. See
-  [Forward edge — SHACL-SPARQL](/v0.5/validation/shacl-sparql).
-- **W3C SHACL manifest runner** — wired to CI like the SPARQL
-  conformance suite is today.
-- **IRI overloads for lifecycle UDFs** — `drop_graph(iri TEXT)`,
-  `clear_graph(iri TEXT)`, etc. as ergonomic siblings to the
-  integer-id variants.
-
-See [`SPEC.pgRDF.LLD.v0.5-FUTURE.md`](https://github.com/styk-tv/pgRDF/blob/main/specs/SPEC.pgRDF.LLD.v0.5-FUTURE.md)
-for the full v0.5 scope.
+- **Negated property sets** `?s !(p) ?o` — out of v0.4 scope;
+  panics with a stable prefix.
+- **Explicit sequence path-expressions** `?s p1/p2 ?o` — use the
+  equivalent multi-pattern BGP `{ ?s p1 ?m . ?m p2 ?o }`; the
+  explicit `Sequence` path-expr is rejected with a pointer to the
+  BGP form.
+- **The gated path remainder** — an alternation arm that is itself
+  a sequence/recursive path (`(a/b|c)`, `(a+|b)`), or a recursive
+  operator whose inner box is a sequence (`(p1/p2)+`). Folding
+  these would compose a recursive CTE inside an alternation arm;
+  LLD §7.1 explicitly permits gating them. They preview-panic with
+  a stable nested-recursive prefix. [`sparql_parse`](/v0.5/query/sparql-parse)
+  does **not** panic — it flags only the gated remainder in
+  `unsupported_algebra`.

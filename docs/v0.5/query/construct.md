@@ -3,19 +3,20 @@ title: CONSTRUCT — graph-shaped result rows
 description: pgrdf.construct(q TEXT) returns SETOF JSONB rows shaped {subject, predicate, object}. Snapshot, view, or rewrite a subgraph in one query.
 ---
 
-# <span class="material-symbols-outlined icon-orange">rocket_launch</span>CONSTRUCT — graph-shaped result rows
+# <span class="material-symbols-outlined icon-green">check_circle</span>CONSTRUCT — graph-shaped result rows
 
 > The canonical SPARQL form for **snapshotting a subgraph**,
 > **materialising a view**, or feeding a graph-rewrite pipeline.
-> Currently shipping on `main` — Phase D, pre-release.
+> Shipped in **v0.4.4** (Phase D, slices 59 → 51).
 
-::: warning In flight
-This surface is landing on the pgRDF `main` branch right now
-(Phase D countdown slices 54-59 — `pgrdf.construct(q)` foundation,
-variable substitution, blank-node templates, multi-triple
-templates, GRAPH-scoped WHERE, WHERE-shorthand). It will tag in
-the next release (post-v0.4.3). The shape described below is
-what's on `main` today.
+::: tip Shipped
+The full CONSTRUCT surface is on a tagged release (v0.4.4):
+foundation + constant-only templates, variable substitution,
+blank-node templates (fresh-per-solution), multi-triple templates
+with shared per-solution bnodes, GRAPH-scoped WHERE, the
+WHERE-shorthand form, round-trip ingest via `put_construct_rows`
+(bnode joining preserved), and `sparql_parse` CONSTRUCT shape
+analysis. W3C-shape fixtures `30-35` lock conformance.
 :::
 
 ## What it does
@@ -48,9 +49,10 @@ or any tabular consumer.
 
 </div>
 
-## Surface as it stands on `main`
+## The shipped surface
 
-The slice countdown reveals the order capabilities landed:
+The Phase D slice countdown shows the order capabilities landed
+(all in v0.4.4):
 
 | Phase D slice | Feature |
 |---|---|
@@ -60,9 +62,9 @@ The slice countdown reveals the order capabilities landed:
 | 56 | **Multi-triple templates** with shared per-solution bnodes — a `_:b` referenced twice in the template shares one identity per solution. |
 | 55 | **GRAPH-scoped WHERE** — `WHERE { GRAPH <iri> { ?s ?p ?o } }` routes to a named graph partition. |
 | 54 | **WHERE-shorthand form** with W3C BGP restrictions — the `CONSTRUCT WHERE { … }` short form (template = WHERE pattern). |
-
-The remaining Phase D slices (53 → cut) close out tests, docs,
-spec sync, and the release tag.
+| 53 | **Round-trip ingest** via `put_construct_rows` — feed a CONSTRUCT straight back into a graph, bnode joining preserved. |
+| 52 | **`sparql_parse` CONSTRUCT shape** — template/WHERE analysis without execution. |
+| 51 | W3C-shape conformance fixtures `30-35` + Phase D coherence sweep. |
 
 ## Examples
 

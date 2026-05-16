@@ -251,19 +251,20 @@ test.describe('v0.5 sub-pages', () => {
     await expect(page.getByRole('heading', { name: /Lifecycle algebra/ })).toBeVisible();
   });
 
-  test('roadmap page reflects shipped UPDATE + future CONSTRUCT / paths', async ({ page }) => {
+  test('roadmap page shows phases B–E shipped + v0.5 forward edge', async ({ page }) => {
     await page.goto('/v0.5/query/roadmap');
-    await expect(page.locator('text=Phase C').first()).toBeVisible();
-    await expect(page.getByRole('heading', { name: 'Phase D — CONSTRUCT' })).toBeVisible();
-    await expect(page.getByRole('heading', { name: 'Property paths' })).toBeVisible();
+    const main = page.locator('.vp-doc').first();
+    await expect(main.getByRole('heading', { level: 2, name: /Shipped \(tagged releases\)/ })).toBeVisible();
+    await expect(main.getByText(/Phase D.*v0\.4\.4/)).toBeVisible();
+    await expect(main.getByText(/Phase E.*v0\.4\.5/)).toBeVisible();
+    await expect(main.getByRole('heading', { level: 2, name: /Still ahead/ })).toBeVisible();
   });
 
-  test('At-a-glance callout reflects v0.4.3', async ({ page }) => {
+  test('At-a-glance callout reflects v0.4.5 with CONSTRUCT + paths shipped', async ({ page }) => {
     await page.goto('/');
     const block = page.locator('.custom-block.info', { hasText: 'At a glance' });
-    await expect(block.getByText(/v0\.4\.3/)).toBeVisible();
-    // Phase D / CONSTRUCT is referenced as in-flight on main.
-    await expect(block.getByText(/Phase D/)).toBeVisible();
+    await expect(block.getByText(/v0\.4\.5/)).toBeVisible();
+    await expect(block.getByText(/property paths/i)).toBeVisible();
   });
 
   test('Material Symbols stylesheet is loaded with subsetted icon list', async ({ page }) => {
@@ -351,13 +352,24 @@ test.describe('v0.5 sub-pages', () => {
     expect(before).toMatch(/storage/);
   });
 
-  test('CONSTRUCT page documents Phase D shipping surface', async ({ page }) => {
+  test('CONSTRUCT page documents the shipped v0.4.4 surface', async ({ page }) => {
     await page.goto('/v0.5/query/construct');
     await expect(page.locator('h1').first()).toContainText('CONSTRUCT');
-    await expect(page.getByText(/In flight/i).first()).toBeVisible();
+    await expect(page.getByText(/Shipped in.*v0\.4\.4/i).first()).toBeVisible();
     await expect(page.getByText(/Variable substitution/i).first()).toBeVisible();
     await expect(page.getByText(/Blank-node templates/i).first()).toBeVisible();
     await expect(page.getByText(/WHERE-shorthand/i).first()).toBeVisible();
+  });
+
+  test('Property paths page documents the v0.4.5 operator set', async ({ page }) => {
+    await page.goto('/v0.5/query/property-paths');
+    await expect(page.locator('h1').first()).toContainText('Property paths');
+    const main = page.locator('.vp-doc').first();
+    await expect(main.getByRole('heading', { level: 2, name: /transitive closure/i })).toBeVisible();
+    await expect(main.getByRole('heading', { level: 2, name: /zero-length semantics/i })).toBeVisible();
+    await expect(main.getByRole('heading', { level: 2, name: /alternation/i })).toBeVisible();
+    await expect(main.getByRole('heading', { level: 2, name: /Materialised-closure no-CTE fast path/i })).toBeVisible();
+    await expect(main.getByText(/pgrdf\.path_max_depth/).first()).toBeVisible();
   });
 
   test('Training landing page enumerates pillars + audio companion', async ({ page }) => {
@@ -420,10 +432,21 @@ test.describe('v0.5 sub-pages', () => {
     }
   });
 
-  test('At-a-glance callout references CONSTRUCT landing on main', async ({ page }) => {
+  test('At-a-glance callout cites CONSTRUCT + property paths shipped', async ({ page }) => {
     await page.goto('/');
     const block = page.locator('.custom-block.info', { hasText: 'At a glance' });
     await expect(block.getByText(/CONSTRUCT/i)).toBeVisible();
-    await expect(block.getByText(/Training/i)).toBeVisible();
+    await expect(block.getByText(/property paths/i)).toBeVisible();
+    await expect(block.getByText(/v0\.4\.4/)).toBeVisible();
+    await expect(block.getByText(/v0\.4\.5/)).toBeVisible();
+  });
+
+  test('Training moved to the Site sidebar group, not Getting started', async ({ page }) => {
+    await page.goto('/');
+    // "Getting started" group should now only have Introduction + four pillars.
+    const gs = page.locator('.VPSidebarItem', { hasText: 'Getting started' }).first();
+    await expect(gs).toBeVisible();
+    // The Training sidebar link still exists (under Site).
+    await expect(page.locator('.VPSidebarItem a.link[href$="/v0.5/training"]')).toHaveCount(1);
   });
 });

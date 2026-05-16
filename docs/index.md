@@ -12,12 +12,10 @@ description: pgRDF — PostgreSQL extension for RDF, SPARQL, SHACL and OWL 2 RL 
 **pgRDF** · Semantic web inside PostgreSQL ·
 Status **Alpha** · License **Apache-2.0** ·
 Postgres **14 · 15 · 16 · 17** ·
-Latest release [**v0.4.3**](https://github.com/styk-tv/pgRDF/releases) — full [SPARQL UPDATE](/v0.5/query/update) shipped ·
-Phase D ([CONSTRUCT](/v0.5/query/construct)) landing on `main` ·
+Latest release [**v0.4.5**](https://github.com/styk-tv/pgRDF/releases) — [CONSTRUCT](/v0.5/query/construct) (v0.4.4) + full [property paths](/v0.5/query/property-paths) (v0.4.5) shipped ·
 [crates.io](https://crates.io/crates/pgrdf) ·
 [GitHub](https://github.com/styk-tv/pgRDF) ·
-[Install →](/v0.5/operations/install) ·
-[Training](/v0.5/training)
+[Install →](/v0.5/operations/install)
 :::
 
 </div>

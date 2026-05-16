@@ -124,7 +124,6 @@ export default withMermaid(defineConfig({
           items: [
             { text: 'Introduction',     link: '/' },
             { text: 'The four pillars', link: '/v0.5/pillars' },
-            { text: 'Training',         link: '/v0.5/training' },
           ],
         },
         {
@@ -171,7 +170,8 @@ export default withMermaid(defineConfig({
             { text: 'ASK',                               link: '/v0.5/query/ask' },
             { text: 'GRAPH <iri> { … }',                 link: '/v0.5/query/graph-clause' },
             { text: 'SPARQL UPDATE',                     link: '/v0.5/query/update' },
-            { text: 'CONSTRUCT (in flight)',             link: '/v0.5/query/construct' },
+            { text: 'CONSTRUCT',                         link: '/v0.5/query/construct' },
+            { text: 'Property paths',                    link: '/v0.5/query/property-paths' },
             { text: 'sparql_parse — inspect without executing', link: '/v0.5/query/sparql-parse' },
             { text: 'Error-message contract',            link: '/v0.5/query/error-contract' },
             { text: "Forward edge — what's next",        link: '/v0.5/query/roadmap' },
@@ -218,6 +218,7 @@ export default withMermaid(defineConfig({
           text: 'Site',
           collapsed: true,
           items: [
+            { text: 'Training',                          link: '/v0.5/training' },
             { text: 'Iconography',                       link: '/v0.5/iconography' },
           ],
         },
