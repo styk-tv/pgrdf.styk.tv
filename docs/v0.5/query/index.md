@@ -25,7 +25,8 @@ the read and write surface share a single UDF entry point.
 - <span class="material-symbols-outlined">query_stats</span> [**Aggregates**](/v0.5/query/aggregates) — `COUNT`, `SUM`, `AVG`, `MIN`/`MAX`, `GROUP_CONCAT`, `SAMPLE`.
 - <span class="material-symbols-outlined">query_stats</span> [**HAVING**](/v0.5/query/having) — post-aggregate FILTER.
 - <span class="material-symbols-outlined">search</span> [**BIND**](/v0.5/query/bind) — project computed values.
-- <span class="material-symbols-outlined">search</span> [**Solution modifiers**](/v0.5/query/modifiers) — `DISTINCT`, `ORDER BY`, `LIMIT`, `OFFSET`.
+- <span class="material-symbols-outlined">search</span> [**Solution modifiers**](/v0.5/query/modifiers) — `DISTINCT`, type-aware `ORDER BY`, `LIMIT`, `OFFSET`.
+- <span class="material-symbols-outlined">search</span> [**VALUES**](/v0.5/query/bind) — inline bindings as a solution source.
 - <span class="material-symbols-outlined">search</span> [**ASK**](/v0.5/query/ask) — boolean queries.
 - <span class="material-symbols-outlined">account_tree</span> [**GRAPH `<iri> { … }`**](/v0.5/query/graph-clause) — named-graph scoping (literal + variable forms).
 - <span class="material-symbols-outlined">hub</span> [**Property paths**](/v0.5/query/property-paths) — `^` `+` `*` `?` `\|` with cycle-safe recursion + materialised-closure fast path (v0.4.5).
@@ -38,6 +39,7 @@ the read and write surface share a single UDF entry point.
 
 - <span class="material-symbols-outlined">code</span> [**SPARQL UPDATE**](/v0.5/query/update) — `INSERT DATA`, `DELETE DATA`, pattern-driven `INSERT/DELETE WHERE`, atomic `DELETE+INSERT/WHERE`, graph-scoped `WITH` and inline `GRAPH`, plus lifecycle `DROP / CLEAR / CREATE GRAPH` (v0.4.3).
 - <span class="material-symbols-outlined">code</span> [**CONSTRUCT**](/v0.5/query/construct) — `pgrdf.construct(q) → SETOF JSONB`; templates (constant / variable / blank-node / multi-triple), GRAPH-scoped WHERE, WHERE-shorthand, round-trip ingest (v0.4.4).
+- <span class="material-symbols-outlined">code</span> **DESCRIBE** — `pgrdf.describe(q) → SETOF JSONB`; the W3C SPARQL 1.1 §16.4 Concise Bounded Description of one or more resources (v0.5.0).
 
 </div>
 

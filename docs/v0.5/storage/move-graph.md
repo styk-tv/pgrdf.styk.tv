@@ -13,7 +13,11 @@ description: pgrdf.move_graph(src, dst) composes copy_graph + drop_graph in the 
 
 ```
 pgrdf.move_graph(src BIGINT, dst BIGINT) → BIGINT
+pgrdf.move_graph(src TEXT,   dst TEXT)   → BIGINT
 ```
+
+The IRI overload (shipped in v0.5.0) resolves both `src` and
+`dst` through `_pgrdf_graphs` and delegates to the id form.
 
 Internally:
 
@@ -27,11 +31,12 @@ rollback unwinds both. Returns the count of triples moved
 ::: tip Implementation note
 The W3C SPARQL 1.1 Update `MOVE` operation is semantically a
 metadata-only DETACH + rebind + ATTACH against the LIST
-partition. pgRDF's v0.4.2 implementation is the compose
-strategy instead: every row's `graph_id` column would need
-updating to satisfy a post-rebind LIST constraint check (itself
-a row scan), so a "true metadata-only swap" isn't a win on this
-schema. The constant-time path is a v0.5 perf optimisation.
+partition. pgRDF ships the compose strategy: every row's
+`graph_id` column would need updating to satisfy a post-rebind
+LIST constraint check (itself a row scan), so a "true
+metadata-only swap" isn't a win on this schema. A constant-time
+partition-rebind path is a v0.6-FUTURE perf optimisation — the
+v0.5.0 compose strategy is correct and transactional today.
 :::
 
 ## Why you'd use it

@@ -186,7 +186,7 @@ export default withMermaid(defineConfig({
             { text: 'Worked example — subclass chain',   link: '/v0.5/inference/example' },
             { text: 'OWL 2 RL rule set',                 link: '/v0.5/inference/owl-rl-rules' },
             { text: 'Idempotence + operator safety',     link: '/v0.5/inference/idempotence' },
-            { text: 'Forward edge — profile selector',   link: '/v0.5/inference/profile-selector' },
+            { text: 'Reasoning profile selector',        link: '/v0.5/inference/profile-selector' },
           ],
         },
         {
@@ -198,7 +198,7 @@ export default withMermaid(defineConfig({
             { text: 'Worked example',                    link: '/v0.5/validation/example' },
             { text: 'SHACL Core components',             link: '/v0.5/validation/shacl-components' },
             { text: 'Report as data',                    link: '/v0.5/validation/report-as-data' },
-            { text: 'Forward edge — SHACL-SPARQL',       link: '/v0.5/validation/shacl-sparql' },
+            { text: 'SHACL-SPARQL + manifest runner',    link: '/v0.5/validation/shacl-sparql' },
           ],
         },
         {

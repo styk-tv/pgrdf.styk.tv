@@ -1,7 +1,9 @@
 # Multi-version Postgres support
 
 > pgRDF builds against PostgreSQL **14, 15, 16, and 17**. The
-> full test bar runs across all four in CI.
+> full v0.5.0 test bar — **274 pgrx + 85 pg_regress + 51
+> W3C-SPARQL + 25 W3C SHACL Core + 3 LUBM** — runs across all
+> four in CI.
 
 ## Supported versions
 
@@ -11,7 +13,7 @@
 | 15 | ✅ supported | Active in CI matrix. |
 | 16 | ✅ supported | Active in CI matrix. |
 | 17 | ✅ supported | Default in `compose-up`. |
-| 18 | ⏳ deferred | pgrx 0.18.0 upstream still fails to build locally; see [ERRATA E-006](https://github.com/styk-tv/pgRDF/blob/main/specs/ERRATA.v0.2.md). Will land when pgrx ships a working 0.18.x. |
+| 18 | ⏳ v0.6-FUTURE | Held to the pgrx 0.16 pin; pgrx 0.18.x does not yet build cleanly upstream. Documented in [ERRATA E-006](https://github.com/styk-tv/pgRDF/blob/main/specs/ERRATA.v0.2.md). Lands once pgrx ships a working 0.18.x — an upstream gate, not a pgRDF gap. |
 
 ## What's tested where
 

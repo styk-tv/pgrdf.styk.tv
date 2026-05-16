@@ -11,7 +11,7 @@ the failure modes a client is likely to care about:
 
 | Trigger | Error prefix |
 |---|---|
-| Unsupported SPARQL algebra (CONSTRUCT, property paths, …) | `pgrdf.sparql: unsupported algebra: <name>` |
+| A spec-permitted out-of-scope shape (negated property sets, explicit sequence path-expr, the gated nested-recursive path remainder) | `pgrdf.sparql: unsupported algebra: <name>` |
 | `load_turtle` with a missing file | `load_turtle: failed to open` |
 | Invalid Turtle | `pgrdf.parse_turtle: parse error: …` |
 | Invalid SPARQL | `pgrdf.sparql_parse: parse error: …` |
@@ -32,18 +32,21 @@ but the prefix is the contract.
 ## Example
 
 ```sql
--- Programmatic detection of an unsupported shape:
+-- Programmatic detection of a spec-permitted out-of-scope shape.
+-- CONSTRUCT, DESCRIBE, and property paths are all supported in
+-- v0.5.0 — the example below uses a negated property set, which
+-- is a deliberate, documented out-of-scope gap.
 DO $$
 DECLARE
     result jsonb;
 BEGIN
     BEGIN
-        SELECT pgrdf.sparql_parse('CONSTRUCT { ?s ?p ?o } WHERE { ?s ?p ?o }')
+        SELECT pgrdf.sparql('SELECT ?s WHERE { ?s !(<http://x/p>) ?o }')
           INTO result;
     EXCEPTION WHEN OTHERS THEN
         IF SQLERRM LIKE 'pgrdf.sparql: unsupported algebra:%' THEN
-            -- route to the v0.5 endpoint, or log, or skip
-            RAISE NOTICE 'CONSTRUCT not yet supported';
+            -- log, skip, or rewrite the query
+            RAISE NOTICE 'negated property set is out of scope';
         ELSE
             RAISE;
         END IF;

@@ -13,14 +13,18 @@ description: Four partition-level primitives for managing named graphs in pgRDF 
 
 The lifecycle UDFs treat each named graph as the partition-level
 object it really is. They all return `BIGINT` and share the same
-stable error-prefix contract.
+stable error-prefix contract. Each one ships **both a BIGINT id
+overload and an IRI `TEXT` overload** in v0.5.0 — the IRI form
+resolves through [`_pgrdf_graphs`](/v0.5/storage/named-graphs)
+and then delegates to the id form, so the semantics are
+identical:
 
-|   | UDF | Signature | What it does |
+|   | UDF | Signatures | What it does |
 |---|---|---|---|
-| <span class="material-symbols-outlined icon-orange">delete_forever</span> | **[`drop_graph`](/v0.5/storage/drop-graph)** | `pgrdf.drop_graph(id BIGINT, cascade BOOLEAN DEFAULT TRUE) → BIGINT` | DETACH + DROP the LIST partition; remove the `_pgrdf_graphs` row. Returns pre-drop triple count. |
-| <span class="material-symbols-outlined">layers_clear</span> | **[`clear_graph`](/v0.5/storage/clear-graph)** | `pgrdf.clear_graph(id BIGINT) → BIGINT` | `TRUNCATE ONLY` the partition. Partition + IRI binding survive. Returns rows-removed count. |
-| <span class="material-symbols-outlined">content_copy</span> | **[`copy_graph`](/v0.5/storage/copy-graph)** | `pgrdf.copy_graph(src BIGINT, dst BIGINT) → BIGINT` | `INSERT INTO … SELECT` every row from `src` to `dst`. Auto-creates `dst` if missing. Returns count copied. |
-| <span class="material-symbols-outlined">swap_horiz</span> | **[`move_graph`](/v0.5/storage/move-graph)** | `pgrdf.move_graph(src BIGINT, dst BIGINT) → BIGINT` | Composes `copy_graph(src, dst)` + `drop_graph(src, cascade => TRUE)` in the caller's transaction. Returns count moved. |
+| <span class="material-symbols-outlined icon-orange">delete_forever</span> | **[`drop_graph`](/v0.5/storage/drop-graph)** | `pgrdf.drop_graph(id BIGINT, cascade BOOLEAN DEFAULT TRUE) → BIGINT`<br>`pgrdf.drop_graph(iri TEXT, cascade BOOLEAN DEFAULT TRUE) → BIGINT` | DETACH + DROP the LIST partition; remove the `_pgrdf_graphs` row. Returns pre-drop triple count. |
+| <span class="material-symbols-outlined">layers_clear</span> | **[`clear_graph`](/v0.5/storage/clear-graph)** | `pgrdf.clear_graph(id BIGINT) → BIGINT`<br>`pgrdf.clear_graph(iri TEXT) → BIGINT` | `TRUNCATE ONLY` the partition. Partition + IRI binding survive. Returns rows-removed count. |
+| <span class="material-symbols-outlined">content_copy</span> | **[`copy_graph`](/v0.5/storage/copy-graph)** | `pgrdf.copy_graph(src BIGINT, dst BIGINT) → BIGINT`<br>`pgrdf.copy_graph(src TEXT, dst TEXT) → BIGINT` | `INSERT INTO … SELECT` every row from `src` to `dst`. Auto-creates `dst` if missing. Returns count copied. |
+| <span class="material-symbols-outlined">swap_horiz</span> | **[`move_graph`](/v0.5/storage/move-graph)** | `pgrdf.move_graph(src BIGINT, dst BIGINT) → BIGINT`<br>`pgrdf.move_graph(src TEXT, dst TEXT) → BIGINT` | Composes `copy_graph(src, dst)` + `drop_graph(src, cascade => TRUE)` in the caller's transaction. Returns count moved. |
 
 All four are **idempotent on absent inputs** (return 0, no error),
 all four reject **negative ids** with a stable prefix, and all

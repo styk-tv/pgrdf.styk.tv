@@ -28,7 +28,7 @@ SELECT pgrdf.stats();
 
 ```json
 {
-  "version":              "0.4.0",
+  "version":              "0.5.0",
   "shmem_dict_cache": {
     "size_entries":   12480,
     "capacity":       65536,

@@ -1,9 +1,12 @@
 # <span class="material-symbols-outlined icon-blue">psychology</span>Pillar 3 — Materialization (OWL 2 RL)
 
-`pgrdf.materialize(graph_id BIGINT) → JSONB` runs OWL 2 RL
-forward-chaining inference (via the [`reasonable`](https://github.com/gtfierro/reasonable)
+`pgrdf.materialize(graph_id BIGINT, profile TEXT DEFAULT 'owl-rl') → JSONB`
+runs forward-chaining inference (via the [`reasonable`](https://github.com/gtfierro/reasonable)
 reasoner) over the named graph, and writes every entailed triple
-back to the same graph with `is_inferred = TRUE`.
+back to the same graph with `is_inferred = TRUE`. The `profile`
+argument selects the rule set — **`'owl-rl'`** (default, full
+OWL 2 RL) or **`'rdfs'`** (RDFS closures only). Both shipped in
+v0.5.0.
 
 The call is **idempotent**: re-running drops previously inferred
 rows first and replaces them. The base graph is never touched.
@@ -16,7 +19,7 @@ rows first and replaces them. The base graph is never touched.
 - <span class="material-symbols-outlined">description</span> [**Worked example**](/v0.5/inference/example) — subclass-chain walkthrough you can run in psql.
 - <span class="material-symbols-outlined">psychology</span> [**OWL 2 RL rule set**](/v0.5/inference/owl-rl-rules) — what the reasoner actually entails.
 - <span class="material-symbols-outlined">settings</span> [**Idempotence + operator safety**](/v0.5/inference/idempotence) — guarantees you can rely on for scheduled jobs.
-- <span class="material-symbols-outlined icon-orange">rocket_launch</span> [**Forward edge — profile selector**](/v0.5/inference/profile-selector) — `pgrdf.materialize(g, profile)`.
+- <span class="material-symbols-outlined">psychology</span> [**Reasoning profile selector**](/v0.5/inference/profile-selector) — `pgrdf.materialize(g, profile)` — `'owl-rl'` + `'rdfs'`, shipped v0.5.0.
 
 </div>
 
@@ -40,7 +43,7 @@ a deep semantic. The recommended path is short and linear:
 - <span class="material-symbols-outlined">description</span> **Walk through the [Worked example](/v0.5/inference/example)** — copy-paste-runnable subclass-chain demo, ~20 lines of SQL.
 - <span class="material-symbols-outlined">psychology</span> **Then the [OWL 2 RL rule set](/v0.5/inference/owl-rl-rules)** — what the reasoner actually entails in practice (subclass closure, transitive properties, equivalence, inverse, sameAs).
 - <span class="material-symbols-outlined">settings</span> **Finish with [Idempotence + operator safety](/v0.5/inference/idempotence)** — the guarantees you need before scheduling materialisation as a cron job.
-- <span class="material-symbols-outlined icon-orange">rocket_launch</span> **Bonus — [Profile selector](/v0.5/inference/profile-selector)** — the v0.5 forward edge, in case your workload would benefit from `'rdfs'` instead of `'owl-rl'`.
+- <span class="material-symbols-outlined">psychology</span> **Then [Reasoning profile selector](/v0.5/inference/profile-selector)** — pick `'rdfs'` instead of the default `'owl-rl'` when you want to bound per-graph materialization cost. Shipped v0.5.0.
 
 </div>
 

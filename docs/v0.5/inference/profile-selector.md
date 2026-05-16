@@ -1,14 +1,12 @@
-# 🚀 Forward edge — profile selector
+# Reasoning profile selector
 
-> A reasoning profile selector on `pgrdf.materialize` so consumers
-> can choose between RDFS, OWL 2 RL, and an extended OWL 2 RL+
-> rule set per call.
+> A reasoning-profile selector on `pgrdf.materialize` lets
+> consumers choose between **RDFS** and **OWL 2 RL** per call.
+> Shipped in **v0.5.0**.
 
-This page is forward-looking. The surface described here is **not
-yet callable** on `main`; the materialize UDF currently exposes
-only the unparameterised `pgrdf.materialize(graph_id)` signature.
+The materialize UDF takes an optional `profile` argument:
 
-## Target surface
+## The surface
 
 ```sql
 pgrdf.materialize(
@@ -19,23 +17,35 @@ pgrdf.materialize(
 
 | Profile value | Rule set |
 |---|---|
-| `'rdfs'` | RDFS Plus — `rdfs:subClassOf`, `rdfs:subPropertyOf`, `rdfs:domain`, `rdfs:range` closures only. Faster; cheaper. |
-| `'owl-rl'` (default) | OWL 2 RL — the current contract, carried forward unchanged. |
-| `'owl-rl-ext'` | OWL 2 RL plus selected DL extensions (TBD; tracked in v0.5-FUTURE LLD). |
+| `'owl-rl'` (default) | OWL 2 RL — the full forward-chaining rule set documented in [OWL 2 RL rule set](/v0.5/inference/owl-rl-rules). Unchanged default; existing callers keep this behaviour without passing the argument. |
+| `'rdfs'` | RDFS closures — `rdfs:subClassOf`, `rdfs:subPropertyOf`, `rdfs:domain`, `rdfs:range`. Faster and cheaper than full OWL 2 RL. |
+
+```sql
+-- Default: OWL 2 RL (back-compatible — no argument needed).
+SELECT pgrdf.materialize(100);
+
+-- Bound the per-graph cost to the RDFS closures only.
+SELECT pgrdf.materialize(100, 'rdfs');
+```
+
+Both profiles are idempotent in the same way the default call is
+— re-running drops the previously inferred rows and replaces
+them. See [Idempotence + operator safety](/v0.5/inference/idempotence).
 
 ## Why it matters
 
 Different workloads benefit from different rule sets:
 
 - **High-throughput ingest pipelines** running thousands of
-  graphs an hour may prefer `'rdfs'` to bound the per-graph
+  graphs an hour can choose `'rdfs'` to bound the per-graph
   materialization cost.
-- **Reasoning-heavy analytical workloads** may want
-  `'owl-rl-ext'` for the additional class-construction
-  entailments.
 - **Default consumers** keep `'owl-rl'`, the W3C-aligned
-  middle ground.
+  middle ground, with no code change.
 
-## Tracked at
+## <span class="material-symbols-outlined icon-orange">rocket_launch</span>v0.6-FUTURE — `'owl-rl-ext'`
 
+An extended `'owl-rl-ext'` profile (OWL 2 RL plus selected DL
+extensions) is on the post-v0.5 backlog, tracked in
 [`SPEC.pgRDF.LLD.v0.5-FUTURE.md §3`](https://github.com/styk-tv/pgRDF/blob/main/specs/SPEC.pgRDF.LLD.v0.5-FUTURE.md).
+It is not callable today; `'owl-rl'` and `'rdfs'` are the two
+shipped v0.5.0 profiles.

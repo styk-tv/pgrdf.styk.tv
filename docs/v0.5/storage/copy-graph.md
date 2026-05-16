@@ -13,7 +13,11 @@ description: pgrdf.copy_graph(src, dst) INSERTs every row from the source graph 
 
 ```
 pgrdf.copy_graph(src BIGINT, dst BIGINT) → BIGINT
+pgrdf.copy_graph(src TEXT,   dst TEXT)   → BIGINT
 ```
+
+The IRI overload (shipped in v0.5.0) resolves both `src` and
+`dst` through `_pgrdf_graphs` and delegates to the id form.
 
 Single-statement `INSERT INTO pgrdf._pgrdf_quads_g<dst> SELECT * FROM pgrdf._pgrdf_quads_g<src>`.
 Returns the row count copied (== the source row count at INSERT

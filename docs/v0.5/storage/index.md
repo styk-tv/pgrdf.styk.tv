@@ -9,7 +9,7 @@ from any Postgres client.
 <div class="icon-bullets">
 
 - <span class="material-symbols-outlined">description</span> [**Load Turtle from disk**](/v0.5/storage/load-turtle) — one UDF reads any `.ttl` file off the server filesystem and ingests it.
-- <span class="material-symbols-outlined">description</span> [**Inline Turtle ingest**](/v0.5/storage/parse-turtle) — same parser, no filesystem dependency.
+- <span class="material-symbols-outlined">description</span> [**Inline Turtle / TriG / N-Quads ingest**](/v0.5/storage/parse-turtle) — same parser family, no filesystem dependency; `parse_trig` / `parse_nquads` for quad-bearing serialisations.
 - <span class="material-symbols-outlined">query_stats</span> [**Verbose ingest statistics**](/v0.5/storage/verbose-stats) — JSONB report of timing, cache hits, batch counts.
 - <span class="material-symbols-outlined">storage</span> [**Per-graph LIST partitions**](/v0.5/storage/graph-partitions) — cheap whole-graph drops, isolated namespaces.
 - <span class="material-symbols-outlined">account_tree</span> [**Named graphs (IRI ↔ id mapping)**](/v0.5/storage/named-graphs) — symmetric IRI lookup for graph-scoped SPARQL.

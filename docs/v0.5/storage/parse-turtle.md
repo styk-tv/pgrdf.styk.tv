@@ -1,7 +1,8 @@
-# Inline Turtle ingest
+# Inline Turtle / TriG / N-Quads ingest
 
-> Same parser as `load_turtle`, no filesystem dependency. Pass the
-> Turtle source as a SQL text literal.
+> Same parser family as `load_turtle`, no filesystem dependency.
+> Pass the RDF source as a SQL text literal — Turtle, TriG, or
+> N-Quads.
 
 ## What it does
 
@@ -11,6 +12,21 @@ Parses Turtle directly from a string argument. Returns the triple
 count loaded. Useful when you don't want to land a file on the
 server first — notebooks, orchestration code, prompt-driven
 synthetic graphs, and test fixtures all benefit.
+
+### Quad-bearing serialisations — TriG + N-Quads
+
+For serialisations that carry the named-graph dimension
+themselves, two sibling UDFs ship in v0.5.0:
+
+`pgrdf.parse_trig(content TEXT, graph_id BIGINT, base_iri TEXT DEFAULT NULL) → BIGINT`
+`pgrdf.parse_nquads(content TEXT, graph_id BIGINT) → BIGINT`
+
+Both share the same dictionary + bulk-insert pipeline as
+`parse_turtle`. `parse_trig` accepts the TriG `GRAPH <iri> { … }`
+block syntax; `parse_nquads` accepts the line-based N-Quads form
+where the optional fourth term names the graph. The
+`graph_id` argument is the default/fallback graph for triples
+that carry no explicit graph in the source.
 
 ## Why you'd use it
 

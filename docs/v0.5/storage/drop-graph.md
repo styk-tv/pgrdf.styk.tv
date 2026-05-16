@@ -12,8 +12,13 @@ description: pgrdf.drop_graph(id, cascade) detaches the LIST partition, drops it
 ## What it does
 
 ```
-pgrdf.drop_graph(id BIGINT, cascade BOOLEAN DEFAULT TRUE) → BIGINT
+pgrdf.drop_graph(id  BIGINT, cascade BOOLEAN DEFAULT TRUE) → BIGINT
+pgrdf.drop_graph(iri TEXT,   cascade BOOLEAN DEFAULT TRUE) → BIGINT
 ```
+
+The IRI overload (shipped in v0.5.0) resolves `iri` through
+`_pgrdf_graphs` and delegates to the id form — identical
+semantics, no need to look the id up first. Then:
 
 1. `ALTER TABLE pgrdf._pgrdf_quads DETACH PARTITION pgrdf._pgrdf_quads_g<id>`
 2. `DROP TABLE pgrdf._pgrdf_quads_g<id>`

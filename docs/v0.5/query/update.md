@@ -266,8 +266,8 @@ inside the UPDATE — the entire rename rolls back. No half-state.
   UPDATE forms LAND state via the query itself, so a default
   seed path would pre-stage the rows the query is supposed to
   produce.
-- Test bar at v0.4.3: **259 automated tests** (166 pgrx + 61
-  pg_regress + 29 W3C-SPARQL + 3 LUBM).
+- Test bar at v0.5.0 (final): **274 pgrx + 85 pg_regress + 51
+  W3C-SPARQL + 25 W3C SHACL Core + 3 LUBM**.
 
 ## See also
 
@@ -280,5 +280,6 @@ inside the UPDATE — the entire rename rolls back. No half-state.
 - [Graph lifecycle UDFs](/v0.5/storage/lifecycle) — the SQL
   UDFs the SPARQL `DROP / CLEAR / CREATE GRAPH` forms route
   through.
-- [Forward edge — what's next](/v0.5/query/roadmap) — CONSTRUCT
-  (Phase D), property paths.
+- [Forward edge — what's next](/v0.5/query/roadmap) — the
+  complete v0.5.0 surface, the v0.6-FUTURE backlog, and the
+  documented upstream gates.

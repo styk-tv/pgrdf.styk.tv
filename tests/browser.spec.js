@@ -260,10 +260,13 @@ test.describe('v0.5 sub-pages', () => {
     await expect(main.getByRole('heading', { level: 2, name: /Still ahead/ })).toBeVisible();
   });
 
-  test('At-a-glance callout reflects v0.4.5 with CONSTRUCT + paths shipped', async ({ page }) => {
+  // Updated for the final v0.5.0 release: the At-a-glance callout
+  // now states v0.5.0 (final) with the complete surface, not the
+  // interim v0.4.x phase markers.
+  test('At-a-glance callout reflects v0.5.0 final with the complete surface', async ({ page }) => {
     await page.goto('/');
     const block = page.locator('.custom-block.info', { hasText: 'At a glance' });
-    await expect(block.getByText(/v0\.4\.5/)).toBeVisible();
+    await expect(block.getByText(/v0\.5\.0/)).toBeVisible();
     await expect(block.getByText(/property paths/i)).toBeVisible();
   });
 
@@ -436,13 +439,18 @@ test.describe('v0.5 sub-pages', () => {
     }
   });
 
-  test('At-a-glance callout cites CONSTRUCT + property paths shipped', async ({ page }) => {
+  // Updated for the final v0.5.0 release: the callout cites the
+  // complete shipped surface (CONSTRUCT, DESCRIBE, property paths,
+  // SHACL Core 25/25) and the v0.5.0 (final) version string,
+  // replacing the interim v0.4.4 / v0.4.5 phase markers.
+  test('At-a-glance callout cites the complete v0.5.0 shipped surface', async ({ page }) => {
     await page.goto('/');
     const block = page.locator('.custom-block.info', { hasText: 'At a glance' });
     await expect(block.getByText(/CONSTRUCT/i)).toBeVisible();
     await expect(block.getByText(/property paths/i)).toBeVisible();
-    await expect(block.getByText(/v0\.4\.4/)).toBeVisible();
-    await expect(block.getByText(/v0\.4\.5/)).toBeVisible();
+    await expect(block.getByText(/DESCRIBE/)).toBeVisible();
+    await expect(block.getByText(/v0\.5\.0/)).toBeVisible();
+    await expect(block.getByText(/final/i)).toBeVisible();
   });
 
   test('Training moved to the Site sidebar group, not Getting started', async ({ page }) => {

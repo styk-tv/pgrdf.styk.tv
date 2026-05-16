@@ -12,8 +12,12 @@ description: pgrdf.clear_graph(id) TRUNCATEs ONLY the per-graph partition, prese
 ## What it does
 
 ```
-pgrdf.clear_graph(id BIGINT) → BIGINT
+pgrdf.clear_graph(id  BIGINT) → BIGINT
+pgrdf.clear_graph(iri TEXT)   → BIGINT
 ```
+
+The IRI overload (shipped in v0.5.0) resolves `iri` through
+`_pgrdf_graphs` and delegates to the id form.
 
 Issues `TRUNCATE ONLY pgrdf._pgrdf_quads_g<id>` against the
 per-graph LIST partition. Returns the row count captured

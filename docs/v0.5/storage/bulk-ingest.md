@@ -13,10 +13,13 @@ statement** bound once per call. Combined with the
 removes the per-triple SQL roundtrip cost that dominates naïve
 row-by-row ingest.
 
-This is **Phase A** of the bulk-insert pipeline. Phase B
-(`heap_multi_insert` direct heap path) is deferred to a later
-cycle — Phase A is the cut that shipped in the v0.3 cycle and is
-exercised by the current test bar.
+This is **Phase A** of the bulk-insert pipeline — the prepared
+`INSERT` + batched-flush path. It is the shipped, v0.5.0 ingest
+contract, exercised by the full test bar. Phase B (a
+`heap_multi_insert` direct-heap fast path) is a **v0.6-FUTURE**
+performance item: it raises throughput further but does not
+change ingest correctness or the surface, so it is sequenced
+after the v0.5.0 capability cut.
 
 ## Why you'd use it
 

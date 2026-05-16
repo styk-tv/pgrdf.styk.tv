@@ -23,9 +23,9 @@ flowchart LR
 | Pillar | What it gives you | Entry-point UDFs |
 |---|---|---|
 | **[1 · Semantic storage](/v0.5/storage/)** | RDF triples land in dictionary-encoded, partitioned Postgres tables you can `SELECT` from with vanilla SQL. Turtle in, quads out. | `pgrdf.load_turtle`, `pgrdf.parse_turtle`, `pgrdf.add_graph`, `pgrdf.count_quads` |
-| **[2 · Semantic query](/v0.5/query/)** | SPARQL 1.1 SELECT/ASK over those triples — multi-pattern joins, FILTER, OPTIONAL, UNION, MINUS, aggregates, BIND, GRAPH. Returns JSONB rows you can join with regular SQL. | `pgrdf.sparql`, `pgrdf.sparql_parse` |
-| **[3 · Semantic materialization](/v0.5/inference/)** | OWL 2 RL forward-chaining inference. Implicit consequences (subclass, subproperty, equivalence, inverse, transitive) are written back into the same tables as queryable rows. | `pgrdf.materialize` |
-| **[4 · Semantic validation](/v0.5/validation/)** | SHACL Core constraint checking. A graph + a shapes graph produce a W3C-shape `sh:ValidationReport` JSONB you can persist, alert on, or gate ingestion with. | `pgrdf.validate` |
+| **[2 · Semantic query](/v0.5/query/)** | Full SPARQL 1.1 — SELECT / ASK / CONSTRUCT / DESCRIBE / UPDATE over those triples: multi-pattern joins, FILTER, OPTIONAL, UNION, MINUS, aggregates (incl. over UNION), BIND, VALUES, type-aware ORDER BY, GRAPH, property paths. Returns JSONB rows you can join with regular SQL. | `pgrdf.sparql`, `pgrdf.construct`, `pgrdf.describe`, `pgrdf.sparql_parse` |
+| **[3 · Semantic materialization](/v0.5/inference/)** | OWL 2 RL **and** RDFS forward-chaining inference (per-call `profile` selector). Implicit consequences (subclass, subproperty, equivalence, inverse, transitive) are written back into the same tables as queryable rows. | `pgrdf.materialize` |
+| **[4 · Semantic validation](/v0.5/validation/)** | Native SHACL Core constraint checking — genuine W3C SHACL Core 25/25. A graph + a shapes graph produce a W3C-shape `sh:ValidationReport` JSONB you can persist, alert on, or gate ingestion with. | `pgrdf.validate` |
 
 ## Anatomy of a single workflow
 

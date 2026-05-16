@@ -39,6 +39,17 @@ If your ontology uses constructs outside OWL 2 RL, those parts of
 the model don't drive entailments; the rest of the ontology still
 materializes as expected.
 
+## Choosing a lighter rule set — the `'rdfs'` profile
+
+`pgrdf.materialize(graph_id, 'rdfs')` (shipped v0.5.0) runs only
+the RDFS closures — `rdfs:subClassOf`, `rdfs:subPropertyOf`,
+`rdfs:domain`, `rdfs:range` — and skips the OWL 2 RL
+equivalence / inverse / transitive / sameAs / class-construction
+rules above. It is faster and cheaper per graph; pick it when
+your workload only needs the schema closures. The default
+(`'owl-rl'`, no argument) is unchanged. See
+[Reasoning profile selector](/v0.5/inference/profile-selector).
+
 ## A worked rule
 
 `owl:TransitiveProperty` is one of the most useful in practice.

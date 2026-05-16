@@ -60,18 +60,22 @@
 |---|---|
 | `sh:severity sh:Info` / `sh:Warning` / `sh:Violation` (default) | Choose the result severity reported in `resultSeverity`. |
 
-## What's not yet supported
+## Beyond SHACL Core
 
 | Component | Status |
 |---|---|
-| SHACL-SPARQL constraint components (`sh:sparql`, `sh:select`, `sh:ask`) | 🚀 v0.5 — see [Forward edge](/v0.5/validation/shacl-sparql). |
-| Property paths with full expressivity (alternation, sequence, inverse beyond simple) | v0.5 alongside the [SPARQL property-path](/v0.5/query/roadmap) work. |
+| SHACL-SPARQL constraint components (`sh:sparql`, `sh:select`, `sh:ask`) | `pgrdf.validate(…, mode => 'sparql')` surface is **shipped and honest** in v0.5.0. The constraint *execution* engine is a documented upstream gate (**E-012**, blocked on [`rudof`](https://github.com/rudof-project/rudof) #21/#94) — not a pgRDF defect. See [SHACL-SPARQL](/v0.5/validation/shacl-sparql). |
 
-## Tests
+The full SHACL Core component set above is shipped — including
+property paths in `sh:path` (the same [SPARQL property-path](/v0.5/query/property-paths)
+engine, alternation / sequence / inverse).
 
-The real engine is exercised end-to-end by
-[`tests/regression/sql/71-shacl-real.sql`](https://github.com/styk-tv/pgRDF/blob/main/tests/regression/sql/71-shacl-real.sql).
-The W3C SHACL manifest runner (ramping up to full conformance
-coverage) is tracked under
+## Conformance + tests
+
+`mode => 'native'` is **genuine W3C SHACL Core**, conformant
+against the W3C SHACL Core test suite at **25/25**. The engine is
+exercised end-to-end by
+[`tests/regression/sql/71-shacl-real.sql`](https://github.com/styk-tv/pgRDF/blob/main/tests/regression/sql/71-shacl-real.sql),
+and the W3C SHACL manifest runner is wired into CI under
 [`tests/w3c-shacl/`](https://github.com/styk-tv/pgRDF/blob/main/tests/w3c-shacl/README.md)
-and lands in v0.5.
+(part of the v0.5.0 test bar).

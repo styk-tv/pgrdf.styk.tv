@@ -1,11 +1,16 @@
 # <span class="material-symbols-outlined icon-blue">verified</span>Pillar 4 — Validation (SHACL Core)
 
-`pgrdf.validate(data_graph_id BIGINT, shapes_graph_id BIGINT) → JSONB`
+`pgrdf.validate(data_graph_id BIGINT, shapes_graph_id BIGINT, mode TEXT DEFAULT 'native') → JSONB`
 validates the data graph against the shapes graph and returns a
 **W3C `sh:ValidationReport`-shape** JSONB document.
 
-Backed by the [`shacl` 0.3.x](https://crates.io/crates/shacl) crate
-from the [rudof project](https://github.com/rudof-project/rudof).
+The default `mode => 'native'` is **genuine W3C SHACL Core** —
+the full SHACL Core constraint set, conformant against the W3C
+SHACL Core test suite at **25/25**. Backed by the
+[`shacl`](https://crates.io/crates/shacl) crate from the
+[rudof project](https://github.com/rudof-project/rudof).
+`mode => 'sparql'` exposes the SHACL-SPARQL surface — see
+[SHACL-SPARQL](/v0.5/validation/shacl-sparql).
 
 ## Topics in this pillar
 
@@ -15,7 +20,7 @@ from the [rudof project](https://github.com/rudof-project/rudof).
 - <span class="material-symbols-outlined">description</span> [**Worked example**](/v0.5/validation/example) — minCount, datatype, nodeKind constraints.
 - <span class="material-symbols-outlined">verified</span> [**SHACL Core components**](/v0.5/validation/shacl-components) — what's supported.
 - <span class="material-symbols-outlined">fact_check</span> [**Report as data**](/v0.5/validation/report-as-data) — querying violations with regular SQL.
-- <span class="material-symbols-outlined icon-orange">rocket_launch</span> [**Forward edge — SHACL-SPARQL**](/v0.5/validation/shacl-sparql) — custom-constraint surface.
+- <span class="material-symbols-outlined">verified</span> [**SHACL-SPARQL**](/v0.5/validation/shacl-sparql) — `mode => 'sparql'` custom-constraint surface (shipped + honest; the constraint *execution* engine is an upstream gate, E-012).
 
 </div>
 
@@ -40,7 +45,7 @@ pages in order:
 - <span class="material-symbols-outlined">description</span> **Run the [Worked example](/v0.5/validation/example)** — minCount + datatype + nodeKind constraint composition, end-to-end in psql.
 - <span class="material-symbols-outlined">verified</span> **Read the [SHACL Core components](/v0.5/validation/shacl-components) reference** — what's supported and what's not. Bookmark this page.
 - <span class="material-symbols-outlined">fact_check</span> **Then [Report as data](/v0.5/validation/report-as-data)** — SHACL reports are JSONB. Querying violations with regular SQL is the gate-ingestion idiom.
-- <span class="material-symbols-outlined icon-orange">rocket_launch</span> **Bonus — [SHACL-SPARQL](/v0.5/validation/shacl-sparql)** — the v0.5 forward edge: custom constraint components defined as embedded SPARQL.
+- <span class="material-symbols-outlined">verified</span> **Then [SHACL-SPARQL](/v0.5/validation/shacl-sparql)** — the `mode => 'sparql'` surface for custom constraint components defined as embedded SPARQL; shipped and honest about the upstream-gated execution engine (E-012).
 
 </div>
 

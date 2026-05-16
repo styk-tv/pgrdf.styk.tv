@@ -1,13 +1,17 @@
 # Drop-in install
 
-> Three files bind-mount onto a stock `postgres:17.4` image. No
-> image rebuild. No second process. K8s variants land the same
-> files via an init container.
+> Three files **per-file `:ro` bind-mount** onto a stock
+> `postgres:17.4-bookworm` image. No image rebuild. No second
+> process. Pull them from a GitHub release tarball **or** the
+> anonymous OCI bundle. K8s variants land the same files via an
+> init container.
 
 ## Three artefacts
 
 Every pgRDF release ships three files per supported PG major /
-architecture:
+architecture. **Bind-mount each file individually as read-only**
+— never a directory mount (a directory mount would shadow the
+image's own `extension/` contents):
 
 | File | Goes into the PG container at |
 |---|---|
@@ -16,6 +20,37 @@ architecture:
 | `pgrdf--<version>.sql` | `${pg_share_dir}/extension/pgrdf--<version>.sql` |
 
 That's it. No image rebuild. No CRD. No separate service.
+
+## Two ways to get the artefacts
+
+### GitHub release tarballs
+
+The v0.5.0 release is the **Latest** release and ships eight
+tarballs — `pg14`–`pg17` × `amd64`/`arm64` — plus a
+`SHA256SUMS`. Download from the
+[release page](https://github.com/styk-tv/pgRDF/releases),
+verify against `SHA256SUMS`, unpack, and per-file `:ro`
+bind-mount the three artefacts.
+
+### Anonymous OCI bundle
+
+The same artefacts are published as an **anonymously-pullable
+OCI artifact** at `ghcr.io/styk-tv/pgrdf-bundle` — zero
+credentials, no login:
+
+```bash
+# Multi-arch index (resolves to your platform):
+oras pull ghcr.io/styk-tv/pgrdf-bundle:v0.5.0
+
+# Or pin an exact PG major + arch:
+oras pull ghcr.io/styk-tv/pgrdf-bundle:0.5.0-pg17-amd64
+```
+
+Available tags: `:0.5.0`, `:v0.5.0`, and
+`:0.5.0-pg{14,15,16,17}-{amd64,arm64}`. For reproducible
+deployments, **digest-pin** the artifact
+(`ghcr.io/styk-tv/pgrdf-bundle@sha256:…`) rather than tracking a
+moving tag. The bundle is public — no PAT, no `docker login`.
 
 ## Local — docker compose
 
@@ -34,7 +69,7 @@ Inside psql:
 ```sql
 CREATE EXTENSION pgrdf;
 SELECT pgrdf.version();
---  → 0.4.0
+--  → 0.5.0
 ```
 
 ## Kubernetes
@@ -48,22 +83,26 @@ emptyDir mount. See
 ## Release tarball layout
 
 ```
-pgrdf-0.4.0-pg17-glibc-amd64.tar.gz
+pgrdf-0.5.0-pg17-glibc-amd64.tar.gz
 ├── lib/pgrdf.so
 ├── share/extension/pgrdf.control
-├── share/extension/pgrdf--0.4.0.sql
+├── share/extension/pgrdf--0.5.0.sql
 ├── LICENSE
 ├── NOTICE
 └── SHA256SUMS
 ```
 
-Downloads via the [release page](https://github.com/styk-tv/pgRDF/releases).
+Downloads via the [release page](https://github.com/styk-tv/pgRDF/releases)
+(v0.5.0 is the **Latest** release), or the equivalent OCI
+artifact `ghcr.io/styk-tv/pgrdf-bundle:v0.5.0`.
 
 ## crates.io
 
-pgRDF is also published on crates.io as
-**[`pgrdf`](https://crates.io/crates/pgrdf)** for namespace
-discoverability. Building from `cargo install` requires a
-matching `pg_config` and the `--features pg17` flag — the
-load-bearing distribution channel for production is the release
-tarball above.
+The crates.io name **[`pgrdf`](https://crates.io/crates/pgrdf)**
+is held as a namespace placeholder. A crates.io publish is
+**intentionally deferred to v0.6** and is **not** the
+consumption path: pgRDF is a `pgrx`/cdylib Postgres extension,
+so the load-bearing distribution channels are the per-PG release
+tarball and the anonymous OCI bundle above — both ship a
+prebuilt `.so` you bind-mount, with no Rust toolchain on the
+database host.
