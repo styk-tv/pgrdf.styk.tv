@@ -411,10 +411,14 @@ test.describe('v0.5 sub-pages', () => {
     const player = page.locator('.chapter-player');
     await expect(player).toBeVisible();
     await player.getByRole('button', { name: /Play/ }).click();
-    // The <audio> element should be advancing currentTime.
-    await page.waitForTimeout(1200);
-    const t = await player.locator('audio').evaluate(a => a.currentTime);
-    expect(t).toBeGreaterThan(0);
+    // Poll for currentTime > 0 rather than a fixed wait — a cold-CDN
+    // first fetch of the 1.5 MB OGG can take longer than any single
+    // sleep, but once it starts, currentTime advances deterministically.
+    const audio = player.locator('audio');
+    await expect.poll(
+      () => audio.evaluate(a => a.currentTime),
+      { timeout: 15_000, intervals: [250, 500, 1000] },
+    ).toBeGreaterThan(0);
   });
 
   test('All five pillar overview pages have a Training section', async ({ page }) => {
