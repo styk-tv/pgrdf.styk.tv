@@ -239,7 +239,32 @@ export default withMermaid(defineConfig({
           text: 'Process',
           collapsed: false,
           items: [
-            { text: 'Processes & flows',                 link: '/v0.6/process/' },
+            { text: 'Overview — the operating model', link: '/v0.6/process/' },
+            { text: 'Building a chain',               link: '/v0.6/process/building-a-chain' },
+            { text: 'Choosing a process',             link: '/v0.6/process/choosing' },
+            {
+              text: 'The verbs',
+              collapsed: false,
+              items: [
+                { text: 'Import',           link: '/v0.6/process/import' },
+                { text: 'Seal',             link: '/v0.6/process/seal' },
+                { text: 'Query',            link: '/v0.6/process/query' },
+                { text: 'Reason',           link: '/v0.6/process/reason' },
+                { text: 'Validate',         link: '/v0.6/process/validate' },
+                { text: 'Carve (roadmap)',  link: '/v0.6/process/carve' },
+                { text: 'Unload (roadmap)', link: '/v0.6/process/unload' },
+              ],
+            },
+            {
+              text: 'Patterns',
+              collapsed: false,
+              items: [
+                { text: 'Load → Query',            link: '/v0.6/process/pattern-load-query' },
+                { text: 'Load → Reason → Query',   link: '/v0.6/process/pattern-reason' },
+                { text: 'Load → Validate → Query', link: '/v0.6/process/pattern-validate' },
+                { text: 'Ingest → Carve → Reason', link: '/v0.6/process/pattern-carve' },
+              ],
+            },
           ],
         },
         {

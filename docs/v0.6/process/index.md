@@ -1,14 +1,15 @@
 ---
-title: Processes & flows
-description: The pgRDF operating model as composable verbs and arrow-chains — Import → Seal → Query, and the key scale-meets-hardware chain Import → Seal → Carve → Seal → Unload → Reason → Validate → Query. Ingest is parallel and scales; reasoning is single-threaded and sized to fit.
+title: Processes & flows — the operating model
+description: pgRDF's operating model as composable verbs you chain with arrows. Import and Seal are parallel and scale with the box; Reason and Validate are single-threaded and want a graph sized to your hardware. The verb reference, the four worked patterns, and how to build your own chain.
 ---
 
 # <span class="material-symbols-outlined icon-blue">account_tree</span>Processes & flows
 
 > pgRDF's operating model is a set of **composable verbs** you chain
 > with arrows. Some verbs are parallel and scale with the box; others
-> are single-threaded and want a graph sized to your hardware. The
-> chains below show how to combine them.
+> are single-threaded and want a graph sized to your hardware. This
+> section is the verb reference, the worked patterns, and the method
+> for building your own chain.
 
 ## Two kinds of process
 
@@ -16,98 +17,48 @@ Every verb falls into one of two classes, split by **how it scales**:
 
 | Class | Verbs | Scaling |
 |---|---|---|
-| **Parallel / scales with the box** | **Import**, **Seal** (concurrent index build) | Fans across a background-worker pool. Add cores → goes faster. Proven on the [full 8.2 B graph](/v0.6/scale/). |
-| **Single-threaded / sized-to-fit** | **Reason**, **Validate** | Runs on one backend. The graph must be sized to fit your hardware — you do not reason over the full source graph. |
+| **Parallel — scales with the box** | [Import](/v0.6/process/import), [Seal](/v0.6/process/seal) | Fans across a background-worker pool. Add cores → goes faster. Proven on the [full 8.2 B graph](/v0.6/scale/). |
+| **Single-threaded — sized to fit** | [Reason](/v0.6/process/reason), [Validate](/v0.6/process/validate) | Runs on one backend. The graph must fit your hardware — you do not reason over the full source graph. |
 
-This is the constraint that shapes every chain:
-**ingest is parallel, reasoning is not.** So the move at scale is to
-ingest the full graph in parallel, then carve a right-sized slice and
-reason over *that*.
+This is the constraint that shapes every chain: **ingest is parallel,
+reasoning is not.** So at scale you ingest the full graph in parallel,
+then [carve](/v0.6/process/carve) a right-sized slice and reason over
+*that*.
 
-## The basic chains
-
-The simplest pipelines need no carving — ingest, seal the indexes,
-query:
-
-```
-Import → Seal → Query
-```
-
-```mermaid
-flowchart LR
-    A[Import]:::par --> B[Seal]:::par --> C[Query]:::out
-    classDef par fill:#0f9d6e,stroke:#0d8a61,color:#fff;
-    classDef out fill:#336791,stroke:#244a64,color:#fff;
-```
-
-When the workload includes inference and validation on a graph that
-already fits your box:
-
-```
-Import → Seal → Reason → Validate → Query
-```
-
-```mermaid
-flowchart LR
-    A[Import]:::par --> B[Seal]:::par --> R[Reason]:::seq --> V[Validate]:::seq --> Q[Query]:::out
-    classDef par fill:#0f9d6e,stroke:#0d8a61,color:#fff;
-    classDef seq fill:#d97706,stroke:#b45c06,color:#fff;
-    classDef out fill:#336791,stroke:#244a64,color:#fff;
-```
-
-The green verbs scale with the box; the amber verbs are
-single-threaded.
-
-## The key chain — scale meets hardware
-
-When the source graph is larger than what a single backend can reason
-over, ingest it in parallel anyway, then **carve** the slice you
-actually need to reason on, seal that slice, unload the rest, and
-reason over the carved graph:
-
-```
-Import(full graph) → Seal → Carve(query) → Seal(slice) → Unload(full graph) → Reason(slice) → Validate → Query
-```
-
-```mermaid
-flowchart LR
-    I[Import<br/>full graph]:::par --> S1[Seal]:::par --> C[Carve<br/>by query]:::road --> S2[Seal<br/>slice]:::par --> U[Unload<br/>full graph]:::road --> R[Reason<br/>slice]:::seq --> V[Validate]:::seq --> Q[Query]:::out
-    classDef par fill:#0f9d6e,stroke:#0d8a61,color:#fff;
-    classDef seq fill:#d97706,stroke:#b45c06,color:#fff;
-    classDef road fill:#7c3aed,stroke:#5b21a6,color:#fff;
-    classDef out fill:#336791,stroke:#244a64,color:#fff;
-```
-
-Read this as **scale meets hardware**:
-
-- **Import(full graph)** and the seals are parallel — they scale to
-  whatever box you have, all the way up to the
-  [8.2-billion-triple ceiling](/v0.6/scale/).
-- **Carve(query)** cuts a query-defined slice out of the full graph.
-- **Unload(full graph)** parks the full graph so it is not taking up
-  the working set while you reason.
-- **Reason(slice)** and **Validate** then run single-threaded over a
-  graph **sized to your box** — not the entire source graph.
-
-In short: you do not reason over the whole source graph on
-ordinary hardware. You ingest it in parallel, carve it down to a slice
-that fits, and reason over the slice.
-
-## The verb glossary
+## The verbs
 
 | Verb | Class | Status |
 |---|---|---|
-| **Import** | parallel | Shipped — [staged bulk loader](/v0.6/storage/staged-loader) (`load_turtle`, `load_turtle_staged_run`). |
-| **Seal** | parallel | Shipped — the staged loader's concurrent INDEX phase (one worker per DDL). |
-| **Query** | — | Shipped — full [SPARQL 1.1 surface](/v0.6/query/). |
-| **Reason** | single-threaded | Shipped — [OWL 2 RL + RDFS materialization](/v0.6/inference/). |
-| **Validate** | single-threaded | Shipped — [SHACL Core 25/25](/v0.6/validation/). |
-| **Carve(query)** | parallel | Roadmap — see [Roadmap](/v0.6/roadmap/) (C1/C2). |
-| **Unload / park** | — | Roadmap — see [Roadmap](/v0.6/roadmap/) (C4). |
+| [**Import**](/v0.6/process/import) | parallel | **Shipped** — [staged bulk loader](/v0.6/storage/staged-loader) (`load_turtle`, `load_turtle_staged_run`). |
+| [**Seal**](/v0.6/process/seal) | parallel | **Shipped** — the index-build step (the staged loader's concurrent INDEX phase). |
+| [**Query**](/v0.6/process/query) | per-query | **Shipped** — full [SPARQL 1.1 surface](/v0.6/query/). |
+| [**Reason**](/v0.6/process/reason) | single-threaded | **Shipped** — [OWL 2 RL + RDFS materialization](/v0.6/inference/). |
+| [**Validate**](/v0.6/process/validate) | single-threaded | **Shipped** — [SHACL Core 25/25](/v0.6/validation/). |
+| [**Carve**](/v0.6/process/carve) | parallel | **Roadmap** — C1/C2 ([roadmap](/v0.6/roadmap/)); manual path today. |
+| [**Unload**](/v0.6/process/unload) | — | **Roadmap** — C4 ([roadmap](/v0.6/roadmap/)); manual path today. |
 
+The import-side and reasoning-side verbs are all shipped on v0.6.14.
 `Carve` and `Unload` are the verbs the v0.6.n line is building toward
-the [v0.7.0 graduation](/v0.6/roadmap/); the import-side and the
-reasoning-side verbs are all shipped on v0.6.14 today.
+the [v0.7.0 graduation](/v0.6/roadmap/).
+
+## The patterns
+
+Four worked chains cover almost every process. Pick one with
+[Choosing a process](/v0.6/process/choosing):
+
+<div class="icon-bullets">
+
+- <span class="material-symbols-outlined">search</span> [**Load → Query**](/v0.6/process/pattern-load-query) — the simplest chain; queryable at any scale.
+- <span class="material-symbols-outlined">psychology</span> [**Load → Reason → Query**](/v0.6/process/pattern-reason) — materialize the closure, then query it.
+- <span class="material-symbols-outlined">verified</span> [**Load → Validate → Query**](/v0.6/process/pattern-validate) — a SHACL conformance gate.
+- <span class="material-symbols-outlined">hub</span> [**Ingest → Carve → Reason**](/v0.6/process/pattern-carve) — scale meets hardware, for sources larger than one backend.
+
+</div>
+
+## Build your own
+
+- [**Building a chain**](/v0.6/process/building-a-chain) — the method: design backwards from the output, make the scaling decision, map verbs to UDFs. Includes the **shape vocabulary** (head · waist · tail) for talking about which step you're on.
+- [**Choosing a process**](/v0.6/process/choosing) — the decision table from goal × scale to a pattern.
 
 ## See also
 
