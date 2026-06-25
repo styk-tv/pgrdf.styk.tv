@@ -21,16 +21,17 @@ refreshes planner statistics automatically.
 
 ## How you run it
 
-```
+```sql
 pgrdf.materialize(graph_id BIGINT, profile TEXT DEFAULT 'owl-rl') → JSONB
 ```
 
-| `profile` | Closure |
-|---|---|
-| `'owl-rl'` (default) | Full OWL 2 RL forward-chaining. |
-| `'rdfs'` | RDFS closures only. |
+The `profile` selects the closure:
 
-See [Pillar 3 — Materialization](/v0.6/inference/) for the rule set.
+- **`'owl-rl'`** (default) — full OWL 2 RL forward-chaining.
+- **`'rdfs'`** — RDFS closures only.
+
+An unknown profile raises an error — there is no silent fallback. See
+[Pillar 3 — Materialization](/v0.6/inference/) for the rule set.
 
 ## Where it sits in a chain
 
@@ -42,11 +43,12 @@ reason over that.
 
 ::: warning Scaling class — single-threaded
 Reason runs on **one backend**. OWL-RL materialization is
-single-thread-bound upstream in the [`reasonable`](https://github.com/gtfierro/reasonable)
-reasoner ([issue #1](https://github.com/styk-tv/pgRDF/issues/1)). This
-is the binding constraint of the operating model: you do **not** reason
-over the full 8.2 B source graph on ordinary hardware — you reason over
-a graph sized to your box. See [Reasoning at scale](/v0.6/inference/scale).
+single-thread-bound upstream in the
+[`reasonable`](https://github.com/gtfierro/reasonable) reasoner
+([issue #1](https://github.com/styk-tv/pgRDF/issues/1)). This is the
+binding constraint of the operating model: you do **not** reason over
+the full 8.2 B source graph on ordinary hardware — you reason over a
+graph sized to your box. See [Reasoning at scale](/v0.6/inference/scale).
 :::
 
 ## Example

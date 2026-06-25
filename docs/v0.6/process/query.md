@@ -5,8 +5,8 @@ description: Query reads a sealed graph with SPARQL 1.1 — SELECT, ASK, CONSTRU
 
 # <span class="material-symbols-outlined icon-blue">search</span>Query
 
-> Read a sealed graph with **SPARQL 1.1**. Query returns JSONB rows
-> you can join straight back into regular SQL — no bridge, no second
+> Read a sealed graph with **SPARQL 1.1**. Query returns JSONB rows you
+> can join straight back into regular SQL — no bridge, no second
 > protocol.
 
 ## What it is
@@ -18,12 +18,40 @@ joins; the result is a set of JSONB solution rows.
 
 ## How you run it
 
-| UDF | Use it for |
-|---|---|
-| [`pgrdf.sparql(q TEXT) → SETOF JSONB`](/v0.6/query/) | SELECT / ASK, and the full SPARQL 1.1 UPDATE algebra, dispatched through one UDF. |
-| [`pgrdf.construct(q TEXT)`](/v0.6/query/construct) | CONSTRUCT a new RDF graph from a query. |
-| [`pgrdf.describe(q TEXT)`](/v0.6/query/) | DESCRIBE (W3C §16.4 Concise Bounded Description). |
-| [`pgrdf.sparql_parse(q TEXT)`](/v0.6/query/sparql-parse) | Inspect the algebra without executing — a static gate. |
+### sparql — SELECT, ASK, and UPDATE
+
+```sql
+pgrdf.sparql(q TEXT) → SETOF JSONB
+```
+
+The main door. Runs SELECT and ASK, and dispatches the full SPARQL 1.1
+UPDATE algebra, inside the caller's transaction. See
+[Pillar 2 — Semantic query](/v0.6/query/).
+
+### construct — build a graph
+
+```sql
+pgrdf.construct(q TEXT)
+```
+
+CONSTRUCT a new RDF graph from a query. See [CONSTRUCT](/v0.6/query/construct).
+
+### describe — concise bounded description
+
+```sql
+pgrdf.describe(q TEXT)
+```
+
+DESCRIBE a resource (W3C §16.4 Concise Bounded Description).
+
+### sparql_parse — inspect without executing
+
+```sql
+pgrdf.sparql_parse(q TEXT)
+```
+
+Return the query algebra without running it — a static gate. See
+[sparql_parse](/v0.6/query/sparql-parse).
 
 The read surface is full: multi-pattern BGPs, `FILTER`, `OPTIONAL`,
 `UNION`, `MINUS`, `VALUES`, downstream `BIND`, aggregates with
@@ -32,16 +60,17 @@ The read surface is full: multi-pattern BGPs, `FILTER`, `OPTIONAL`,
 
 ## Where it sits in a chain
 
-**After [Seal](/v0.6/process/seal); usually last.** Query is the
-output verb — it runs on a sealed graph at any time, including after
+**After [Seal](/v0.6/process/seal); usually last.** Query is the output
+verb — it runs on a sealed graph at any time, including after
 [Reason](/v0.6/process/reason) has written inferred quads back, so a
 post-reasoning query sees the entailed triples too.
 
 ::: tip Scaling class — per-query
 Query is neither the parallel-ingest class nor the single-threaded
 reasoning class: each call plans and executes against the hexastore
-with a cached plan. It is not the verb that drives the carve decision —
-[Reason](/v0.6/process/reason) and [Validate](/v0.6/process/validate) are.
+with a cached plan. It is not the verb that drives the carve
+decision — [Reason](/v0.6/process/reason) and
+[Validate](/v0.6/process/validate) are.
 :::
 
 ## Example

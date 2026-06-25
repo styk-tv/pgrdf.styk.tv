@@ -27,6 +27,17 @@
   margin: 16px 0;
 }
 
+/* Code never wraps — long UDF signatures scroll horizontally rather
+   than breaking across lines into the content column. */
+.vp-doc div[class*='language-'] pre {
+  overflow-x: auto;
+}
+.vp-doc div[class*='language-'] pre code {
+  white-space: pre;
+  word-break: normal;
+  overflow-wrap: normal;
+}
+
 /* Two-column hero on the Introduction page —
    "At a glance" callout on the left, logo on the right.
    Collapses to a single column on narrow viewports. */

@@ -295,6 +295,10 @@ export default withMermaid(defineConfig({
       { icon: 'github', link: 'https://github.com/styk-tv/pgRDF' },
     ],
 
+    // Right-hand "On this page" nav shows H2 + H3, so per-UDF sections
+    // surface as anchors instead of being buried in reference tables.
+    outline: { level: [2, 3], label: 'On this page' },
+
     search: { provider: 'local' },
 
     editLink: {

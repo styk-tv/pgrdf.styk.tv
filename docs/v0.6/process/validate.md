@@ -18,14 +18,16 @@ regular SQL.
 
 ## How you run it
 
-```
+```sql
 pgrdf.validate(data_graph BIGINT, shapes_graph BIGINT, mode TEXT DEFAULT 'native') → JSONB
 ```
 
-| `mode` | Engine |
-|---|---|
-| `'native'` (default) | W3C **SHACL Core 25/25** — the rudof SHACL Core engine, with the W3C manifest runner wired into CI. |
-| `'sparql'` | SHACL-SPARQL custom constraints (`sh:sparql` / `sh:select` / `sh:ask`) via the working rudof `SparqlEngine`. |
+The `mode` selects the engine:
+
+- **`'native'`** (default) — W3C **SHACL Core 25/25**, the rudof SHACL
+  Core engine, with the W3C manifest runner wired into CI.
+- **`'sparql'`** — SHACL-SPARQL custom constraints (`sh:sparql` /
+  `sh:select` / `sh:ask`) via the working rudof `SparqlEngine`.
 
 A pgRDF-native SHACL-SPARQL engine (`mode => 'pgrdf'`) is on the
 [roadmap](/v0.6/roadmap/), not shipped. See
@@ -41,8 +43,8 @@ asserted triples — often what you actually want.
 ::: warning Scaling class — single-threaded
 Like [Reason](/v0.6/process/reason), Validate runs on one backend over
 a graph **sized to your box**. It is the other half of the
-single-threaded class that the [carve pattern](/v0.6/process/pattern-carve)
-exists to serve.
+single-threaded class that the
+[carve pattern](/v0.6/process/pattern-carve) exists to serve.
 :::
 
 ## Example
