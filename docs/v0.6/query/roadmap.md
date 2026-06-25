@@ -1,6 +1,6 @@
 ---
 title: Forward edge — what's next
-description: The complete SPARQL surface at v0.6.14, the forward backlog, and the two documented upstream gates (E-011 / E-012) that are not pgRDF defects.
+description: The complete SPARQL surface at v0.6.14, the forward backlog, and the two documented upstream gates (E-011 / E-014) that are not pgRDF defects.
 ---
 
 # <span class="material-symbols-outlined icon-orange">rocket_launch</span>Forward edge — what's next
@@ -22,7 +22,7 @@ has been stable across the v0.5 → v0.6 line:
 - <span class="material-symbols-outlined icon-green">check_circle</span>**Full SPARQL UPDATE surface** — [INSERT/DELETE DATA, pattern-driven INSERT/DELETE WHERE, atomic DELETE+INSERT/WHERE, WITH + inline GRAPH scoping, DROP/CLEAR/CREATE lifecycle algebra](/v0.6/query/update).
 - <span class="material-symbols-outlined icon-green">check_circle</span>**[CONSTRUCT](/v0.6/query/construct)** — constant-only + variable + blank-node + multi-triple templates, GRAPH-scoped WHERE, WHERE-shorthand, round-trip ingest, `sparql_parse` shape analysis.
 - <span class="material-symbols-outlined icon-green">check_circle</span>**[Property paths](/v0.6/query/property-paths)** — `^` `+` `*` `?` `|` with cycle-safe recursive CTEs, the `pgrdf.path_max_depth` guard, W3C §9.3 zero-length semantics, and the materialised-closure no-CTE fast path.
-- <span class="material-symbols-outlined icon-green">check_circle</span>**The residual read surface** — `DESCRIBE` ([W3C §16.4 CBD](/v0.6/query/) via `pgrdf.describe`), `VALUES` inline bindings, downstream `BIND` (after the BGP block), aggregates over `UNION`, type-aware `ORDER BY`, multi-triple `OPTIONAL`, `TriG` + `N-Quads` ingest (`pgrdf.parse_trig` / `pgrdf.parse_nquads`), BIGINT **and** IRI overloads on every lifecycle UDF (`drop_graph` / `clear_graph` / `copy_graph` / `move_graph`), the [`pgrdf.materialize(g, profile)` selector](/v0.6/inference/) (`'owl-rl'` + `'rdfs'`), and [W3C SHACL Core 25/25](/v0.6/validation/) plus the wired W3C SHACL manifest runner.
+- <span class="material-symbols-outlined icon-green">check_circle</span>**The residual read surface** — `DESCRIBE` ([W3C §16.4 CBD](/v0.6/query/) via `pgrdf.describe`), `VALUES` inline bindings, downstream `BIND` (after the BGP block), aggregates over `UNION`, type-aware `ORDER BY`, multi-triple `OPTIONAL`, `TriG` + `N-Quads` ingest (`pgrdf.parse_trig` / `pgrdf.parse_nquads`), BIGINT **and** IRI overloads on every lifecycle UDF (`drop_graph` / `clear_graph` / `copy_graph` / `move_graph`), the [`pgrdf.materialize(g, profile)` selector](/v0.6/inference/) (`'owl-rl'` + `'rdfs'`), [W3C SHACL Core 25/25](/v0.6/validation/) plus the wired W3C SHACL manifest runner, and the **native SHACL-SPARQL engine** (`pgrdf.validate(…, mode => 'pgrdf')`) — the shipped, authoritative SHACL-SPARQL gate evaluating `sh:sparql` / `sh:select` / `sh:ask` constraints directly against the hexastore (see [SHACL-SPARQL](/v0.6/validation/shacl-sparql)).
 
 </div>
 
@@ -42,7 +42,6 @@ is performance and depth work, not missing pillar surface:
 <div class="icon-bullets">
 
 - <span class="material-symbols-outlined icon-orange">rocket_launch</span>**`executor.rs` core-BGP carve** — restructure the BGP translator core for clarity and reuse.
-- <span class="material-symbols-outlined icon-orange">rocket_launch</span>**A native SHACL-SPARQL engine** — see the upstream gate below.
 - <span class="material-symbols-outlined icon-orange">rocket_launch</span>**Federated `SERVICE`** — query across remote SPARQL endpoints.
 - <span class="material-symbols-outlined icon-orange">rocket_launch</span>**Incremental materialisation** — re-materialise only the affected closure on graph delta.
 - <span class="material-symbols-outlined icon-orange">rocket_launch</span>**RDF 1.2 triple terms** — see the upstream gate below.
@@ -56,14 +55,14 @@ covered in full on the [**Roadmap**](/v0.6/roadmap/) and the
 
 ## <span class="material-symbols-outlined icon-orange">schedule</span>Documented upstream gates (not pgRDF defects)
 
-Two items are blocked on a third-party crate shipping the
-required surface. They are documented upstream dependencies — the
-pgRDF side is built; the upstream side is the gate:
+Two items are blocked on a third-party crate. They are documented
+upstream dependencies — the pgRDF side is built and shipped; the
+upstream side is the gate:
 
 | Erratum | What | Upstream gate |
 |---|---|---|
 | **E-011** | RDF 1.2 triple terms **and** the crates.io publish | Both wait on [`gtfierro/reasonable#50`](https://github.com/gtfierro/reasonable/issues/50). The crates.io publish is deliberately held until that lands — the tarball / OCI bundle are the consumption path meanwhile. |
-| **E-012** | SHACL-SPARQL constraint execution (`sh:sparql` / `sh:select` / `sh:ask`) | Waits on [`rudof`](https://github.com/rudof-project/rudof) (#21 / #94). The `pgrdf.validate(…, mode => 'sparql')` **surface is shipped** — it reports what it can and is clear about what the upstream engine doesn't yet execute. See [SHACL-SPARQL](/v0.6/validation/). |
+| **E-014** | rudof `'sparql'` mode returns the **wrong verdict** on common SHACL-SPARQL topologies | Engine *reachability* (E-012) is **resolved** in `shacl 0.3.2` — `mode => 'sparql'` now reaches the rudof `SparqlEngine`. But the engine returns `conforms=true` / 0 violations where the W3C answer is non-conforming. SHACL-SPARQL constraint execution itself is **shipped**: the authoritative `pgrdf.validate(…, mode => 'pgrdf')` gate returns the correct verdict (3 violations on `node-sparql-001`). The open item is purely the rudof verdict bug, tracked on [`rudof`](https://github.com/rudof-project/rudof). See [SHACL-SPARQL](/v0.6/validation/shacl-sparql). |
 
 ## Spec-permitted gaps (by design, not "coming soon")
 

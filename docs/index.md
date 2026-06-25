@@ -138,10 +138,11 @@ independently.
 
 ## Where this content comes from
 
-This site translates the canonical feature spec
-[`SPEC.pgRDF.v0.5.FEATURES.md`](https://github.com/styk-tv/pgRDF/blob/main/specs/SPEC.pgRDF.v0.5.FEATURES.md)
-into a per-feature documentation surface. Each page here cites
-the test fixture in
+This site is the published companion to pgRDF's engineering specs —
+most directly
+[`SPEC.pgRDF.LLD.v0.6.14.md`](https://github.com/styk-tv/pgRDF/blob/main/specs/SPEC.pgRDF.LLD.v0.6.14.md),
+the as-built low-level design. Each page is grounded in the shipped
+v0.6.14 source and cites the test fixture in
 [`styk-tv/pgRDF/tests/`](https://github.com/styk-tv/pgRDF/tree/main/tests)
 that pins the contract — every feature is exercised by that test
 in CI. The whole v0.6.14 surface is callable on `main`

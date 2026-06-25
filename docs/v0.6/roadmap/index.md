@@ -49,20 +49,20 @@ performance and depth work, not missing pillar surface:
 | Pillar | Forward-edge items |
 |---|---|
 | **[Storage](/v0.6/storage/)** | Per-graph index reorganization for carved graphs — the full 6-way bidirectional hexastore + `pg_trgm` string index built per carved slice (C3, v0.6.17). The staged bulk loader, resolve-strategy selector, and big-RAM tuning already shipped in v0.6.14. |
-| **[SPARQL query](/v0.6/query/roadmap)** | `executor.rs` core-BGP carve · native SHACL-SPARQL engine (gate E-012) · federated `SERVICE` · incremental materialisation · RDF 1.2 triple terms (gate E-011). |
+| **[SPARQL query](/v0.6/query/roadmap)** | `executor.rs` core-BGP carve · federated `SERVICE` · incremental materialisation · RDF 1.2 triple terms (gate E-011). The native SHACL-SPARQL engine is **already shipped** (`mode => 'pgrdf'`) — see [Validation](/v0.6/validation/shacl-sparql). |
 | **[Inference](/v0.6/inference/)** | Reasoning over a carved, right-sized slice — single-threaded by design; the carving line (C1–C6) is what makes at-scale reasoning practical. |
-| **[Validation](/v0.6/validation/)** | SHACL-SPARQL constraint execution (gate E-012). |
+| **[Validation](/v0.6/validation/)** | SHACL-SPARQL constraint execution is **shipped** as the authoritative `mode => 'pgrdf'` gate. The open upstream item is **E-014** — the rudof `'sparql'` mode returns the wrong verdict — tracked below. |
 
 ## <span class="material-symbols-outlined icon-orange">schedule</span>Documented upstream gates (not pgRDF defects)
 
-Two backlog items are blocked on a third-party crate shipping the
-required surface. They are documented upstream dependencies — the
-pgRDF side is built; the upstream side is the gate:
+Two backlog items are blocked on a third-party crate. They are
+documented upstream dependencies — the pgRDF side is built and shipped;
+the upstream side is the gate:
 
 | Erratum | What | Upstream gate |
 |---|---|---|
 | **E-011** | RDF 1.2 triple terms **and** the crates.io publish | Both wait on [`gtfierro/reasonable#50`](https://github.com/gtfierro/reasonable/issues/50). The crates.io publish is deliberately held until that lands — the tarball / OCI bundle are the consumption path meanwhile. |
-| **E-012** | SHACL-SPARQL constraint execution (`sh:sparql` / `sh:select` / `sh:ask`) | Waits on [`rudof`](https://github.com/rudof-project/rudof) (#21 / #94). The `pgrdf.validate(…, mode => 'sparql')` surface is shipped — it reports what it can and is clear about what the upstream engine doesn't yet execute. See [SHACL-SPARQL](/v0.6/validation/). |
+| **E-014** | rudof `'sparql'` mode returns the **wrong verdict** on common SHACL-SPARQL topologies | The `shacl 0.3.2` `SparqlEngine` (E-012 — engine *reachability* — is **resolved**; `'sparql'` now reaches the engine) returns `conforms=true` / 0 violations where the W3C answer is non-conforming. pgRDF beats rudof here: the **shipped, authoritative `mode => 'pgrdf'` gate** returns the correct verdict, so SHACL-SPARQL constraint execution is delivered. The open item is purely the rudof verdict bug, tracked upstream on [`rudof`](https://github.com/rudof-project/rudof). See [SHACL-SPARQL](/v0.6/validation/shacl-sparql). |
 
 The full upstream-gate detail lives on the
 [SPARQL forward edge](/v0.6/query/roadmap).

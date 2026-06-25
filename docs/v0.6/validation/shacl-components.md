@@ -64,7 +64,7 @@
 
 | Component | Status |
 |---|---|
-| SHACL-SPARQL constraint components (`sh:sparql`, `sh:select`, `sh:ask`) | Reachable via `pgrdf.validate(…, mode => 'sparql')` — the working rudof `SparqlEngine`, shipped in the `shacl 0.3.2` crate. It parses and evaluates `sh:sparql` / `sh:select` / `sh:ask` constraints and returns the same `sh:ValidationReport`-shape JSONB. A pgRDF-native SHACL-SPARQL engine (`mode => 'pgrdf'`, Track H) is on the [roadmap](/v0.6/roadmap/), not shipped. See [SHACL-SPARQL](/v0.6/validation/shacl-sparql). |
+| SHACL-SPARQL constraint components (`sh:sparql`, `sh:select`, `sh:ask`) | **Shipped.** Reachable via `pgrdf.validate(…, mode => 'pgrdf')` — the **pgRDF-native** SHACL-SPARQL handler, the **authoritative** gate for custom constraints. It evaluates `sh:sparql` / `sh:select` / `sh:ask` constraints **directly against the hexastore** (no N-Triples rehydrate) and returns the same `sh:ValidationReport`-shape JSONB with the correct W3C verdict. The alternate `mode => 'sparql'` (rudof `SparqlEngine`) reaches the engine but is **E-014-buggy** — it returns the wrong verdict on common topologies and is not a trusted gate. See [SHACL-SPARQL](/v0.6/validation/shacl-sparql). |
 
 The full SHACL Core component set above is shipped — including
 property paths in `sh:path` (the same [SPARQL property-path](/v0.6/query/property-paths)

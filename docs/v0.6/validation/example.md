@@ -72,8 +72,7 @@ SELECT pgrdf.validate(1, 2);
 }
 ```
 
-Alice conforms. Bob does not — exactly the constraint we wrote
-the shape for.
+Alice conforms. Bob does not — exactly what the shape declares.
 
 ## Fix the data and re-validate
 

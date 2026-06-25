@@ -1,6 +1,6 @@
 ---
 title: Validate — the conformance verb
-description: Validate checks a graph against a SHACL shapes graph and returns a W3C sh:ValidationReport as JSONB. Backed by pgrdf.validate — mode 'native' is W3C SHACL Core 25/25; mode 'sparql' runs SHACL-SPARQL custom constraints. Single-threaded, sized to fit.
+description: Validate checks a graph against a SHACL shapes graph and returns a W3C sh:ValidationReport as JSONB. Backed by pgrdf.validate — mode 'native' is W3C SHACL Core 25/25; mode 'pgrdf' is the shipped, authoritative SHACL-SPARQL gate; mode 'sparql' reaches the rudof engine but is E-014-caveated. Single-threaded, sized to fit.
 ---
 
 # <span class="material-symbols-outlined icon-blue">verified</span>Validate
@@ -26,12 +26,19 @@ The `mode` selects the engine:
 
 - **`'native'`** (default) — W3C **SHACL Core 25/25**, the rudof SHACL
   Core engine, with the W3C manifest runner wired into CI.
-- **`'sparql'`** — SHACL-SPARQL custom constraints (`sh:sparql` /
-  `sh:select` / `sh:ask`) via the working rudof `SparqlEngine`.
+- **`'pgrdf'`** — the **shipped**, **authoritative** SHACL-SPARQL gate.
+  The pgRDF-native handler evaluates SHACL-SPARQL custom constraints
+  (`sh:sparql` / `sh:select` / `sh:ask`) **directly against the
+  hexastore** — no N-Triples rehydrate — and returns the correct W3C
+  verdict.
+- **`'sparql'`** — routes SHACL-SPARQL constraints to the rudof
+  `SparqlEngine`. The dispatch reaches the engine, but it carries an
+  open correctness caveat (**E-014**): it returns the wrong verdict on
+  common topologies, so it is **not a trusted gate** — use `'pgrdf'`
+  for SHACL-SPARQL correctness.
 
-A pgRDF-native SHACL-SPARQL engine (`mode => 'pgrdf'`) is on the
-[roadmap](/v0.6/roadmap/), not shipped. See
-[Pillar 4 — Validation](/v0.6/validation/).
+See [Pillar 4 — Validation](/v0.6/validation/) and
+[SHACL-SPARQL](/v0.6/validation/shacl-sparql).
 
 ## Where it sits in a chain
 
