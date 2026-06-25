@@ -48,7 +48,7 @@ performance and depth work, not missing pillar surface:
 
 | Pillar | Forward-edge items |
 |---|---|
-| **[Storage](/v0.6/storage/)** | Big-RAM bulk-ingest tuning and the staged-loader strategy work (folded into the C1–C6 line above). |
+| **[Storage](/v0.6/storage/)** | Per-graph index reorganization for carved graphs — the full 6-way bidirectional hexastore + `pg_trgm` string index built per carved slice (C3, v0.6.17). The staged bulk loader, resolve-strategy selector, and big-RAM tuning already shipped in v0.6.14. |
 | **[SPARQL query](/v0.6/query/roadmap)** | `executor.rs` core-BGP carve · native SHACL-SPARQL engine (gate E-012) · federated `SERVICE` · incremental materialisation · RDF 1.2 triple terms (gate E-011). |
 | **[Inference](/v0.6/inference/)** | Reasoning over a carved, right-sized slice — single-threaded by design; the carving line (C1–C6) is what makes at-scale reasoning practical. |
 | **[Validation](/v0.6/validation/)** | SHACL-SPARQL constraint execution (gate E-012). |

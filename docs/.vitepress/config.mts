@@ -94,6 +94,13 @@ export default withMermaid(defineConfig({
   lastUpdated: true,
   sitemap: { hostname: SITE_URL },
 
+  // Vivid, high-contrast Shiki highlighting (the default github-light reads
+  // near-monochrome for SQL). VS Code Light+/Dark+ give distinct keyword,
+  // type, string, and function colors.
+  markdown: {
+    theme: { light: 'light-plus', dark: 'dark-plus' },
+  },
+
   themeConfig: {
     logo: '/logo.svg',
     siteTitle: 'pgRDF',
@@ -109,12 +116,23 @@ export default withMermaid(defineConfig({
       {
         text: 'Releases',
         items: [
-          { text: 'GitHub releases (v0.6.14)', link: 'https://github.com/styk-tv/pgRDF/releases/tag/v0.6.14' },
-          { text: 'CHANGELOG',                 link: 'https://github.com/styk-tv/pgRDF/blob/main/CHANGELOG.md' },
-          { text: 'crates.io',                 link: 'https://crates.io/crates/pgrdf' },
+          {
+            text: 'Current — v0.6.14',
+            items: [
+              { text: 'Release notes (v0.6.14)', link: 'https://github.com/styk-tv/pgRDF/releases/tag/v0.6.14' },
+              { text: 'CHANGELOG',               link: 'https://github.com/styk-tv/pgRDF/blob/main/CHANGELOG.md' },
+              { text: 'crates.io',               link: 'https://crates.io/crates/pgrdf' },
+            ],
+          },
+          {
+            text: 'More',
+            items: [
+              { text: 'All releases',        link: 'https://github.com/styk-tv/pgRDF/releases' },
+              { text: 'Archive — v0.5 docs', link: '/v0.5/pillars' },
+            ],
+          },
         ],
       },
-      { text: 'Archive (v0.5)', link: '/v0.5/pillars' },
       { text: 'GitHub', link: 'https://github.com/styk-tv/pgRDF' },
     ],
 
@@ -218,17 +236,17 @@ export default withMermaid(defineConfig({
           ],
         },
         {
-          text: 'Scale',
-          collapsed: false,
-          items: [
-            { text: 'Scale & benchmarks',                link: '/v0.6/scale/' },
-          ],
-        },
-        {
           text: 'Process',
           collapsed: false,
           items: [
             { text: 'Processes & flows',                 link: '/v0.6/process/' },
+          ],
+        },
+        {
+          text: 'Scale',
+          collapsed: false,
+          items: [
+            { text: 'Scale & benchmarks',                link: '/v0.6/scale/' },
           ],
         },
         {

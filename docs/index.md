@@ -10,7 +10,7 @@ description: pgRDF — PostgreSQL extension for RDF, SPARQL, SHACL and OWL 2 RL 
 
 ::: info At a glance
 **pgRDF** · Semantic web inside PostgreSQL ·
-Status **Alpha** · License **MIT** ·
+License **MIT** ·
 Postgres **14 · 15 · 16 · 17** ·
 Latest release [**v0.6.14**](https://github.com/styk-tv/pgRDF/releases/tag/v0.6.14) — the native [staged bulk loader](/v0.6/storage/staged-loader) (full 8.2-billion-triple Wikidata `truthy` graph in a single instance) on top of the complete four-pillar surface: SPARQL SELECT/ASK/[CONSTRUCT](/v0.6/query/construct)/DESCRIBE + [property paths](/v0.6/query/property-paths) + full UPDATE, OWL 2 RL **and** RDFS [materialization](/v0.6/inference/), [SHACL Core](/v0.6/validation/) 25/25 ·
 [GitHub releases](https://github.com/styk-tv/pgRDF/releases) ·
@@ -143,8 +143,8 @@ This site translates the canonical feature spec
 into a per-feature documentation surface. Each page here cites
 the test fixture in
 [`styk-tv/pgRDF/tests/`](https://github.com/styk-tv/pgRDF/tree/main/tests)
-that pins the contract — every feature is real and tested, not
-aspirational. The whole v0.6.14 surface is callable on `main`
+that pins the contract — every feature is exercised by that test
+in CI. The whole v0.6.14 surface is callable on `main`
 today. The forward backlog — graph carving, per-graph index
 reorganization, RDF 1.2 triple terms, a native SHACL-SPARQL engine,
 federated `SERVICE`, incremental materialisation — is tracked in

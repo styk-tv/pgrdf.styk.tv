@@ -53,8 +53,8 @@ SELECT pgrdf.sparql_parse(
 A query that uses a feature outside the executable surface shows
 up in `unsupported_algebra`. `sparql_parse` itself **never
 panics** — it lowers the full executable set and flags only the
-genuinely-unsupported remainder, mirroring how it reports
-not-yet-shipped UPDATE forms.
+spec-permitted out-of-scope remainder (the full UPDATE algebra and
+the executable property-path set both lower cleanly).
 
 ## Property paths
 
