@@ -8,7 +8,7 @@ description: The pgRDF operating model as composable verbs and arrow-chains — 
 > pgRDF's operating model is a set of **composable verbs** you chain
 > with arrows. Some verbs are parallel and scale with the box; others
 > are single-threaded and want a graph sized to your hardware. The
-> chains below show how to combine them honestly.
+> chains below show how to combine them.
 
 ## Two kinds of process
 
@@ -19,7 +19,7 @@ Every verb falls into one of two classes, split by **how it scales**:
 | **Parallel / scales with the box** | **Import**, **Seal** (concurrent index build) | Fans across a background-worker pool. Add cores → goes faster. Proven on the [full 8.2 B graph](/v0.6/scale/). |
 | **Single-threaded / sized-to-fit** | **Reason**, **Validate** | Runs on one backend. The graph must be sized to fit your hardware — you do not reason over the full source graph. |
 
-This is the honest constraint that shapes every chain:
+This is the constraint that shapes every chain:
 **ingest is parallel, reasoning is not.** So the move at scale is to
 ingest the full graph in parallel, then carve a right-sized slice and
 reason over *that*.
@@ -89,7 +89,7 @@ Read this as **scale meets hardware**:
 - **Reason(slice)** and **Validate** then run single-threaded over a
   graph **sized to your box** — not the entire source graph.
 
-The honest summary: you do not reason over the whole source graph on
+In short: you do not reason over the whole source graph on
 ordinary hardware. You ingest it in parallel, carve it down to a slice
 that fits, and reason over the slice.
 

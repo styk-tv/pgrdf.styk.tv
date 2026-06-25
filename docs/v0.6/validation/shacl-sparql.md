@@ -37,8 +37,7 @@ shipped in the [`shacl`](https://crates.io/crates/shacl) crate
 constraints into its IR, resolves the shape's target set, and
 evaluates each constraint to produce `sh:ValidationResult` entries.
 
-The default `mode => 'native'` is unaffected: it is genuine W3C
-SHACL Core, 25/25.
+The default `mode => 'native'` is unaffected: W3C SHACL Core, 25/25.
 
 ::: tip A pgRDF-native engine is on the roadmap
 Today `mode => 'sparql'` rehydrates the data graph as N-Triples and
@@ -56,7 +55,7 @@ that powers `pgrdf.sparql`. It is **not shipped** today; the
 
 | `mode` | Engine | Use it for |
 |---|---|---|
-| `'native'` (default) | rudof SHACL Core | All SHACL Core constraints — genuine W3C SHACL Core 25/25. |
+| `'native'` (default) | rudof SHACL Core | All SHACL Core constraints — W3C SHACL Core 25/25. |
 | `'sparql'` | rudof `SparqlEngine` | `sh:sparql` / `sh:select` / `sh:ask` custom constraints — the working SHACL-SPARQL path. |
 | `'pgrdf'` | pgRDF-native SHACL-SPARQL | **Roadmap** (Track H) — direct hexastore evaluation. Not shipped; see the [roadmap](/v0.6/roadmap/). |
 
@@ -70,8 +69,8 @@ ships as a Turtle manifest pointing at paired
 data/shapes/report fixtures. pgRDF wires a runner against this
 manifest into CI, the way the SPARQL test surface is wired via
 [`tests/w3c-sparql/`](/v0.6/query/). The native SHACL Core path
-runs at **25/25** on the W3C SHACL Core suite — that is the
-"genuine SHACL Core" claim the rest of this pillar makes.
+runs at **25/25** on the W3C SHACL Core suite — full SHACL Core
+conformance, verified in CI.
 
 ## Tests
 

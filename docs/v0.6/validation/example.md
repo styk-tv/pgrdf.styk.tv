@@ -91,10 +91,10 @@ SELECT pgrdf.validate(1, 2);
 ## Tests
 
 - [`tests/regression/sql/71-shacl-real.sql`](https://github.com/styk-tv/pgRDF/blob/main/tests/regression/sql/71-shacl-real.sql)
-  — real engine + W3C-shape report, violating case.
+  — W3C-shape validation report, violating case.
 - [`tests/regression/sql/70-validate-stub.sql`](https://github.com/styk-tv/pgRDF/blob/main/tests/regression/sql/70-validate-stub.sql)
-  — back-compat signal that the surface signature didn't break
-  when the early stub was replaced with the real engine.
+  — back-compat guard that the `pgrdf.validate` surface signature
+  stays stable across releases.
 - [`tests/regression/sql/122-shacl-modes.sql`](https://github.com/styk-tv/pgRDF/blob/main/tests/regression/sql/122-shacl-modes.sql)
   — the `mode` field + default, unknown-mode error, and the
   materialised-graph entailment case.

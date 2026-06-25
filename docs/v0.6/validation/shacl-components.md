@@ -72,7 +72,7 @@ engine, alternation / sequence / inverse).
 
 ## Conformance + tests
 
-`mode => 'native'` is **genuine W3C SHACL Core**, conformant
+`mode => 'native'` is **W3C SHACL Core**, conformant
 against the W3C SHACL Core test suite at **25/25**. The engine is
 exercised end-to-end by
 [`tests/regression/sql/71-shacl-real.sql`](https://github.com/styk-tv/pgRDF/blob/main/tests/regression/sql/71-shacl-real.sql),

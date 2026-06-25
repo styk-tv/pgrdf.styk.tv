@@ -4,7 +4,7 @@
 validates the data graph against the shapes graph and returns a
 **W3C `sh:ValidationReport`-shape** JSONB document.
 
-The default `mode => 'native'` is **genuine W3C SHACL Core** —
+The default `mode => 'native'` is **W3C SHACL Core** —
 the full SHACL Core constraint set, conformant against the W3C
 SHACL Core test suite at **25/25**. Backed by the
 [`shacl`](https://crates.io/crates/shacl) crate (`0.3.2`) from the

@@ -56,13 +56,13 @@ performance and depth work, not missing pillar surface:
 ## <span class="material-symbols-outlined icon-orange">schedule</span>Documented upstream gates (not pgRDF defects)
 
 Two backlog items are blocked on a third-party crate shipping the
-required surface. They are honest, documented dependencies — the
+required surface. They are documented upstream dependencies — the
 pgRDF side is built; the upstream side is the gate:
 
 | Erratum | What | Upstream gate |
 |---|---|---|
 | **E-011** | RDF 1.2 triple terms **and** the crates.io publish | Both wait on [`gtfierro/reasonable#50`](https://github.com/gtfierro/reasonable/issues/50). The crates.io publish is deliberately held until that lands — the tarball / OCI bundle are the consumption path meanwhile. |
-| **E-012** | SHACL-SPARQL constraint execution (`sh:sparql` / `sh:select` / `sh:ask`) | Waits on [`rudof`](https://github.com/rudof-project/rudof) (#21 / #94). The `pgrdf.validate(…, mode => 'sparql')` surface is shipped and honest — it reports what it can and is clear about what the upstream engine doesn't yet execute. See [SHACL-SPARQL](/v0.6/validation/). |
+| **E-012** | SHACL-SPARQL constraint execution (`sh:sparql` / `sh:select` / `sh:ask`) | Waits on [`rudof`](https://github.com/rudof-project/rudof) (#21 / #94). The `pgrdf.validate(…, mode => 'sparql')` surface is shipped — it reports what it can and is clear about what the upstream engine doesn't yet execute. See [SHACL-SPARQL](/v0.6/validation/). |
 
 The full upstream-gate detail lives on the
 [SPARQL forward edge](/v0.6/query/roadmap).

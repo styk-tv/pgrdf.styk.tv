@@ -12,7 +12,7 @@ description: pgRDF — PostgreSQL extension for RDF, SPARQL, SHACL and OWL 2 RL 
 **pgRDF** · Semantic web inside PostgreSQL ·
 Status **Alpha** · License **MIT** ·
 Postgres **14 · 15 · 16 · 17** ·
-Latest release [**v0.6.14**](https://github.com/styk-tv/pgRDF/releases/tag/v0.6.14) — the native [staged bulk loader](/v0.6/storage/staged-loader) (full 8.2-billion-triple Wikidata `truthy` graph in a single instance) on top of the complete four-pillar surface: SPARQL SELECT/ASK/[CONSTRUCT](/v0.6/query/construct)/DESCRIBE + [property paths](/v0.6/query/property-paths) + full UPDATE, OWL 2 RL **and** RDFS [materialization](/v0.6/inference/), genuine [SHACL Core](/v0.6/validation/) 25/25 ·
+Latest release [**v0.6.14**](https://github.com/styk-tv/pgRDF/releases/tag/v0.6.14) — the native [staged bulk loader](/v0.6/storage/staged-loader) (full 8.2-billion-triple Wikidata `truthy` graph in a single instance) on top of the complete four-pillar surface: SPARQL SELECT/ASK/[CONSTRUCT](/v0.6/query/construct)/DESCRIBE + [property paths](/v0.6/query/property-paths) + full UPDATE, OWL 2 RL **and** RDFS [materialization](/v0.6/inference/), [SHACL Core](/v0.6/validation/) 25/25 ·
 [GitHub releases](https://github.com/styk-tv/pgRDF/releases) ·
 anonymous [OCI bundle](/v0.6/operations/install) ·
 [GitHub](https://github.com/styk-tv/pgRDF) ·
@@ -30,14 +30,14 @@ anonymous [OCI bundle](/v0.6/operations/install) ·
 **pgRDF** is a PostgreSQL extension that turns your Postgres
 database into a high-performance semantic-web platform. Written
 in Rust on top of [`pgrx`](https://github.com/pgcentralfoundation/pgrx),
-it provides four real engines under one extension surface:
+it provides four engines under one extension surface:
 
 | Engine | What it does | Entry-point UDFs |
 |---|---|---|
 | **Storage** | Dictionary-encoded triples in LIST-partitioned tables with SPO / POS / OSP covering indexes. Turtle, TriG, and N-Quads ingest — plus the native staged bulk loader for graphs that won't fit a single transaction. | [`pgrdf.load_turtle`](/v0.6/storage/load-turtle), [`pgrdf.load_turtle_staged_run`](/v0.6/storage/staged-loader), [`pgrdf.parse_turtle`](/v0.6/storage/parse-turtle), [`pgrdf.parse_trig`](/v0.6/storage/parse-turtle), [`pgrdf.parse_nquads`](/v0.6/storage/parse-turtle), [`pgrdf.add_graph`](/v0.6/storage/named-graphs) |
 | **SPARQL** | SPARQL 1.1 SELECT / ASK / CONSTRUCT / DESCRIBE + full UPDATE + property paths — parsed via `spargebra`, translated to dynamic SQL, executed with a per-backend plan cache. | [`pgrdf.sparql`](/v0.6/query/), [`pgrdf.construct`](/v0.6/query/construct), [`pgrdf.describe`](/v0.6/query/), [`pgrdf.sparql_parse`](/v0.6/query/sparql-parse) |
 | **Inference** | OWL 2 RL **and** RDFS forward-chaining via the [`reasonable`](https://github.com/gtfierro/reasonable) reasoner. Writes inferences back as queryable rows. | [`pgrdf.materialize`](/v0.6/inference/) |
-| **Validation** | Native SHACL Core (genuine W3C SHACL Core 25/25) via the [rudof project's](https://github.com/rudof-project/rudof) `shacl` crate. Returns a W3C `sh:ValidationReport`-shape JSONB document. | [`pgrdf.validate`](/v0.6/validation/) |
+| **Validation** | Native SHACL Core (W3C SHACL Core 25/25) via the [rudof project's](https://github.com/rudof-project/rudof) `shacl` crate. Returns a W3C `sh:ValidationReport`-shape JSONB document. | [`pgrdf.validate`](/v0.6/validation/) |
 
 All four engines run **inside Postgres**. There's no separate
 service, no second deployment surface, no extra protocol. Every

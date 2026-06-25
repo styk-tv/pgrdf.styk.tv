@@ -1,14 +1,14 @@
 ---
 title: The four pillars
-description: pgRDF v0.6 — one Postgres extension exposing four real engines (storage, SPARQL query, OWL 2 RL materialization, SHACL Core validation) under the pgrdf.* schema, now with the native staged bulk loader proven on the full 8.2-billion-triple Wikidata graph.
+description: pgRDF v0.6 — one Postgres extension exposing four engines (storage, SPARQL query, OWL 2 RL materialization, SHACL Core validation) under the pgrdf.* schema, now with the native staged bulk loader proven on the full 8.2-billion-triple Wikidata graph.
 ---
 
 # The four pillars at a glance
 
 pgRDF is one Postgres extension exposing four pillars under the
-`pgrdf.*` schema. Each pillar is a real engine, not a stub. They
-compose — the same `graph_id` you load Turtle into is the one you
-SPARQL-query, the one you materialize, and the one you validate.
+`pgrdf.*` schema. They compose — the same `graph_id` you load Turtle
+into is the one you SPARQL-query, the one you materialize, and the one
+you validate.
 
 ```mermaid
 flowchart LR
@@ -30,7 +30,7 @@ flowchart LR
 | **[1 · Semantic storage](/v0.6/storage/)** | RDF triples land in dictionary-encoded, partitioned Postgres tables you can `SELECT` from with vanilla SQL. Turtle in, quads out. v0.6 adds the [native staged bulk loader](/v0.6/storage/staged-loader). | `pgrdf.load_turtle`, `pgrdf.load_turtle_staged_run`, `pgrdf.parse_turtle`, `pgrdf.add_graph`, `pgrdf.count_quads` |
 | **[2 · Semantic query](/v0.6/query/)** | Full SPARQL 1.1 — SELECT / ASK / CONSTRUCT / DESCRIBE / UPDATE over those triples: multi-pattern joins, FILTER, OPTIONAL, UNION, MINUS, aggregates (incl. over UNION), BIND, VALUES, type-aware ORDER BY, GRAPH, property paths. Returns JSONB rows you can join with regular SQL. | `pgrdf.sparql`, `pgrdf.construct`, `pgrdf.describe`, `pgrdf.sparql_parse` |
 | **[3 · Semantic materialization](/v0.6/inference/)** | OWL 2 RL **and** RDFS forward-chaining inference (per-call `profile` selector). Implicit consequences (subclass, subproperty, equivalence, inverse, transitive) are written back into the same tables as queryable rows. | `pgrdf.materialize` |
-| **[4 · Semantic validation](/v0.6/validation/)** | Native SHACL Core constraint checking — genuine W3C SHACL Core 25/25. A graph + a shapes graph produce a W3C-shape `sh:ValidationReport` JSONB you can persist, alert on, or gate ingestion with. | `pgrdf.validate` |
+| **[4 · Semantic validation](/v0.6/validation/)** | Native SHACL Core constraint checking — W3C SHACL Core 25/25. A graph + a shapes graph produce a W3C-shape `sh:ValidationReport` JSONB you can persist, alert on, or gate ingestion with. | `pgrdf.validate` |
 
 ## The operating model
 
